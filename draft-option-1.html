@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wink Wink — Option 1 Draft (Editorial Letterbox)</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1817;
+      --black: #0d0b0b;
+      --cream: #faf4ee;
+      --rose-gold: #c08f6b;
+      --rose-gold-light: #d9b48f;
+      --line: rgba(192, 143, 107, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", system-ui, sans-serif;
+      font-weight: 300;
+    }
+
+    /* Draft banner */
+    .draft-banner {
+      background: #1a1614;
+      color: #a89c8e;
+      padding: 0.55rem 1.5rem;
+      font-family: "Italiana", serif;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.18);
+    }
+    .draft-banner a {
+      color: var(--rose-gold-light);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217, 180, 143, 0.4);
+      padding-bottom: 1px;
+      margin-left: 1.5rem;
+    }
+
+    /* ─────────────────────────────────────────
+       HERO — Option 1: Editorial Letterbox
+       Composition logic of a couture campaign film:
+         · Slim cream band on top  → masthead (wordmark + thin rule)
+         · Cinematic video band     → contained center strip
+         · Tall cream band on bottom → typographic statement + CTA
+       References: Saint Laurent campaign films, Wong Kar-wai title cards,
+       Chanel No.5 microsites, Tom Ford Beauty editorial drops.
+       ───────────────────────────────────────── */
+    .hero {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+      background: var(--cream);
+    }
+
+    /* ── Top band: masthead ── */
+    .hero__top {
+      padding: clamp(1.5rem, 2.5vw, 2.2rem) clamp(1.75rem, 4vw, 3.5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero__brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .hero__brand-mark {
+      font-family: "Italiana", serif;
+      font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--ink);
+      padding-left: 0.42em;
+      line-height: 1;
+    }
+    .hero__brand-sub {
+      font-family: "Italiana", serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.62em;
+      text-transform: uppercase;
+      color: #8a7c6d;
+      padding-left: 0.62em;
+      line-height: 1;
+    }
+    .hero__top-meta {
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #8a7c6d;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Middle band: cinematic video strip ── */
+    .hero__media {
+      position: relative;
+      overflow: hidden;
+      background: #0d0b0b;
+      isolation: isolate;
+      /* Letterbox height — restrained cinematic strip */
+      height: clamp(280px, 42vh, 460px);
+    }
+    .hero__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 38%;
+      filter: brightness(1) contrast(1.05) saturate(1.02);
+    }
+
+    /* ── Bottom band: typographic statement ── */
+    .hero__bottom {
+      padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.75rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4rem);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: clamp(2.5rem, 6vw, 5rem);
+      align-items: end;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero__eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      margin-bottom: 1.2rem;
+    }
+    .hero__title {
+      font-family: "Italiana", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 5.4vw, 4.8rem);
+      line-height: 1.02;
+      letter-spacing: 0.005em;
+      color: var(--ink);
+      max-width: 11ch;
+    }
+    .hero__bottom-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      max-width: 460px;
+    }
+    .hero__sub {
+      font-family: "Inter", sans-serif;
+      font-weight: 300;
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: #6e5f51;
+    }
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1.05rem 2.5rem;
+      background: var(--ink);
+      color: var(--cream);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid var(--ink);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn:hover { background: transparent; color: var(--ink); }
+    .link {
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--rose-gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.5);
+      padding-bottom: 2px;
+    }
+    .link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    .cta-note {
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #8a7c6d;
+    }
+
+    /* Mobile */
+    @media (max-width: 820px) {
+      .hero__top { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+      .hero__media { height: clamp(260px, 50vh, 420px); }
+      .hero__bottom { grid-template-columns: 1fr; gap: 1.8rem; }
+      .hero__title { max-width: none; font-size: clamp(2.4rem, 9vw, 3.4rem); }
+    }
+    @media (max-width: 720px) {
+      .hero__brand-mark { font-size: 1.05rem; letter-spacing: 0.32em; padding-left: 0.32em; }
+      .hero__brand-sub { font-size: 0.58rem; letter-spacing: 0.5em; padding-left: 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="draft-banner">
+    Draft · Option 1 — Editorial Letterbox
+    <a href="/">← back to live site</a>
+  </div>
+
+  <section class="hero">
+    <!-- Top band -->
+    <div class="hero__top">
+      <div class="hero__brand">
+        <span class="hero__brand-mark">Wink Wink</span>
+        <span class="hero__brand-sub">Beauty Bar</span>
+      </div>
+      <span class="hero__top-meta">Jurupa Valley, California</span>
+    </div>
+
+    <!-- Cinematic strip -->
+    <div class="hero__media" aria-hidden="true">
+      <video class="hero__video" autoplay loop muted playsinline preload="metadata">
+        <source src="images/insta-6.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- Typographic statement -->
+    <div class="hero__bottom">
+      <div>
+        <p class="hero__eyebrow">Hair · Lash Extensions · Waxing</p>
+        <h1 class="hero__title">Elevated Beauty, Effortlessly You</h1>
+      </div>
+      <div class="hero__bottom-right">
+        <p class="hero__sub">Luxury lashes, dimensional hair, and flawless waxing — designed to make you feel confident from every angle.</p>
+        <div class="hero__actions">
+          <a href="#" class="btn">Text to Book</a>
+          <a href="#" class="link">view the menu &rarr;</a>
+        </div>
+        <p class="cta-note">by appointment only</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function(){
+      var v = document.querySelector(".hero__video");
+      if (!v) return;
+      var setRate = function(){ try { v.playbackRate = 0.65; } catch(e){} };
+      setRate();
+      v.addEventListener("loadedmetadata", setRate);
+      v.addEventListener("play", setRate);
+    })();
+  </script>
+</body>
+</html>

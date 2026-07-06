@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wink Wink — Option 8 Draft (Sculpted Video Lighting)</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1817;
+      --black: #0d0b0b;
+      --cream: #faf4ee;
+      --rose-gold: #c08f6b;
+      --rose-gold-light: #d9b48f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: #0d0b0b;
+      color: var(--cream);
+      font-family: "Inter", system-ui, sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* Draft banner — so you know this isn't the live site */
+    .draft-banner {
+      background: #1a1614;
+      color: #a89c8e;
+      padding: 0.55rem 1.5rem;
+      font-family: "Italiana", serif;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.18);
+    }
+    .draft-banner a { color: var(--rose-gold-light); text-decoration: none; border-bottom: 1px solid rgba(217, 180, 143, 0.4); padding-bottom: 1px; margin-left: 1.5rem; }
+
+    /* ─────────────────────────────────────────
+       HERO — Option 8: Sculpted Video Lighting
+       Full-bleed video, no dark overlays.
+       Lighting is built FROM the video itself:
+         · Key light:  brightens the focal lash
+         · Falloff:    warm sepia toward corners (NOT black)
+         · Film bloom: tiny warm halo on the subject
+       Text sits in the naturally darker corner.
+       ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 92vh;
+      min-height: 640px;
+      overflow: hidden;
+      isolation: isolate;
+      background: #0d0b0b;
+    }
+    .hero__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      /* Restore full sharpness + slight grade — no dimming */
+      filter: brightness(1.02) contrast(1.08) saturate(1.02);
+    }
+
+    /* 1. KEY LIGHT — soft warm brightness boost on the focal subject (the lash).
+       mix-blend soft-light + cream tone = brightens warm areas without bleaching.
+       Centered roughly where the eye is in the source video. */
+    .hero__keylight {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(ellipse 55% 60% at 68% 44%,
+        rgba(255, 238, 215, 0.34) 0%,
+        rgba(255, 238, 215, 0.18) 30%,
+        rgba(255, 238, 215, 0) 65%);
+      mix-blend-mode: soft-light;
+    }
+
+    /* 2. CINEMATIC FALLOFF — warm sepia darkening toward the corners.
+       multiply + warm brown reads as film grade, not as a digital shadow.
+       NOTE: no black anywhere — only warm tones. */
+    .hero__falloff {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: radial-gradient(ellipse 95% 100% at 62% 42%,
+        rgba(42, 28, 20, 0) 28%,
+        rgba(42, 28, 20, 0.38) 72%,
+        rgba(58, 38, 28, 0.68) 100%);
+      mix-blend-mode: multiply;
+    }
+
+    /* 3. FILM BLOOM — tiny warm halo right at the focal point.
+       screen + warm cream = subtle luminous shimmer on the lash. */
+    .hero__bloom {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background: radial-gradient(ellipse 22% 22% at 68% 42%,
+        rgba(255, 228, 198, 0.14) 0%,
+        rgba(255, 228, 198, 0) 75%);
+      mix-blend-mode: screen;
+    }
+
+    /* 4. EDGE SMOOTHING — a hair of corner soft-fade so the rectangle doesn't read hard.
+       Very subtle — just a finishing touch. */
+    .hero__edge {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom,
+          rgba(13, 11, 11, 0.18) 0%,
+          rgba(13, 11, 11, 0) 12%,
+          rgba(13, 11, 11, 0) 85%,
+          rgba(13, 11, 11, 0.28) 100%);
+    }
+
+    /* Wordmark — top-left editorial mark */
+    .hero__brand {
+      position: absolute;
+      top: clamp(1.5rem, 3vw, 2.6rem);
+      left: clamp(1.5rem, 4vw, 3.5rem);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .hero__brand-mark {
+      font-family: "Italiana", serif;
+      font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: #ebdcc3;
+      padding-left: 0.42em;
+      line-height: 1;
+    }
+    .hero__brand-sub {
+      font-family: "Italiana", serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.62em;
+      text-transform: uppercase;
+      color: #a89c8e;
+      padding-left: 0.62em;
+      line-height: 1;
+    }
+
+    /* Type stack — bottom-left, sitting in the natural shadow falloff.
+       Reads as poster composition (Vogue cover, Chanel campaign). */
+    .hero__content {
+      position: absolute;
+      bottom: clamp(2.5rem, 6vw, 5rem);
+      left: clamp(1.5rem, 4vw, 4rem);
+      z-index: 10;
+      max-width: 560px;
+    }
+    .hero__eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--rose-gold-light);
+      margin-bottom: 1.1rem;
+    }
+    .hero__title {
+      font-family: "Italiana", serif;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 5.6vw, 4.6rem);
+      line-height: 1.04;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+      margin-bottom: 1.2rem;
+      /* No drop shadow — the lighting itself does the readability work */
+    }
+    .hero__sub {
+      color: #ece1d0;
+      font-size: 1rem;
+      line-height: 1.55;
+      max-width: 440px;
+      margin-bottom: 1.8rem;
+    }
+    .hero__actions { display: flex; gap: 1.3rem; align-items: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.4rem;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid var(--cream);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn:hover { background: transparent; color: var(--cream); }
+    .link {
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--rose-gold-light);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217, 180, 143, 0.45);
+      padding-bottom: 2px;
+    }
+    .cta-note {
+      margin-top: 1rem;
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #a89c8e;
+    }
+
+    /* Mobile — keep the same lighting, recenter the text */
+    @media (max-width: 720px) {
+      .hero { height: 88vh; min-height: 540px; }
+      .hero__content { left: 1.25rem; right: 1.25rem; bottom: clamp(2rem, 8vw, 3rem); max-width: none; }
+      .hero__title { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+      .hero__brand { left: 1.25rem; top: 1.25rem; }
+      .hero__brand-mark { font-size: 1rem; letter-spacing: 0.32em; }
+      .hero__brand-sub { font-size: 0.55rem; letter-spacing: 0.5em; }
+      /* Shift the key light slightly so it doesn't sit on the text on mobile */
+      .hero__keylight { background: radial-gradient(ellipse 75% 50% at 50% 32%,
+        rgba(255, 238, 215, 0.32) 0%, rgba(255, 238, 215, 0.15) 35%, transparent 70%); }
+      .hero__falloff { background: radial-gradient(ellipse 100% 70% at 50% 32%,
+        rgba(42, 28, 20, 0) 30%, rgba(42, 28, 20, 0.45) 80%, rgba(58, 38, 28, 0.7) 100%); }
+      .hero__bloom { background: radial-gradient(ellipse 35% 18% at 50% 32%,
+        rgba(255, 228, 198, 0.14) 0%, rgba(255, 228, 198, 0) 75%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="draft-banner">
+    Draft · Option 8 — Sculpted Video Lighting
+    <a href="/">← back to live site</a>
+  </div>
+
+  <section class="hero">
+    <video class="hero__video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
+      <source src="images/insta-6.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Layered film lighting (no black overlays, no shadows) -->
+    <div class="hero__keylight" aria-hidden="true"></div>
+    <div class="hero__falloff" aria-hidden="true"></div>
+    <div class="hero__bloom" aria-hidden="true"></div>
+    <div class="hero__edge" aria-hidden="true"></div>
+
+    <div class="hero__brand">
+      <span class="hero__brand-mark">Wink Wink</span>
+      <span class="hero__brand-sub">Beauty Bar</span>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow">Hair · Lash Extensions · Waxing</p>
+      <h1 class="hero__title">Elevated Beauty,<br />Effortlessly You</h1>
+      <p class="hero__sub">Luxury lashes, dimensional hair, and flawless waxing designed to make you feel confident from every angle.</p>
+      <div class="hero__actions">
+        <a href="#" class="btn">Text to Book</a>
+        <a href="#" class="link">view the menu &rarr;</a>
+      </div>
+      <p class="cta-note">by appointment only</p>
+    </div>
+  </section>
+
+  <script>
+    // Slow playback to 0.65× to match the live site's cinematic feel
+    (function(){
+      var v = document.querySelector(".hero__video");
+      if (!v) return;
+      var setRate = function(){ try { v.playbackRate = 0.65; } catch(e){} };
+      setRate();
+      v.addEventListener("loadedmetadata", setRate);
+      v.addEventListener("play", setRate);
+    })();
+  </script>
+</body>
+</html>

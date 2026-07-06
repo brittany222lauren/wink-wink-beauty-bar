@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wink Wink — Portfolio Draft (Concept 8: Studio Window)</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1817;
+      --black: #0d0b0b;
+      --cream: #faf4ee;
+      --rose-gold: #c08f6b;
+      --rose-gold-light: #d9b48f;
+      --muted: #b3a596;
+      --line: rgba(192, 143, 107, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; }
+
+    /* Draft banner */
+    .draft-banner {
+      background: #1a1614;
+      color: #a89c8e;
+      padding: 0.55rem 1.5rem;
+      font-family: "Italiana", serif;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.18);
+    }
+    .draft-banner a {
+      color: var(--rose-gold-light);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217, 180, 143, 0.4);
+      padding-bottom: 1px;
+      margin-left: 1.5rem;
+    }
+
+    /* ─────────────────────────────────────────
+       STUDIO WINDOW — vertical-drift portfolio
+       Three parallel lanes drifting upward at
+       slightly different speeds. Each lane
+       respects its tiles' native aspect ratios.
+       Cream mask-fades at top + bottom so tiles
+       emerge from / dissolve into the page.
+       ───────────────────────────────────────── */
+    .studio {
+      background: var(--cream);
+      padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem) clamp(3.5rem, 7vw, 6rem);
+      border-top: 1px solid var(--line);
+    }
+    .studio__head {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto clamp(2rem, 4vw, 3rem);
+    }
+    .studio__kicker {
+      display: block;
+      font-family: "Inter", sans-serif;
+      font-style: italic;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      margin-bottom: 0.85rem;
+    }
+    .studio__title {
+      font-family: "Italiana", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .studio__handle {
+      display: inline-block;
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--rose-gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: border-color 0.2s ease;
+    }
+    .studio__handle:hover { border-bottom-color: var(--rose-gold); }
+
+    /* The viewport — a vertical window into a drifting reel */
+    .studio__window {
+      position: relative;
+      max-width: 1280px;
+      margin: 0 auto;
+      height: clamp(640px, 78vh, 880px);
+      overflow: hidden;
+      /* Soft cream fades top + bottom so tiles emerge from / dissolve into cream */
+      -webkit-mask-image: linear-gradient(to bottom,
+        transparent 0%, #000 9%, #000 91%, transparent 100%);
+              mask-image: linear-gradient(to bottom,
+        transparent 0%, #000 9%, #000 91%, transparent 100%);
+    }
+    /* Three parallel lanes — slightly varied widths for organic feel */
+    .studio__rails {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1.25fr;
+      gap: clamp(0.8rem, 1.4vw, 1.2rem);
+      height: 100%;
+      align-items: start;
+    }
+    .studio__lane {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.8rem, 1.4vw, 1.2rem);
+      animation: laneDrift linear infinite;
+      will-change: transform;
+    }
+    /* Each lane drifts upward at a slightly different cadence — creates depth */
+    .studio__lane--slow   { animation-duration: 64s; }
+    .studio__lane--medium { animation-duration: 52s; animation-direction: reverse; } /* middle drifts the OTHER way for layered counter-motion */
+    .studio__lane--fast   { animation-duration: 48s; }
+
+    @keyframes laneDrift {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-50%); } /* content duplicated 2x, loops seamlessly */
+    }
+
+    /* Pause on hover — lets visitor inspect a piece */
+    .studio__window:hover .studio__lane {
+      animation-play-state: paused;
+    }
+
+    /* Each tile keeps its NATIVE aspect ratio */
+    .studio-tile {
+      display: block;
+      border-radius: 4px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #ece4d8 0%, #ddd2c1 100%);
+      cursor: zoom-in;
+      position: relative;
+    }
+    .studio-tile a { display: block; width: 100%; height: 100%; }
+    .studio-tile img,
+    .studio-tile video {
+      width: 100%;
+      height: auto;
+      display: block;
+      /* Unified warm color grade — matches the rest of the site */
+      filter: brightness(1.02) contrast(1.08) saturate(1.05) sepia(0.06) hue-rotate(-2deg);
+      transition: transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+    }
+    .studio-tile:hover img,
+    .studio-tile:hover video {
+      transform: scale(1.03);
+    }
+    /* Subtle rose-gold edge on hover */
+    .studio-tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border: 1px solid rgba(192, 143, 107, 0);
+      border-radius: 4px;
+      transition: border-color 0.4s ease;
+    }
+    .studio-tile:hover::after {
+      border-color: rgba(192, 143, 107, 0.42);
+    }
+
+    /* Reduced motion: freeze the drift, allow native scroll */
+    @media (prefers-reduced-motion: reduce) {
+      .studio__lane { animation: none; }
+      .studio__window {
+        overflow-y: auto;
+        -webkit-mask-image: none;
+                mask-image: none;
+      }
+    }
+
+    /* Tablet: 2 lanes, slightly slower so fewer pieces feels OK */
+    @media (max-width: 900px) {
+      .studio__rails { grid-template-columns: 1fr 1fr; }
+      .studio__lane--fast { display: none; }
+      .studio__lane--slow   { animation-duration: 56s; }
+      .studio__lane--medium { animation-duration: 44s; }
+      .studio__window { height: clamp(560px, 78vh, 760px); }
+    }
+    /* Mobile: 1 lane, vertical drift, narrower */
+    @media (max-width: 600px) {
+      .studio__rails { grid-template-columns: 1fr; }
+      .studio__lane--medium { display: none; }
+      .studio__lane--slow { animation-duration: 50s; max-width: 92%; margin: 0 auto; }
+      .studio__window { height: clamp(620px, 80vh, 740px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="draft-banner">
+    Draft · Concept 8 &mdash; Studio Window (Vertical Drift Lanes)
+    <a href="/">&larr; back to live site</a>
+  </div>
+
+  <section class="studio">
+    <header class="studio__head">
+      <span class="studio__kicker">Follow Along</span>
+      <h2 class="studio__title">The Portfolio</h2>
+      <a href="https://instagram.com/winkwinkbeautybar" class="studio__handle" target="_blank" rel="noopener">@winkwinkbeautybar</a>
+    </header>
+
+    <div class="studio__window">
+      <div class="studio__rails">
+
+        <!-- Lane 1 (slow) — anchors with the strongest lash & hair portrait pieces -->
+        <ul class="studio__lane studio__lane--slow">
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="Brow and lash extension finished look" width="1320" height="1819" loading="lazy" /></picture></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="Brunette hair with dimensional highlights" width="1320" height="1856" loading="lazy" /></picture></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="Lash extension close-up with mirror tool" width="1309" height="1850" loading="lazy" /></picture></a></li>
+          <!-- Duplicated 2x for seamless infinite loop -->
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="" width="1320" height="1819" loading="lazy" /></picture></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="" width="1320" height="1856" loading="lazy" /></picture></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="" width="1309" height="1850" loading="lazy" /></picture></a></li>
+        </ul>
+
+        <!-- Lane 2 (medium, counter-drifts downward) — videos + mid-detail -->
+        <ul class="studio__lane studio__lane--medium">
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-5.mp4" autoplay loop muted playsinline preload="metadata"></video></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="Volume lash extensions detail" width="1287" height="1376" loading="lazy" /></picture></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" autoplay loop muted playsinline preload="metadata"></video></a></li>
+          <!-- Duplicated 2x -->
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-5.mp4" autoplay loop muted playsinline preload="metadata"></video></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="" width="1287" height="1376" loading="lazy" /></picture></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" autoplay loop muted playsinline preload="metadata"></video></a></li>
+        </ul>
+
+        <!-- Lane 3 (fast) — interleaved hair + lash, slightly offset start -->
+        <ul class="studio__lane studio__lane--fast">
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="Volume lash extensions detail" width="1287" height="1376" loading="lazy" /></picture></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="Brunette hair with dimensional highlights" width="1320" height="1856" loading="lazy" /></picture></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="Lash extension close-up with mirror tool" width="1309" height="1850" loading="lazy" /></picture></a></li>
+          <li class="studio-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" autoplay loop muted playsinline preload="metadata"></video></a></li>
+          <!-- Duplicated 2x -->
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="" width="1287" height="1376" loading="lazy" /></picture></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="" width="1320" height="1856" loading="lazy" /></picture></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="" width="1309" height="1850" loading="lazy" /></picture></a></li>
+          <li class="studio-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" autoplay loop muted playsinline preload="metadata"></video></a></li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Slow video playback on all studio videos to match site rhythm
+    document.querySelectorAll(".studio-tile video").forEach(function (v) {
+      var setRate = function () { try { v.playbackRate = 0.6; } catch (e) {} };
+      setRate();
+      v.addEventListener("loadedmetadata", setRate);
+      v.addEventListener("play", setRate);
+    });
+  </script>
+</body>
+</html>

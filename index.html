@@ -3,40 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wink Wink Beauty Bar — Hair · Lash Extensions · Waxing</title>
-  <meta name="description" content="Wink Wink Beauty Bar in Jurupa Valley, CA — lash extensions, hair services, and waxing. Book your appointment today." />
+  <title>Wink Wink Beauty Bar · Hair · Lash Extensions · Waxing</title>
+  <meta name="description" content="Wink Wink Beauty Bar, a private studio in Jurupa Valley, California. Lash extensions, hair, and waxing, by appointment." />
+
+  <!-- Favicons — rose-gold diamond, matching the flourish motif used
+       throughout the site. Inline SVG is served to modern browsers
+       (crisp at every size — tab, gallery, bookmark, home screen).
+       PNG/ICO fallbacks remain for legacy browsers. Safari's pinned-tab
+       icon uses mask-icon with the same shape. -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,3 29,16 16,29 3,16' fill='%23c08f6b'/%3E%3C/svg%3E" />
+  <link rel="icon" href="images/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png" />
+  <link rel="mask-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,3 29,16 16,29 3,16' fill='black'/%3E%3C/svg%3E" color="#c08f6b" />
+  <meta name="theme-color" content="#0d0b0b" />
+
+  <!-- Open Graph (Facebook, iMessage, Slack, LinkedIn, etc.) —
+       Editorial voice: reads like a house masthead, not a service listing.
+       Preview card renders as a mini magazine cover when shared. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://winkwinkbeauty.com/" />
+  <meta property="og:title" content="Wink Wink Beauty Bar — Elevated Beauty, Effortlessly You" />
+  <meta property="og:description" content="A private studio for hair, lash extensions, and waxing in Jurupa Valley. Rikki, twenty-five years in the craft. By appointment, booked by text." />
+  <meta property="og:image" content="https://winkwinkbeauty.com/images/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Wink Wink Beauty Bar · Hair · Lash Extensions · Waxing · By appointment in Jurupa Valley" />
+  <meta property="og:site_name" content="Wink Wink Beauty Bar" />
+  <meta property="og:locale" content="en_US" />
+  <link rel="canonical" href="https://winkwinkbeauty.com/" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Wink Wink Beauty Bar — Elevated Beauty, Effortlessly You" />
+  <meta name="twitter:description" content="A private studio for hair, lash extensions, and waxing in Jurupa Valley. Rikki, twenty-five years in the craft. By appointment, booked by text." />
+  <meta name="twitter:image" content="https://winkwinkbeauty.com/images/og-image.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20260703-3" />
+  <!-- Preload key visual assets so they're ready by scroll-arrival -->
+  <link rel="preload" as="image" href="images/lash-bg.webp" type="image/webp" />
+  <link rel="preload" as="image" href="images/insta-3.webp" type="image/webp" />
+  <!-- Lenis — buttery smooth scroll (Linear / Loewe / Cuberto-grade) -->
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js" defer></script>
+  <script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body>
 
+  <!-- Loading splash — brand wordmark reveal -->
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash__brand">
+      <span class="splash__mark">Wink Wink</span>
+      <span class="splash__sub">Beauty Bar</span>
+    </div>
+  </div>
+
+  <!-- Scroll-progress hairline (fills as user scrolls) -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
   <!-- Navigation -->
   <header class="nav" id="top">
-    <a href="#top" class="nav__brand">Wink Wink</a>
-    <nav class="nav__links">
+    <a href="#top" class="nav__brand" aria-label="Wink Wink Beauty Bar home">
+      <span class="nav__brand-mark">Wink Wink</span>
+      <span class="nav__brand-sub">Beauty Bar</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
       <a href="#services">Services</a>
-      <a href="#lashes">Lashes</a>
-      <a href="#hair">Hair</a>
-      <a href="#waxing">Waxing</a>
+      <a href="#about">About</a>
+      <a href="#lashes-cover">Lashes</a>
+      <a href="#hair-cover">Hair</a>
+      <a href="#waxing-cover">Waxing</a>
       <a href="#visit">Visit</a>
     </nav>
-    <a href="sms:+16264220770" class="btn btn--small js-book" data-phone="(626) 422-0770">Text to Book</a>
+    <a href="sms:+16264220770?&body=Hi%20Rikki%21%20I%27d%20love%20to%20book%20an%20appointment.%0A%0AService%3A%20%5Bservice%5D%0ABest%20days%2Ftimes%3A%20%5Bwhen%5D%0A%0AThank%20you%21" class="btn btn--small js-book nav__cta" data-phone="(626) 422-0770">Text to Book</a>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span class="nav__toggle-label">Menu</span>
+    </button>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero — editorial split: cream type column + contained video portrait -->
   <section class="hero">
     <div class="hero__inner">
-      <img src="images/logo.png" alt="Wink Wink Beauty Bar logo" class="hero__logo" />
-      <p class="hero__eyebrow">Hair · Lash Extensions · Waxing</p>
-      <h1 class="hero__title">Where Beauty<br />Meets Confidence</h1>
-      <p class="hero__sub">A boutique beauty bar in Jurupa Valley dedicated to lashes that flutter, hair that turns heads, and skin that glows.</p>
+      <p class="hero__eyebrow"><span class="hero__eyebrow-part">Hair</span><span class="hero__eyebrow-sep" aria-hidden="true"> &middot; </span><span class="hero__eyebrow-part">Lash Extensions</span><span class="hero__eyebrow-sep" aria-hidden="true"> &middot; </span><span class="hero__eyebrow-part">Waxing</span></p>
+      <h1 class="hero__title">Elevated Beauty,<br />Effortlessly You</h1>
+      <p class="hero__sub">Luxury lashes, dimensional hair, and flawless waxing designed to make you feel confident from every angle.</p>
       <div class="hero__actions">
-        <a href="sms:+16264220770" class="btn js-book" data-phone="(626) 422-0770">Text to Book</a>
-        <a href="#lashes" class="btn btn--ghost">View Price List</a>
+        <a href="sms:+16264220770?&body=Hi%20Rikki%21%20I%27d%20love%20to%20book%20an%20appointment.%0A%0AService%3A%20%5Bservice%5D%0ABest%20days%2Ftimes%3A%20%5Bwhen%5D%0A%0AThank%20you%21" class="btn js-book js-hero-cta" data-phone="(626) 422-0770">Text to Book</a>
+        <a href="#lashes" class="link--quiet">view the menu <span class="hero__link-arrow" aria-hidden="true">&rarr;</span></a>
       </div>
-      <p class="cta-note">Fastest way to reserve your appointment</p>
+      <div class="hero__badge">
+        <p class="cta-note"><span class="cta-note__part">by appointment only</span><span class="cta-note__sep" aria-hidden="true"> &middot; </span><span class="cta-note__part">currently booking</span></p>
+        <a href="#services" class="hero__scroll" aria-label="Discover the studio">
+          <span class="hero__scroll-arrow" aria-hidden="true">&darr;</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero__media" aria-hidden="true">
+      <video class="hero__video" autoplay loop muted playsinline preload="metadata">
+        <source src="images/insta-6.mp4" type="video/mp4" />
+      </video>
+      <span class="hero__media-grain" aria-hidden="true"></span>
     </div>
   </section>
 
@@ -46,23 +117,82 @@
     <p class="section__lead">Three signature specialties, one elevated experience.</p>
     <div class="services__grid">
       <article class="service-card service-card--hair">
-        <span class="service-card__icon">&#9733;</span>
         <h3>Hair</h3>
         <p>Cuts, styling, and dimensional color from baby lights to full corrections.</p>
+        <span class="service-card__detail">From $40</span>
         <a href="#hair" class="service-card__link">See pricing</a>
       </article>
       <article class="service-card service-card--lash">
-        <span class="service-card__icon">&#10024;</span>
         <h3>Lash Extensions</h3>
         <p>Full sets, refills, lifts, and soft special-occasion looks tailored to you.</p>
+        <span class="service-card__detail">From $80</span>
         <a href="#lashes" class="service-card__link">See pricing</a>
       </article>
       <article class="service-card service-card--waxing">
-        <span class="service-card__icon">&#9826;</span>
         <h3>Waxing</h3>
         <p>Brows, lip, chin, neck, and full-face waxing for clean, defined results.</p>
+        <span class="service-card__detail">From $9</span>
         <a href="#waxing" class="service-card__link">See pricing</a>
       </article>
+    </div>
+  </section>
+
+  <!-- Meet Rikki + Testimonials page pull — Rikki pins while
+       "What Clients Say" scrolls up over it -->
+  <div class="page-pull">
+  <section class="about" id="about">
+    <div class="about__inner">
+      <figure class="about__photo">
+        <picture>
+          <source srcset="artist/rikki.webp" type="image/webp" />
+          <img src="artist/rikki.png" alt="Rikki, founder and lead artist of Wink Wink Beauty Bar" width="1087" height="1446" loading="lazy" decoding="async" onerror="this.parentElement.parentElement.classList.add('about__photo--empty');this.style.display='none';" />
+        </picture>
+      </figure>
+      <div class="about__copy">
+        <span class="menu__kicker">The Artist</span>
+        <h2 class="section__title">Meet Rikki</h2>
+        <p>I'm Rikki, the artist behind Wink Wink. 25+ years in the industry, trained in cosmetology and lash artistry, honed at the top beauty salons in Beverly Hills, and mentored by some of the most respected names in the craft. My work has taken me on set, shaping looks for A-list celebrities on television. I invest in continuing education year after year, because every client deserves the very best of me.</p>
+        <p>Outside the studio, I'm a proud mom with an endless love for animals. Bookings are kept private so the studio stays calm, the work stays personal, and you always leave feeling like the best version of yourself.</p>
+        <p class="about__sign">Rikki, founder &amp; lead artist</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials — kind words from clients -->
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials__head">
+      <span class="menu__kicker">Kind Words</span>
+      <h2 class="section__title">What Clients Say</h2>
+    </div>
+    <ul class="testimonials__list">
+      <li class="testimonial testimonial--featured">
+        <p class="testimonial__quote">I'd been going to the same lash artist for years and didn't think it could get better. Two minutes in with Rikki, I knew. She mapped the set to my actual face, different lengths over different parts of my eye, and <span class="testimonial__highlight">it's the first time I've ever loved how lashes look on me</span>. My sister hired her the next week.</p>
+        <p class="testimonial__attr"><span class="testimonial__attr-name">Megan R.</span><span class="testimonial__attr-service">Full Set Extensions</span></p>
+      </li>
+      <li class="testimonial">
+        <p class="testimonial__quote">&ldquo;My hair is dark and notoriously hard to lift. Everyone makes it brassy. Rikki took her time, did two passes, and <span class="testimonial__highlight">it came out a perfect lived-in honey</span>. Three different women have stopped me at coffee shops since asking who does it.&rdquo;</p>
+        <p class="testimonial__attr"><span class="testimonial__attr-name">Lauren K.</span><span class="testimonial__attr-service">Baby Light</span></p>
+      </li>
+      <li class="testimonial">
+        <p class="testimonial__quote">&ldquo;Honestly, the lift converted me from a lash extension person. Lower maintenance, no commitment, and <span class="testimonial__highlight">I keep getting compliments on lashes I didn't know I had</span>. The studio's also private. No salon noise, no awkward small talk.&rdquo;</p>
+        <p class="testimonial__attr"><span class="testimonial__attr-name">Jess M.</span><span class="testimonial__attr-service">Lash Lift</span></p>
+      </li>
+    </ul>
+  </section>
+  </div>
+
+  <!-- Signature Spotlight — the heroic moment -->
+  <section class="spotlight" id="spotlight" aria-label="Signature service spotlight">
+    <div class="spotlight__inner">
+      <div class="spotlight__copy">
+        <span class="spotlight__eyebrow">the studio's signature</span>
+        <h2 class="spotlight__title">Full Set<br />Lash Extensions</h2>
+        <p class="spotlight__sub">Fully customized. Mapped to your eye shape. Wake-up-ready glamour.</p>
+        <div class="spotlight__price-row">
+          <span class="spotlight__price"><span class="from">From</span>$100</span>
+          <a href="sms:+16264220770?&body=Hi%20Rikki%21%20I%27d%20love%20to%20book%20an%20appointment.%0A%0AService%3A%20%5Bservice%5D%0ABest%20days%2Ftimes%3A%20%5Bwhen%5D%0A%0AThank%20you%21" class="btn js-book" data-phone="(626) 422-0770">Text to Book</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -71,18 +201,27 @@
     <div class="menu__head">
       <span class="menu__kicker">Client Favorites</span>
       <h2 class="section__title">Signature Services</h2>
-      <p class="menu__intro">The treatments Wink Wink is loved for — a beautiful place to begin.</p>
+      <p class="menu__intro">The treatments Wink Wink is loved for. A beautiful place to begin.</p>
       <div class="menu__ornament" aria-hidden="true"></div>
     </div>
     <div class="signature__grid">
       <article class="signature-card signature-card--featured">
-        <span class="signature-card__tag">Most Loved</span>
-        <span class="signature-card__eyebrow">Lashes</span>
-        <h3 class="signature-card__name">Full Set Lash Extensions</h3>
-        <p class="signature-card__desc">Our most-booked service — a fully customized set, mapped to your natural eye shape for soft, wake-up-ready glamour.</p>
-        <div class="signature-card__foot">
-          <span class="menu-item__price"><span class="from">From</span> $100</span>
-          <a href="#lashes" class="signature-card__link">View details</a>
+        <span class="signature-card__tag">The Signature</span>
+        <figure class="signature-card__media" aria-hidden="true">
+          <picture>
+            <source srcset="images/signature.webp" type="image/webp" />
+            <img src="images/signature.jpg" alt="" loading="lazy" decoding="async" width="1264" height="843" />
+          </picture>
+        </figure>
+        <div class="signature-card__body">
+          <span class="signature-card__eyebrow">Lashes</span>
+          <h3 class="signature-card__name">Full Set Lash Extensions</h3>
+          <p class="signature-card__desc">Our most-booked service, a fully customized set, mapped to your natural eye shape for soft, wake-up-ready glamour.</p>
+          <p class="signature-card__booking">Now booking</p>
+          <div class="signature-card__foot">
+            <span class="menu-item__price"><span class="from">From</span> $100</span>
+            <a href="#lashes" class="signature-card__link">Explore the lash menu <span class="signature-card__link-arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
         </div>
       </article>
       <article class="signature-card">
@@ -91,7 +230,7 @@
         <p class="signature-card__desc">Your own lashes, lifted and curled for effortless, low-maintenance definition that lasts.</p>
         <div class="signature-card__foot">
           <span class="menu-item__price"><span class="from">From</span> $85</span>
-          <a href="#lashes" class="signature-card__link">View details</a>
+          <a href="#lashes" class="signature-card__link">Consider the upkeep <span class="signature-card__link-arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </article>
       <article class="signature-card">
@@ -100,22 +239,42 @@
         <p class="signature-card__desc">All-over lightening for luminous, head-turning dimension, finished with a polished style.</p>
         <div class="signature-card__foot">
           <span class="menu-item__price"><span class="from">From</span> $100</span>
-          <a href="#hair" class="signature-card__link">View details</a>
+          <a href="#hair" class="signature-card__link">View the hair menu <span class="signature-card__link-arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </article>
     </div>
   </section>
 
+  <!-- Editorial interlude — atmospheric divider between Signatures and the menu -->
+  <section class="interlude" aria-label="An editorial pause">
+    <span class="interlude__eyebrow">a note from the studio</span>
+    <p class="interlude__line">We believe beauty should feel effortless, personal, and completely your own. Every detail is tailored to you.</p>
+    <p class="interlude__sign"><span class="interlude__sign-rule" aria-hidden="true"></span><span class="interlude__sign-name">Rikki</span></p>
+  </section>
+
+  <!-- Rose-gold hairline — a single thread stitching the interlude
+       to the lash chapter cover so the dark-on-dark handoff has a
+       deliberate boundary instead of a collision. -->
+  <div class="section-thread" aria-hidden="true"></div>
+
+  <!-- Chapter cover: The Lash Menu -->
+  <aside id="lashes-cover" class="menu-cover menu-cover--lashes" aria-hidden="true">
+    <span class="menu-cover__grain" aria-hidden="true"></span>
+    <div class="menu-cover__inner">
+      <span class="menu-cover__numeral">I.</span>
+      <span class="menu-cover__label">The Lash Menu</span>
+      <span class="menu-cover__flourish" aria-hidden="true"></span>
+    </div>
+  </aside>
+
   <!-- Lashes pricing -->
-  <section class="menu" id="lashes">
+  <section class="menu" id="lashes" aria-label="The Lash Menu">
     <div class="menu__head">
-      <span class="menu__kicker">Lash Artistry</span>
-      <h2 class="section__title">Lash Extensions</h2>
-      <p class="menu__intro">Custom sets mapped to your eyes — from a soft, natural flutter to full glamour.</p>
+      <p class="menu__intro">Custom sets mapped to your eyes, from a soft, natural flutter to full glamour.</p>
       <div class="menu__ornament" aria-hidden="true"></div>
     </div>
     <ul class="menu-list">
-      <li class="menu-item">
+      <li class="menu-item menu-item--lead">
         <div class="menu-item__head">
           <span class="menu-item__name">Full Set Extensions</span>
           <span class="menu-item__lead" aria-hidden="true"></span>
@@ -137,7 +296,7 @@
           <span class="menu-item__lead" aria-hidden="true"></span>
           <span class="menu-item__price"><span class="from">From</span> $50</span>
         </div>
-        <p class="menu-item__desc">A lightweight, natural flutter — perfect for weddings, dates, and special moments.</p>
+        <p class="menu-item__desc">A lightweight, natural flutter, perfect for weddings, dates, and special moments.</p>
       </li>
       <li class="menu-item">
         <div class="menu-item__head">
@@ -150,11 +309,19 @@
     </ul>
   </section>
 
+  <!-- Chapter cover: The Hair Menu -->
+  <aside id="hair-cover" class="menu-cover menu-cover--hair" aria-hidden="true">
+    <span class="menu-cover__grain" aria-hidden="true"></span>
+    <div class="menu-cover__inner">
+      <span class="menu-cover__numeral">II.</span>
+      <span class="menu-cover__label">The Hair Menu</span>
+      <span class="menu-cover__flourish" aria-hidden="true"></span>
+    </div>
+  </aside>
+
   <!-- Hair pricing -->
-  <section class="menu menu--alt" id="hair">
+  <section class="menu" id="hair" aria-label="The Hair Menu">
     <div class="menu__head">
-      <span class="menu__kicker">Hair Studio</span>
-      <h2 class="section__title">Hair Services</h2>
       <p class="menu__intro">Cuts, color, and dimensional lightening for hair that turns heads.</p>
       <div class="menu__ornament" aria-hidden="true"></div>
     </div>
@@ -174,6 +341,14 @@
           <span class="menu-item__price"><span class="from">From</span> $50</span>
         </div>
         <p class="menu-item__desc">A root and color refresh to keep your shade looking salon-fresh between visits.</p>
+      </li>
+      <li class="menu-item">
+        <div class="menu-item__head">
+          <span class="menu-item__name">All Over Color</span>
+          <span class="menu-item__lead" aria-hidden="true"></span>
+          <span class="menu-item__price"><span class="from">From</span> $70</span>
+        </div>
+        <p class="menu-item__desc">A single-process color from root to end for a rich, uniform finish.</p>
       </li>
       <li class="menu-item">
         <div class="menu-item__head">
@@ -218,11 +393,19 @@
     </ul>
   </section>
 
+  <!-- Chapter cover: The Wax Menu -->
+  <aside id="waxing-cover" class="menu-cover menu-cover--waxing" aria-hidden="true">
+    <span class="menu-cover__grain" aria-hidden="true"></span>
+    <div class="menu-cover__inner">
+      <span class="menu-cover__numeral">III.</span>
+      <span class="menu-cover__label">The Wax Menu</span>
+      <span class="menu-cover__flourish" aria-hidden="true"></span>
+    </div>
+  </aside>
+
   <!-- Waxing pricing -->
-  <section class="menu" id="waxing">
+  <section class="menu" id="waxing" aria-label="The Wax Menu">
     <div class="menu__head">
-      <span class="menu__kicker">Smooth &amp; Defined</span>
-      <h2 class="section__title">Waxing</h2>
       <p class="menu__intro">Clean, precise waxing for effortlessly polished features.</p>
       <div class="menu__ornament" aria-hidden="true"></div>
     </div>
@@ -237,7 +420,7 @@
       </li>
       <li class="menu-item">
         <div class="menu-item__head">
-          <span class="menu-item__name">Lips</span>
+          <span class="menu-item__name">Lip</span>
           <span class="menu-item__lead" aria-hidden="true"></span>
           <span class="menu-item__price"><span class="from">From</span> $9</span>
         </div>
@@ -260,51 +443,755 @@
         <p class="menu-item__desc">Full-face smoothing for a flawless, makeup-ready canvas.</p>
       </li>
     </ul>
-    <p class="menu__note">All prices are starting points; your final quote is confirmed at your consultation. New services added regularly.</p>
+    <p class="menu__note">All prices are starting points &middot; final quote confirmed at consultation.</p>
   </section>
 
-  <!-- Booking CTA band -->
-  <section class="cta-band">
-    <span class="menu__kicker">Ready When You Are</span>
-    <h2 class="section__title">Let's Get You Booked</h2>
-    <p class="cta-band__sub">Text us the service you'd love and a few times that work for you — we'll take care of the rest.</p>
-    <a href="sms:+16264220770" class="btn js-book" data-phone="(626) 422-0770">Text to Book</a>
-    <p class="cta-note cta-note--onlight">The fastest, easiest way to reserve your appointment.</p>
-  </section>
+  <!-- The Portfolio — see the work -->
+  <section class="insta filmstrip" id="insta">
+    <div class="insta__head">
+      <span class="menu__kicker">Follow Along</span>
+      <h2 class="section__title">The Portfolio</h2>
+      <a href="https://instagram.com/winkwinkbeautybar" class="insta__handle" target="_blank" rel="noopener">@winkwinkbeautybar</a>
+    </div>
 
-  <!-- Visit / Contact -->
-  <section class="visit" id="visit">
-    <div class="visit__card">
-      <span class="menu__kicker">Visit Us</span>
-      <h2 class="section__title section__title--light">Come See Us</h2>
-      <address class="visit__address">
-        Sola Salon &middot; Suite #35<br />
-        6361 Pats Ranch Rd.<br />
-        Jurupa Valley, CA
-      </address>
-      <a href="tel:+16264220770" class="visit__phone">+1 (626) 422-0770</a>
-      <div class="hero__actions hero__actions--center">
-        <a href="sms:+16264220770" class="btn js-book" data-phone="(626) 422-0770">Text to Book</a>
-        <a href="https://maps.google.com/?q=6361+Pats+Ranch+Rd+Jurupa+Valley+CA" class="btn btn--ghost" target="_blank" rel="noopener">Get Directions</a>
-      </div>
-      <p class="cta-note">Fastest way to reserve your appointment</p>
+    <!-- One horizontal strip. Each tile keeps its native aspect ratio.
+         Order interleaves lash + hair + video so neither dominates. -->
+    <div class="filmstrip__viewport">
+      <ul class="filmstrip__track">
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="Brow and lash extension finished look" width="1320" height="1819" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="Brunette hair with dimensional highlights" width="1320" height="1856" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="Lash extension close-up with mirror tool" width="1309" height="1850" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-5.mp4" autoplay loop muted playsinline preload="metadata" aria-label="Hair styling, behind the chair at Wink Wink"></video></a></li>
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="Volume lash extensions detail" width="1287" height="1376" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" autoplay loop muted playsinline preload="metadata" aria-label="Lash detail, behind the chair at Wink Wink"></video></a></li>
+        <li class="filmstrip-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-7.webp" type="image/webp" /><img src="images/insta-7.jpg" alt="Dramatic volume lash extensions in close-up" width="1314" height="1749" loading="lazy" decoding="async" /></picture></a></li>
+        <!-- Duplicated for seamless infinite loop (no autoplay on duplicates) -->
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="" width="1320" height="1819" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="" width="1320" height="1856" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="" width="1309" height="1850" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><video src="images/insta-5.mp4" loop muted playsinline preload="metadata" aria-hidden="true"></video></a></li>
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="" width="1287" height="1376" loading="lazy" decoding="async" /></picture></a></li>
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><video src="images/insta-6.mp4" loop muted playsinline preload="metadata" aria-hidden="true"></video></a></li>
+        <li class="filmstrip-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener" tabindex="-1"><picture><source srcset="images/insta-7.webp" type="image/webp" /><img src="images/insta-7.jpg" alt="" width="1314" height="1749" loading="lazy" decoding="async" /></picture></a></li>
+      </ul>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Final booking section — conversion-focused luxury close -->
+  <section class="finale" id="visit">
+    <div class="finale__atmosphere" aria-hidden="true"></div>
+    <div class="finale__inner">
+      <h2 class="finale__title">Let's Get You Booked</h2>
+      <p class="finale__sub">Text Rikki the service you'd love and a few times that work for you, and she'll take care of the rest.</p>
+      <div class="finale__cta-wrap">
+        <a href="sms:+16264220770?&body=Hi%20Rikki%21%20I%27d%20love%20to%20book%20an%20appointment.%0A%0AService%3A%20%5Bservice%5D%0ABest%20days%2Ftimes%3A%20%5Bwhen%5D%0A%0AThank%20you%21" class="btn btn--finale js-book" data-phone="(626) 422-0770">Text to Book</a>
+        <p class="finale__avail">By appointment &middot; Currently booking</p>
+      </div>
+      <div class="finale__details">
+        <address class="finale__address">
+          <span class="finale__address-line">Sola Salon &middot; Suite #35</span>
+          <span class="finale__address-line">6361 Pats Ranch Rd. &middot; Jurupa Valley, CA</span>
+        </address>
+        <div class="finale__contact">
+          <a href="tel:+16264220770" class="finale__phone">+1 (626) 422-0770</a>
+          <span class="finale__sep" aria-hidden="true">&middot;</span>
+          <a href="https://maps.google.com/?q=6361+Pats+Ranch+Rd+Jurupa+Valley+CA" class="finale__directions" target="_blank" rel="noopener">Get Directions</a>
+        </div>
+        <a href="https://instagram.com/winkwinkbeautybar" class="finale__ig" target="_blank" rel="noopener" aria-label="Follow Wink Wink on Instagram">
+          <svg class="ig-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer — minimal dark band, signature line -->
   <footer class="footer">
-    <img src="images/logo.png" alt="Wink Wink Beauty Bar" class="footer__logo" />
-    <p class="footer__tagline">Hair · Lash Extensions · Waxing</p>
-    <p class="footer__copy">&copy; 2026 Wink Wink Beauty Bar. All rights reserved.</p>
+    <p class="footer__line">
+      &copy; 2026 Wink Wink Beauty Bar
+      <span class="footer__sep" aria-hidden="true">|</span>
+      Website Created By The Digital Millionaires&trade;, A Marketing Agency<a href="https://instagram.com/thedigitalmillionaires" class="footer__dm-ig" target="_blank" rel="noopener" aria-label="Follow The Digital Millionaires on Instagram"><svg class="ig-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none" /></svg></a>
+    </p>
+    <p class="footer__url">
+      <a href="https://digitalmillionaires.co" target="_blank" rel="noopener">digitalmillionaires.co</a>
+    </p>
   </footer>
 
+  <!-- Custom cursor follower (soft rose-gold glow) -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <!-- Sticky menu chapter indicator -->
+  <aside class="chapter-marker" aria-hidden="true">
+    <span class="chapter-marker__numeral"></span>
+    <span class="chapter-marker__label"></span>
+  </aside>
+
+  <!-- Page index — side-margin section numeral -->
+  <aside class="page-index" aria-hidden="true">
+    <span class="page-index__numeral">01</span>
+    <span class="page-index__label">Services</span>
+  </aside>
+
+  <!-- Lightbox for See the Work tiles -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image preview">
+    <button class="lightbox__close" type="button" aria-label="Close preview">close</button>
+    <div class="lightbox__stage"></div>
+    <a href="sms:+16264220770?&body=Hi%20Rikki%21%20I%27d%20love%20to%20book%20an%20appointment.%0A%0AService%3A%20%5Bservice%5D%0ABest%20days%2Ftimes%3A%20%5Bwhen%5D%0A%0AThank%20you%21" class="lightbox__cta">Book this look &rarr;</a>
+  </div>
+
   <!-- Sticky mobile booking bar -->
-  <a href="sms:+16264220770" class="sticky-book" aria-label="Text to book your appointment">
+  <a href="sms:+16264220770?&body=Hi%20Rikki%21%20I%27d%20love%20to%20book%20an%20appointment.%0A%0AService%3A%20%5Bservice%5D%0ABest%20days%2Ftimes%3A%20%5Bwhen%5D%0A%0AThank%20you%21" class="sticky-book js-book" data-phone="(626) 422-0770" aria-label="Text to book your appointment">
     <span class="sticky-book__label">Text to Book</span>
-    <span class="sticky-book__sub">Fastest way to reserve</span>
+    <span class="sticky-book__sub">&middot; Rikki</span>
   </a>
 
   <script>
+    // Refresh always starts at the top of the page (luxury feel — predictable
+    // first impression on reload). Honors deep-link hashes so #anchor still works.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    if (!window.location.hash) window.scrollTo(0, 0);
+
+    // Live in-viewport tracker — toggles .is-in-viewport on each section based
+    // on current intersection. Used by CSS to pause infinite animations
+    // (Ken Burns, breath, glow) on sections that aren't currently visible.
+    (function () {
+      if (!("IntersectionObserver" in window)) return;
+      var sections = document.querySelectorAll("section, .menu-cover");
+      var liveIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          entry.target.classList.toggle("is-in-viewport", entry.isIntersecting);
+        });
+      }, { threshold: 0, rootMargin: "0px" });
+      sections.forEach(function (s) { liveIO.observe(s); });
+      // Hero is visible on first paint — set it immediately so its intro
+      // animations (Ken Burns, glow) start without waiting for an observer tick.
+      var hero = document.querySelector(".hero");
+      if (hero) hero.classList.add("is-in-viewport");
+    })();
+
+    // Slow fade-up reveal on scroll (skips hero; respects prefers-reduced-motion)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!("IntersectionObserver" in window)) return;
+      var targets = document.querySelectorAll("section:not(.hero), .menu-cover");
+      targets.forEach(function (el) { el.classList.add("reveal"); });
+      // Mobile fires later: on tall sections the 8% threshold triggered before
+      // the visitor could see the content. On viewports ≤720px we hold off
+      // until the section top has crossed ~25% up from the viewport bottom.
+      // Reveals TOGGLE — sections re-animate every time they scroll back
+      // into view, not just the first time. Keeps the site feeling alive.
+      var mobile = window.matchMedia("(max-width: 720px)").matches;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+        });
+      }, {
+        threshold: mobile ? 0.12 : 0.08,
+        rootMargin: mobile ? "0px 0px -25% 0px" : "0px 0px -40px 0px"
+      });
+      targets.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Per-card reveal observer — service cards + signature cards each get
+    // their own IntersectionObserver so the animation fires when THAT card
+    // actually enters view (not when the section top does — cards further
+    // down were animating hundreds of pixels before the visitor could see
+    // them). Toggles .is-in-view on/off so animations replay on scroll back.
+    (function () {
+      if (!("IntersectionObserver" in window)) return;
+      var cards = document.querySelectorAll(".service-card, .signature-card");
+      if (!cards.length) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          entry.target.classList.toggle("is-in-view", entry.isIntersecting);
+        });
+      }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+      cards.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Mobile hamburger drawer
+    (function () {
+      var toggle = document.getElementById("navToggle");
+      var links = document.getElementById("navLinks");
+      if (!toggle || !links) return;
+      var setOpen = function (open) {
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        links.classList.toggle("is-open", open);
+      };
+      toggle.addEventListener("click", function () {
+        setOpen(toggle.getAttribute("aria-expanded") !== "true");
+      });
+      links.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", function () { setOpen(false); });
+      });
+    })();
+
+    // M.1 — Hero h1 curtain reveal. Each character rises from below a mask
+    // (padded overflow on .hero__word) with per-letter stagger, and lines
+    // stagger separately via --line (0 for line 1, 1 for line 2 after <br>).
+    // The last word gets .hero__word--italic-swap for the italic → upright
+    // resolve emphasis; the entire title starts an ambient letter-spacing
+    // breath after the reveal completes (see CSS titleBreath).
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var title = document.querySelector(".hero__title");
+      if (!title) return;
+      var letterIndex = 0;
+      var lineIndex = 0;
+      var lastWordEl = null;
+      function walk(node) {
+        if (node.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          var parts = node.textContent.split(/(\s+)/);
+          parts.forEach(function (part) {
+            if (part === "") return;
+            if (/^\s+$/.test(part)) {
+              frag.appendChild(document.createTextNode(part));
+              return;
+            }
+            var wordEl = document.createElement("span");
+            wordEl.className = "hero__word";
+            wordEl.style.setProperty("--line", lineIndex);
+            for (var i = 0; i < part.length; i++) {
+              var letter = document.createElement("span");
+              letter.className = "hero__letter";
+              letter.style.setProperty("--i", letterIndex++);
+              letter.style.setProperty("--line", lineIndex);
+              letter.textContent = part[i];
+              wordEl.appendChild(letter);
+            }
+            frag.appendChild(wordEl);
+            lastWordEl = wordEl;
+          });
+          return frag;
+        }
+        // <br> marks a line boundary — subsequent letters get +1 line index
+        if (node.nodeType === 1 && node.tagName === "BR") {
+          lineIndex++;
+          return node.cloneNode(false);
+        }
+        var clone = node.cloneNode(false);
+        Array.from(node.childNodes).forEach(function (child) {
+          clone.appendChild(walk(child));
+        });
+        return clone;
+      }
+      var newFrag = document.createDocumentFragment();
+      Array.from(title.childNodes).forEach(function (child) {
+        newFrag.appendChild(walk(child));
+      });
+      title.innerHTML = "";
+      title.appendChild(newFrag);
+      if (lastWordEl) lastWordEl.classList.add("hero__word--italic-swap");
+      title.classList.add("js-hero-title-ready");
+    })();
+
+    // M.4 — Active section dot in nav (IntersectionObserver-driven)
+    (function () {
+      if (!("IntersectionObserver" in window)) return;
+      var links = document.querySelectorAll(".nav__links a[href^='#']");
+      if (!links.length) return;
+      var map = {};
+      links.forEach(function (l) {
+        var id = l.getAttribute("href").slice(1);
+        if (id) map[id] = l;
+      });
+      var sections = Object.keys(map)
+        .map(function (id) { return document.getElementById(id); })
+        .filter(Boolean);
+      var setCurrent = function (id) {
+        links.forEach(function (l) { l.classList.remove("is-current"); });
+        if (map[id]) map[id].classList.add("is-current");
+      };
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) setCurrent(e.target.id); });
+      }, { rootMargin: "-40% 0px -50% 0px", threshold: 0 });
+      sections.forEach(function (s) { io.observe(s); });
+    })();
+
+    // M.2 — Sticky chapter indicator (I./II./III.) during pricing menu scroll
+    (function () {
+      var marker = document.querySelector(".chapter-marker");
+      if (!marker) return;
+      var numeral = marker.querySelector(".chapter-marker__numeral");
+      var label = marker.querySelector(".chapter-marker__label");
+      var menus = [
+        { el: document.getElementById("lashes"), numeral: "I.", label: "Lashes" },
+        { el: document.getElementById("hair"),   numeral: "II.", label: "Hair" },
+        { el: document.getElementById("waxing"), numeral: "III.", label: "Waxing" }
+      ].filter(function (m) { return !!m.el; });
+      if (!menus.length) return;
+      var current = null;
+      var update = function () {
+        var center = window.innerHeight * 0.5;
+        var active = null;
+        menus.forEach(function (m) {
+          var r = m.el.getBoundingClientRect();
+          if (r.top < center && r.bottom > center) active = m;
+        });
+        if (active !== current) {
+          current = active;
+          if (active) {
+            numeral.textContent = active.numeral;
+            if (label) label.textContent = active.label;
+            marker.classList.add("is-visible");
+          } else {
+            marker.classList.remove("is-visible");
+          }
+        }
+      };
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    })();
+
+    // (N.3 drag-to-scroll + L.5 marquee duplication retired — gallery is now a static
+    //  editorial masonry rather than a horizontal carousel.)
+
+    // Cinematic hero video — slow playback + trimmed opening + ceremonial fade
+    //   • playbackRate 0.5× (slow-motion editorial pacing)
+    //   • Trim point: 1.3s. The weak hair-heavy opening (0–1.3s) is skipped
+    //     permanently — both on first load AND on every natural loop.
+    //   • Video plays 1.3s → end (4.63s), loops back to 1.3s (never to 0).
+    //   • Ceremonial fade waits for the first seek so the visitor never sees
+    //     the weak opening frame, even for a flash.
+    (function () {
+      var v = document.querySelector(".hero__video");
+      if (!v) return;
+
+      var TRIM_POINT = 1.5;
+
+      var setRate = function () { try { v.playbackRate = 0.5; } catch (e) {} };
+      setRate();
+      v.addEventListener("loadedmetadata", setRate);
+      v.addEventListener("play", setRate);
+
+      // Position at trim point as early as possible
+      var seekToTrim = function () { try { v.currentTime = TRIM_POINT; } catch (e) {} };
+      if (v.readyState >= 1) seekToTrim();
+      else v.addEventListener("loadedmetadata", seekToTrim, { once: true });
+
+      // After every natural loop (loop attribute resets to 0), reseek to trim point.
+      // The lower-bound check catches the moment the video wraps back to ~0.
+      v.addEventListener("timeupdate", function () {
+        if (v.currentTime < TRIM_POINT - 0.05) seekToTrim();
+      });
+
+      // Hidden until the first seek lands at the trim point
+      v.style.opacity = "0";
+      v.style.transition = "opacity 2.6s cubic-bezier(0.32, 0.72, 0.36, 1)";
+      var firstSeekHandled = false;
+      var revealOnce = function () {
+        if (firstSeekHandled) return;
+        firstSeekHandled = true;
+        // Defer one tick so the transition has its starting value before we change
+        setTimeout(function () { v.style.opacity = "1"; }, 20);
+      };
+      v.addEventListener("seeked", revealOnce);
+      // Fallback in case 'seeked' never fires (older browsers / odd quirks)
+      if (v.readyState >= 3) setTimeout(revealOnce, 500);
+      else v.addEventListener("canplay", function () { setTimeout(revealOnce, 500); }, { once: true });
+    })();
+
+    // B2 — Loading splash: hide once fonts ready + small delay
+    (function () {
+      var splash = document.getElementById("splash");
+      if (!splash) return;
+      var hide = function () {
+        setTimeout(function () { splash.classList.add("is-hidden"); }, 700);
+      };
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(hide);
+      } else {
+        window.addEventListener("load", hide);
+      }
+    })();
+
+    // B3 — Scroll progress hairline (fills as user scrolls)
+    (function () {
+      var bar = document.getElementById("scrollProgress");
+      if (!bar) return;
+      var update = function () {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop;
+        var max = h.scrollHeight - h.clientHeight;
+        var pct = max > 0 ? (scrolled / max) * 100 : 0;
+        bar.style.width = pct.toFixed(1) + "%";
+      };
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    })();
+
+    // B1 — Mobile menu toggle: update aria-expanded for label swap (already handled by existing nav drawer JS — extending to ensure label updates)
+    (function () {
+      var toggle = document.getElementById("navToggle");
+      var label = toggle ? toggle.querySelector(".nav__toggle-label") : null;
+      if (!toggle || !label) return;
+      var origText = label.textContent;
+      var observer = new MutationObserver(function () {
+        label.textContent = toggle.getAttribute("aria-expanded") === "true" ? "Close" : origText;
+      });
+      observer.observe(toggle, { attributes: true, attributeFilter: ["aria-expanded"] });
+    })();
+
+    // B3 — Cursor-magnetized CTAs (subtle pull when cursor approaches primary buttons)
+    (function () {
+      if (window.matchMedia && (
+        window.matchMedia("(hover: none)").matches ||
+        window.matchMedia("(pointer: coarse)").matches ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      )) return;
+      var ctas = document.querySelectorAll(".hero .btn.js-book, .spotlight .btn, .cta-band .btn");
+      ctas.forEach(function (btn) {
+        var radius = 80; // px — magnetic pull range
+        var maxPull = 8; // px — max displacement
+        var onMove = function (e) {
+          var r = btn.getBoundingClientRect();
+          var cx = r.left + r.width / 2;
+          var cy = r.top + r.height / 2;
+          var dx = e.clientX - cx;
+          var dy = e.clientY - cy;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < radius + Math.max(r.width, r.height) / 2) {
+            var pull = Math.min(1, (radius - Math.max(0, dist - Math.max(r.width, r.height) / 2)) / radius);
+            btn.style.transform = "translate(" + (dx * pull * maxPull / radius).toFixed(1) + "px, " + (dy * pull * maxPull / radius).toFixed(1) + "px)";
+          } else {
+            btn.style.transform = "";
+          }
+        };
+        var onLeave = function () { btn.style.transform = ""; };
+        window.addEventListener("mousemove", onMove);
+        btn.addEventListener("mouseleave", onLeave);
+      });
+    })();
+
+    // B5 — Subtle parallax on Meet Rikki portrait + signature card images (5-7% slower than scroll)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var targets = document.querySelectorAll(".about__photo, .signature-card");
+      if (!targets.length) return;
+      var ticking = false;
+      var update = function () {
+        targets.forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          if (r.bottom > 0 && r.top < window.innerHeight) {
+            var p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+            var offset = (p - 0.5) * 14;
+            el.style.setProperty("--parallax-y", (-offset).toFixed(1) + "px");
+          }
+        });
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
+    })();
+
+    // B5 — Subtle parallax on interlude backdrop image (6% slower than scroll)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var interlude = document.querySelector(".interlude");
+      if (!interlude) return;
+      var ticking = false;
+      var update = function () {
+        var r = interlude.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight) {
+          var p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+          var offset = (p - 0.5) * 20;
+          interlude.style.setProperty("--interlude-parallax", (-offset).toFixed(1) + "px");
+        }
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
+    })();
+
+    // B6 — Drag-to-scroll hint: hide after first user interaction with the insta carousel
+    (function () {
+      var hint = document.querySelector(".insta__hint");
+      var vp = document.querySelector(".insta__viewport");
+      if (!hint || !vp) return;
+      var hide = function () { hint.classList.add("is-hidden"); };
+      vp.addEventListener("mousedown", hide, { once: true });
+      vp.addEventListener("touchstart", hide, { once: true });
+      vp.addEventListener("wheel", hide, { once: true });
+      setTimeout(hide, 8000); // also fade after 8s regardless
+    })();
+
+    // B6 — Lightbox on tile click
+    (function () {
+      var lightbox = document.getElementById("lightbox");
+      if (!lightbox) return;
+      var stage = lightbox.querySelector(".lightbox__stage");
+      var closeBtn = lightbox.querySelector(".lightbox__close");
+      var open = function (media) {
+        stage.innerHTML = "";
+        stage.appendChild(media);
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      };
+      var close = function () {
+        lightbox.classList.remove("is-open");
+        lightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        stage.innerHTML = "";
+      };
+      document.querySelectorAll(".insta-tile").forEach(function (tile) {
+        var anchor = tile.querySelector("a");
+        if (!anchor) return;
+        anchor.addEventListener("click", function (e) {
+          // Skip if user was dragging (handled by N.3 click suppression)
+          if (e.defaultPrevented) return;
+          e.preventDefault();
+          var img = tile.querySelector("img");
+          var video = tile.querySelector("video");
+          if (img) {
+            var clone = document.createElement("img");
+            clone.src = img.currentSrc || img.src;
+            clone.alt = img.alt;
+            open(clone);
+          } else if (video) {
+            var v = document.createElement("video");
+            v.src = video.src;
+            v.controls = true;
+            v.autoplay = true;
+            v.muted = true;
+            v.playsInline = true;
+            v.loop = true;
+            open(v);
+          }
+        });
+      });
+      closeBtn.addEventListener("click", close);
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) close();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && lightbox.classList.contains("is-open")) close();
+      });
+    })();
+
+    // B7 — Footer share-to-friend link (native share or copy to clipboard)
+    (function () {
+      var link = document.getElementById("footerShare");
+      if (!link) return;
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        var url = window.location.href;
+        if (navigator.share) {
+          navigator.share({ title: "Wink Wink Beauty Bar", url: url }).catch(function () {});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(function () {
+            var orig = link.textContent;
+            link.textContent = "Link copied ✓";
+            setTimeout(function () { link.textContent = orig; }, 2200);
+          });
+        }
+      });
+    })();
+
+    // B8 — Vary section reveals (different entrance per section)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var map = {
+        services: "reveal--up",
+        about: "reveal--right",
+        spotlight: "reveal--zoom",
+        signature: "reveal--up",
+        lashes: "reveal--up",
+        hair: "reveal--up",
+        waxing: "reveal--up",
+        testimonials: "reveal--up",
+        insta: "reveal--left",
+        visit: "reveal--up"
+      };
+      Object.keys(map).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add(map[id]);
+      });
+    })();
+
+    // C — Custom cursor follower with eased lag (~200ms feel); off on touch + reduced motion
+    (function () {
+      if (window.matchMedia && (
+        window.matchMedia("(hover: none)").matches ||
+        window.matchMedia("(pointer: coarse)").matches ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      )) return;
+      var glow = document.querySelector(".cursor-glow");
+      if (!glow) return;
+      var tx = -100, ty = -100, mx = -100, my = -100;
+      var running = false;
+      var hovering = false;
+      var loop = function () {
+        tx += (mx - tx) * 0.18;
+        ty += (my - ty) * 0.18;
+        glow.style.transform = "translate3d(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px, 0) translate(-50%, -50%)";
+        if (running) requestAnimationFrame(loop);
+      };
+      // Linger detection — after 900ms of stillness, cursor swells into a
+      // soft rose-gold halo (the "attentive" state). Any movement cancels.
+      var lingerTimer = null;
+      var scheduleLinger = function () {
+        if (lingerTimer) clearTimeout(lingerTimer);
+        glow.classList.remove("is-lingering");
+        lingerTimer = setTimeout(function () {
+          glow.classList.add("is-lingering");
+        }, 900);
+      };
+      document.addEventListener("mousemove", function (e) {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!glow.classList.contains("is-active")) {
+          glow.classList.add("is-active");
+          tx = mx; ty = my; // start at cursor instead of off-screen jump
+        }
+        if (!running) { running = true; requestAnimationFrame(loop); }
+        scheduleLinger();
+      });
+      document.addEventListener("mouseleave", function () {
+        glow.classList.remove("is-active");
+        running = false;
+      });
+      document.addEventListener("mouseenter", function () {
+        if (!running) { running = true; requestAnimationFrame(loop); }
+      });
+      // Expand on interactive elements (event delegation — covers later-added DOM)
+      var isInteractive = function (el) {
+        return el && el.closest && el.closest("a, button, .btn, [role='button'], input, label, .insta-tile");
+      };
+      document.addEventListener("mouseover", function (e) {
+        if (isInteractive(e.target) && !hovering) {
+          hovering = true;
+          glow.classList.add("is-link");
+        }
+      });
+      document.addEventListener("mouseout", function (e) {
+        if (hovering && !isInteractive(e.relatedTarget)) {
+          hovering = false;
+          glow.classList.remove("is-link");
+        }
+      });
+    })();
+
+    // D.3 — Side-margin page index (updates section numeral + label on scroll)
+    (function () {
+      var index = document.querySelector(".page-index");
+      if (!index) return;
+      var numeralEl = index.querySelector(".page-index__numeral");
+      var labelEl = index.querySelector(".page-index__label");
+      var sections = [
+        { id: "services",     n: "01", label: "Services" },
+        { id: "about",        n: "02", label: "The Artist" },
+        { id: "spotlight",    n: "03", label: "Signature" },
+        { id: "signature",    n: "04", label: "Loved For" },
+        { id: "lashes",       n: "05", label: "The Menu" },
+        { id: "testimonials", n: "06", label: "Voices" },
+        { id: "insta",        n: "07", label: "The Work" },
+        { id: "visit",        n: "08", label: "The Studio" }
+      ].map(function (s) {
+        s.el = document.getElementById(s.id);
+        return s;
+      }).filter(function (s) { return !!s.el; });
+      if (!sections.length) return;
+      var current = null;
+      var update = function () {
+        var center = window.innerHeight * 0.45;
+        var active = null;
+        sections.forEach(function (s) {
+          var r = s.el.getBoundingClientRect();
+          if (r.top < center && r.bottom > center) active = s;
+        });
+        if (active !== current) {
+          current = active;
+          if (active) {
+            numeralEl.textContent = active.n;
+            labelEl.textContent = active.label;
+            index.classList.add("is-visible");
+          } else {
+            index.classList.remove("is-visible");
+          }
+        }
+      };
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    })();
+
+    // M.3 — Slow parallax on Spotlight background image (rAF-throttled)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var spotlight = document.querySelector(".spotlight");
+      if (!spotlight) return;
+      var ticking = false;
+      var update = function () {
+        var r = spotlight.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight) {
+          var progress = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+          var offset = (progress - 0.5) * spotlight.offsetHeight * 0.14;
+          spotlight.style.setProperty("--parallax", (-offset).toFixed(1) + "px");
+        }
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
+    })();
+
+    // Mobile cross-fade — each section fades in as it enters the last
+    // 30% of the viewport and fades out as it leaves the first 30%.
+    // Sections in the middle stay fully visible so tall menus remain
+    // readable while scrolling through them. Desktop keeps its page-pull
+    // + reveal choreography.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var mql = window.matchMedia("(max-width: 899px)");
+      if (!mql.matches) return;
+      var selector = "section:not(.hero), .menu-cover";
+      var targets = Array.prototype.slice.call(document.querySelectorAll(selector));
+      if (!targets.length) return;
+      targets.forEach(function (t) { t.setAttribute("data-crossfade", ""); });
+      document.body.classList.add("js-crossfade-enabled");
+
+      var ticking = false;
+      function update() {
+        var vh = window.innerHeight;
+        var enterZone = vh * 0.30;
+        var exitZone  = vh * 0.30;
+        targets.forEach(function (sec) {
+          var r = sec.getBoundingClientRect();
+          if (r.bottom < -vh || r.top > vh * 2) return; // far offscreen
+          var op;
+          if (r.bottom <= 0 || r.top >= vh) {
+            op = 0;
+          } else if (r.top > vh - enterZone) {
+            op = 1 - (r.top - (vh - enterZone)) / enterZone;
+          } else if (r.bottom < exitZone) {
+            op = r.bottom / exitZone;
+          } else {
+            op = 1;
+          }
+          if (op < 0) op = 0;
+          if (op > 1) op = 1;
+          sec.style.opacity = op.toFixed(3);
+        });
+        ticking = false;
+      }
+      function onScroll() {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", update);
+      update();
+    })();
+
     // Sticky mobile booking bar — reveal once the hero scrolls away
     (function () {
       var bar = document.querySelector(".sticky-book");
@@ -314,6 +1201,405 @@
       };
       window.addEventListener("scroll", toggle, { passive: true });
       toggle();
+    })();
+
+    // Scroll-triggered nav CTA — only visible once the visitor has scrolled past the hero.
+    // Above the hero, the nav stays purely typographic (brand + links). The "Text to Book"
+    // pill fades in once the visitor signals engagement by scrolling past the editorial split.
+    (function () {
+      var cta = document.querySelector(".nav__cta");
+      var hero = document.querySelector(".hero");
+      if (!cta || !hero) return;
+      var triggerAt = function () {
+        // Reveal when we're roughly past 70% of the hero height
+        return Math.max(160, hero.offsetHeight * 0.7);
+      };
+      var update = function () {
+        cta.classList.toggle("is-visible", window.scrollY > triggerAt());
+      };
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+      update();
+    })();
+
+    // ════════════════════════════════════════════════════════════════
+    // LUXURY MOTION SYSTEM — 18-item highest-impact sprint
+    // ════════════════════════════════════════════════════════════════
+
+    // M.1 — Lenis smooth-scroll (loaded via CDN in <head>, deferred so we wait for load)
+    function __initLenis() {
+      if (typeof Lenis === "undefined") return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (window.__lenis) return; // already initialized
+      var lenis = new Lenis({
+        duration: 1.15,
+        easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+        smoothWheel: true,
+        smoothTouch: false
+      });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+      window.__lenis = lenis;
+    }
+    if (typeof Lenis !== "undefined") __initLenis();
+    else window.addEventListener("load", __initLenis, { once: true });
+
+    // M.2 — Cursor parallax on hero video
+    //   The video gently follows cursor position within the hero (~8px max shift)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) return;
+      var hero = document.querySelector(".hero");
+      var media = document.querySelector(".hero__media");
+      if (!hero || !media) return;
+      var ticking = false, cx = 0, cy = 0;
+      hero.addEventListener("mousemove", function (e) {
+        var r = hero.getBoundingClientRect();
+        cx = (e.clientX - r.left) / r.width - 0.5;
+        cy = (e.clientY - r.top) / r.height - 0.5;
+        if (!ticking) {
+          requestAnimationFrame(function () {
+            media.style.transform = "translate(" + (cx * -10).toFixed(1) + "px, " + (cy * -6).toFixed(1) + "px)";
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      hero.addEventListener("mouseleave", function () { media.style.transform = ""; });
+    })();
+
+    // M.3 — Magnetic CTA pull (primary CTAs across the site)
+    //   Buttons within 90px of cursor pull toward it ~28% of distance.
+    //   Restrained to PRIMARY actions only (hero, spotlight, signature cards,
+    //   finale) — menu rows, footer, and tiles stay non-magnetic so the page
+    //   doesn't feel chaotic.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) return;
+      var btns = document.querySelectorAll(
+        ".hero .btn, .btn--finale, .spotlight .btn, .signature-card__link"
+      );
+      if (!btns.length) return;
+      var rafScheduled = false, mouseX = 0, mouseY = 0;
+      document.addEventListener("mousemove", function (e) {
+        mouseX = e.clientX; mouseY = e.clientY;
+        if (rafScheduled) return;
+        rafScheduled = true;
+        requestAnimationFrame(function () {
+          btns.forEach(function (btn) {
+            var r = btn.getBoundingClientRect();
+            var bx = r.left + r.width / 2;
+            var by = r.top + r.height / 2;
+            var dx = mouseX - bx;
+            var dy = mouseY - by;
+            var dist = Math.hypot(dx, dy);
+            if (dist < 90) {
+              var pull = (1 - dist / 90) * 0.28;
+              btn.style.setProperty("--magnetic-x", (dx * pull).toFixed(1) + "px");
+              btn.style.setProperty("--magnetic-y", (dy * pull).toFixed(1) + "px");
+              btn.classList.add("is-magnetized");
+            } else if (btn.classList.contains("is-magnetized")) {
+              btn.style.removeProperty("--magnetic-x");
+              btn.style.removeProperty("--magnetic-y");
+              btn.classList.remove("is-magnetized");
+            }
+          });
+          rafScheduled = false;
+        });
+      }, { passive: true });
+    })();
+
+    // M.7 — Cursor-tracked warm spotlight (Spotlight section only — finale excluded
+    //   because the closing chapter should feel calm, not interactive)
+    (function () {
+      if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) return;
+      var sections = document.querySelectorAll(".spotlight");
+      sections.forEach(function (sec) {
+        sec.addEventListener("mousemove", function (e) {
+          var r = sec.getBoundingClientRect();
+          var x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+          var y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+          sec.style.setProperty("--cursor-x", x + "%");
+          sec.style.setProperty("--cursor-y", y + "%");
+          sec.classList.add("has-cursor");
+        });
+        sec.addEventListener("mouseleave", function () {
+          sec.classList.remove("has-cursor");
+        });
+      });
+    })();
+
+    // Filmstrip: CSS keyframes drive auto-scroll on .filmstrip__track (composited,
+    // runs on the compositor thread, immune to main-thread scroll jitter). This
+    // block layers manual scrubbing ON TOP of the auto-scroll: drag or horizontal
+    // wheel updates --scrub-x, which is applied to the track via the CSS `translate`
+    // property. Because `translate` applies BEFORE `transform` per the CSS
+    // Transforms spec, the animation (transform) and the scrub (translate)
+    // compose additively without conflict. Auto-scroll never pauses.
+    (function () {
+      var viewport = document.querySelector(".filmstrip__viewport");
+      var track    = document.querySelector(".filmstrip__track");
+      if (!viewport || !track) return;
+
+      var scrubX = 0, halfWidth = 0;
+      var isDown = false, startX = 0, startScrub = 0, didDrag = false;
+
+      function measure() { halfWidth = track.scrollWidth / 2; }
+      measure();
+      window.addEventListener("resize", measure);
+      track.querySelectorAll("img, video").forEach(function (el) {
+        if (el.tagName === "IMG") {
+          if (!el.complete) el.addEventListener("load", measure, { once: true });
+        } else {
+          el.addEventListener("loadedmetadata", measure, { once: true });
+        }
+      });
+
+      function apply() {
+        // Wrap scrub into a single loop cycle. Content is doubled in markup,
+        // so `scrubX % halfWidth` shows visually identical tiles — the wrap is
+        // invisible and the visitor can scrub indefinitely without hitting an end.
+        var v = halfWidth > 0 ? scrubX % halfWidth : scrubX;
+        track.style.setProperty("--scrub-x", v + "px");
+      }
+
+      // Horizontal wheel / trackpad two-finger swipe scrubs the strip. Vertical
+      // wheel is left untouched so page scroll works normally while hovering.
+      viewport.addEventListener("wheel", function (e) {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+          scrubX -= e.deltaX;
+          apply();
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Mouse drag: 1:1 horizontal scrub. Mousemove/mouseup listen on window so
+      // the drag continues even if the cursor briefly leaves the viewport.
+      viewport.addEventListener("mousedown", function (e) {
+        isDown = true; didDrag = false;
+        startX = e.pageX; startScrub = scrubX;
+        viewport.classList.add("is-dragging");
+      });
+      window.addEventListener("mousemove", function (e) {
+        if (!isDown) return;
+        var dx = e.pageX - startX;
+        if (Math.abs(dx) > 4) didDrag = true;
+        scrubX = startScrub + dx;
+        apply();
+      });
+      function endDrag() {
+        if (!isDown) return;
+        isDown = false;
+        viewport.classList.remove("is-dragging");
+      }
+      window.addEventListener("mouseup", endDrag);
+      viewport.addEventListener("mouseleave", endDrag);
+
+      // Touch: same scrub, but only after the visitor's finger has moved MORE
+      // horizontally than vertically. That way a vertical swipe scrolls the
+      // page normally, and a horizontal swipe scrubs the strip.
+      var touchStartX = 0, touchStartY = 0, touchStartScrub = 0;
+      var touchActive = false, touchDirectionLocked = false;
+      viewport.addEventListener("touchstart", function (e) {
+        var t = e.touches[0];
+        touchStartX = t.pageX;
+        touchStartY = t.pageY;
+        touchStartScrub = scrubX;
+        touchActive = true;
+        touchDirectionLocked = false;
+        didDrag = false;
+      }, { passive: true });
+      viewport.addEventListener("touchmove", function (e) {
+        if (!touchActive) return;
+        var t = e.touches[0];
+        var dx = t.pageX - touchStartX;
+        var dy = t.pageY - touchStartY;
+        // First meaningful movement decides direction: horizontal = scrub,
+        // vertical = page scroll (touchActive turns off so we don't scrub).
+        if (!touchDirectionLocked) {
+          if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+          if (Math.abs(dx) > Math.abs(dy)) {
+            touchDirectionLocked = true;
+          } else {
+            touchActive = false; // page-scroll gesture — let it happen
+            return;
+          }
+        }
+        if (Math.abs(dx) > 4) didDrag = true;
+        scrubX = touchStartScrub + dx;
+        apply();
+        // Only preventDefault once we're scrubbing horizontally — never for
+        // vertical swipes, so page scroll stays natural.
+        if (e.cancelable) e.preventDefault();
+      }, { passive: false });
+      function endTouch() { touchActive = false; touchDirectionLocked = false; }
+      viewport.addEventListener("touchend", endTouch);
+      viewport.addEventListener("touchcancel", endTouch);
+
+      // Suppress the tile click if the visitor actually dragged — prevents the
+      // lightbox from opening at the end of a scrub gesture. Reset didDrag
+      // after so the NEXT genuine click still opens the lightbox.
+      viewport.addEventListener("click", function (e) {
+        if (didDrag) { e.preventDefault(); e.stopPropagation(); didDrag = false; }
+      }, true);
+    })();
+
+    // —— Service card photo parallax (medium-impact #23)
+    //   Each card's ::before background photo shifts opposite to scroll for depth
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var cards = document.querySelectorAll(".service-card");
+      if (!cards.length) return;
+      var ticking = false;
+      function update() {
+        var vh = window.innerHeight;
+        cards.forEach(function (card) {
+          var r = card.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          // Progress from -1 (just below viewport) to +1 (just above)
+          var progress = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+          card.style.setProperty("--card-parallax", (progress * -22).toFixed(1) + "px");
+        });
+        ticking = false;
+      }
+      window.addEventListener("scroll", function () {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
+    })();
+
+    // M.6 — Wire lightbox to filmstrip tiles
+    (function () {
+      var lightbox = document.getElementById("lightbox");
+      var stage = lightbox && lightbox.querySelector(".lightbox__stage");
+      var closeBtn = lightbox && lightbox.querySelector(".lightbox__close");
+      if (!lightbox || !stage) return;
+      var tiles = document.querySelectorAll(".filmstrip-tile");
+      tiles.forEach(function (tile) {
+        tile.addEventListener("click", function (e) {
+          var link = tile.querySelector("a");
+          var img = tile.querySelector("img");
+          var video = tile.querySelector("video");
+          // Don't intercept if visitor wants to actually visit Instagram
+          if (e.target.closest("a") && (e.ctrlKey || e.metaKey || e.shiftKey)) return;
+          e.preventDefault();
+          stage.innerHTML = "";
+          if (img) {
+            var clone = img.cloneNode(false);
+            clone.removeAttribute("loading");
+            stage.appendChild(clone);
+          } else if (video) {
+            var v = video.cloneNode(false);
+            v.setAttribute("autoplay", "");
+            v.setAttribute("controls", "");
+            v.muted = false;
+            stage.appendChild(v);
+          }
+          lightbox.classList.add("is-open");
+          document.body.style.overflow = "hidden";
+        });
+      });
+      function closeLightbox() {
+        lightbox.classList.remove("is-open");
+        stage.innerHTML = "";
+        document.body.style.overflow = "";
+      }
+      if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && lightbox.classList.contains("is-open")) closeLightbox();
+      });
+    })();
+
+    // M.6 (cont) — Center-tile focus treatment retired (was the primary source
+    //   of portfolio jitter — filter recalculation every animation frame caused
+    //   constant repaints when combined with the moving scrollLeft and hover
+    //   scale transforms. Tile hover state alone provides enough interactivity.)
+
+    // Meet Rikki bio — split body paragraphs into .about__word spans
+    // so the CSS can cascade them in with per-word stagger on scroll into view.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var paras = document.querySelectorAll(".about__copy p:not(.about__sign)");
+      if (!paras.length) return;
+      var wordIndex = 0;
+      paras.forEach(function (p) {
+        var text = p.textContent;
+        p.textContent = "";
+        var parts = text.split(/(\s+)/);
+        parts.forEach(function (part) {
+          if (part === "") return;
+          if (/^\s+$/.test(part)) {
+            p.appendChild(document.createTextNode(part));
+          } else {
+            var span = document.createElement("span");
+            span.className = "about__word";
+            span.style.setProperty("--i", wordIndex++);
+            span.textContent = part;
+            p.appendChild(span);
+          }
+        });
+      });
+    })();
+
+    // M.5 — Word-by-word reveal (interlude quote + finale headline + ALL testimonials)
+    //   Splits text into spans and applies a stagger as section enters viewport.
+    //   Preserves inline element children (e.g. .testimonial__highlight) by
+    //   walking the DOM recursively rather than flattening textContent.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var targets = document.querySelectorAll(".interlude__line, .testimonial .testimonial__quote, .finale__sub, .finale__address-line, .finale__avail, .finale__directions");
+      function wordify(node, ctr) {
+        var children = Array.prototype.slice.call(node.childNodes);
+        children.forEach(function (child) {
+          if (child.nodeType === Node.TEXT_NODE) {
+            var text = child.textContent;
+            if (!text) return;
+            var frag = document.createDocumentFragment();
+            text.split(/(\s+)/).forEach(function (w) {
+              if (!w) return;
+              if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return; }
+              var span = document.createElement("span");
+              span.className = "word-reveal";
+              span.style.setProperty("--word-i", ctr.i);
+              span.textContent = w;
+              frag.appendChild(span);
+              ctr.i++;
+            });
+            child.parentNode.replaceChild(frag, child);
+          } else if (child.nodeType === Node.ELEMENT_NODE) {
+            wordify(child, ctr);
+          }
+        });
+      }
+      targets.forEach(function (el) { wordify(el, { i: 0 }); });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.querySelectorAll(".word-reveal").forEach(function (w) {
+              w.classList.add("is-revealed");
+            });
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      targets.forEach(function (el) { io.observe(el); });
+    })();
+
+    // M.4 — Spotlight section text cascade reveal
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var spot = document.querySelector(".spotlight");
+      if (!spot) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-cascading");
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.25 });
+      io.observe(spot);
     })();
 
     // Booking CTAs: native SMS on mobile; reveal the number on desktop
@@ -346,7 +1632,753 @@
         });
       });
     })();
+
+    /* ==================================================================
+       TIER 3 — TEXT MOTION PREMIUM LAYER (JS)
+       Six DOM/behavior additions that pair with the CSS in styles.css.
+       All are gated by prefers-reduced-motion and no-op on failure.
+       ================================================================== */
+
+    // T3.2 — Character curtain reveal for section titles
+    //   Wraps each character of every .section__title in a .char-reveal span
+    //   with --char-i, so CSS can stagger drop-in reveals from behind a mask.
+    //   Each WORD is wrapped in a .char-word (white-space: nowrap) so browsers
+    //   can only break between words, never mid-word.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var titles = document.querySelectorAll(".section__title");
+      function charify(root) {
+        var ctr = { i: 0 };
+        (function walk(node) {
+          var children = Array.prototype.slice.call(node.childNodes);
+          children.forEach(function (child) {
+            if (child.nodeType === Node.TEXT_NODE) {
+              var text = child.textContent;
+              if (!text) return;
+              var frag = document.createDocumentFragment();
+              text.split(/(\s+)/).forEach(function (part) {
+                if (!part) return;
+                if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+                var word = document.createElement("span");
+                word.className = "char-word";
+                for (var i = 0; i < part.length; i++) {
+                  var span = document.createElement("span");
+                  span.className = "char-reveal";
+                  span.style.setProperty("--char-i", ctr.i);
+                  span.textContent = part[i];
+                  word.appendChild(span);
+                  ctr.i++;
+                }
+                frag.appendChild(word);
+              });
+              child.parentNode.replaceChild(frag, child);
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+              walk(child);
+            }
+          });
+        })(root);
+      }
+      titles.forEach(function (t) { charify(t); t.classList.add("js-charified"); });
+    })();
+
+    // T3.3 — Line-by-line reveal for menu intros
+    //   Splits each .menu__intro at sentence boundaries (period + space + capital)
+    //   into .line-reveal spans, each with --line-i for staggered CSS transitions.
+    //   Single-sentence intros still animate in as one line.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var intros = document.querySelectorAll(".menu__intro");
+      intros.forEach(function (intro) {
+        var text = intro.textContent.trim();
+        if (!text) return;
+        var sentences = text.split(/(?<=\.)\s+(?=[A-Z])/);
+        intro.textContent = "";
+        sentences.forEach(function (sent, i) {
+          var span = document.createElement("span");
+          span.className = "line-reveal";
+          span.style.setProperty("--line-i", i);
+          span.textContent = sent;
+          intro.appendChild(span);
+          if (i < sentences.length - 1) intro.appendChild(document.createTextNode(" "));
+        });
+      });
+    })();
+
+    // T3.7 — Menu item name letter cascade
+    //   Wraps each character of .menu-item__name direct text nodes in a
+    //   .name-char-reveal span (leaves inline <small> children intact).
+    //   IntersectionObserver toggles .is-name-revealed on the parent row.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!("IntersectionObserver" in window)) return;
+      var names = document.querySelectorAll(".menu-item__name");
+      names.forEach(function (nameEl) {
+        var ctr = 0;
+        var children = Array.prototype.slice.call(nameEl.childNodes);
+        children.forEach(function (child) {
+          if (child.nodeType !== Node.TEXT_NODE) return;
+          var text = child.textContent;
+          if (!text) return;
+          var frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var word = document.createElement("span");
+            word.className = "name-char-word";
+            for (var i = 0; i < part.length; i++) {
+              var span = document.createElement("span");
+              span.className = "name-char-reveal";
+              span.style.setProperty("--nchar-i", ctr);
+              span.textContent = part[i];
+              word.appendChild(span);
+              ctr++;
+            }
+            frag.appendChild(word);
+          });
+          child.parentNode.replaceChild(frag, child);
+        });
+      });
+      var items = document.querySelectorAll(".menu-item");
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) e.target.classList.add("is-name-revealed");
+          else e.target.classList.remove("is-name-revealed");
+        });
+      }, { threshold: 0.35, rootMargin: "0px 0px -8% 0px" });
+      items.forEach(function (m) { io.observe(m); });
+    })();
+
+    // T3.9 — Scroll-driven letter-spacing on section titles
+    //   As a title crosses viewport-center, its letter-spacing pumps up to
+    //   ~0.025em and back. Writes --title-track per-frame; CSS reads it via
+    //   letter-spacing: calc(). rAF-throttled, passive scroll listener.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var titles = document.querySelectorAll(".section__title");
+      if (!titles.length) return;
+      var vh = window.innerHeight;
+      var ticking = false;
+      function update() {
+        var mid = vh / 2;
+        titles.forEach(function (t) {
+          var rect = t.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > vh) return;
+          var tc = rect.top + rect.height / 2;
+          var dist = Math.abs(tc - mid);
+          var n = Math.max(0, 1 - dist / mid);
+          var expand = n * 0.025;
+          t.style.setProperty("--title-track", expand.toFixed(4) + "em");
+        });
+        ticking = false;
+      }
+      window.addEventListener("scroll", function () {
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      window.addEventListener("resize", function () {
+        vh = window.innerHeight;
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      });
+      update();
+    })();
+
+    // T3.10 — Menu chapter numeral draw-in
+    //   Menu covers already get .is-visible from the section IO in D.1; CSS
+    //   handles the clip-path reveal. No extra JS needed. (Marker for docs.)
+
+    // T3.HERO — Subtitle word cascade (splits .hero__sub into .hero__sub-word
+    //   spans with --sub-i for CSS-driven per-word stagger). Runs on page load.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var sub = document.querySelector(".hero__sub");
+      if (!sub) return;
+      var text = sub.textContent;
+      sub.textContent = "";
+      var idx = 0;
+      text.split(/(\s+)/).forEach(function (part) {
+        if (part === "") return;
+        if (/^\s+$/.test(part)) { sub.appendChild(document.createTextNode(part)); return; }
+        var span = document.createElement("span");
+        span.className = "hero__sub-word";
+        span.style.setProperty("--sub-i", idx++);
+        span.textContent = part;
+        sub.appendChild(span);
+      });
+      sub.classList.add("js-hero-sub-ready");
+    })();
+
+    // T3.HERO — Hero CTA char split for magnetic pull. Wraps each character
+    //   of the hero CTA text in .hero-cta-char spans for cursor-magnetic
+    //   proximity animation. Desktop only, hover-scoped (see effect below).
+    (function () {
+      var cta = document.querySelector(".js-hero-cta");
+      if (!cta) return;
+      var text = cta.textContent;
+      cta.textContent = "";
+      text.split(/(\s+)/).forEach(function (part) {
+        if (part === "") return;
+        if (/^\s+$/.test(part)) { cta.appendChild(document.createTextNode(part)); return; }
+        var word = document.createElement("span");
+        word.className = "hero-cta-word";
+        for (var i = 0; i < part.length; i++) {
+          var ch = document.createElement("span");
+          ch.className = "hero-cta-char";
+          ch.textContent = part[i];
+          word.appendChild(ch);
+        }
+        cta.appendChild(word);
+      });
+    })();
+
+    // T3.CURSOR — Custom rose-gold twin-circle cursor (desktop only).
+    //   Two elements: a small filled dot that tracks the mouse exactly,
+    //   and a larger outlined ring that follows with spring lag. On
+    //   hover over interactive elements, the ring blooms 3x and the dot
+    //   fades. Auto-off on touch and prefers-reduced-motion.
+    (function () {
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      var cursor = document.createElement("div");
+      cursor.className = "cursor-duo";
+      cursor.setAttribute("aria-hidden", "true");
+      var ring = document.createElement("div");
+      ring.className = "cursor-duo__ring";
+      cursor.appendChild(ring);
+      document.body.appendChild(cursor);
+      document.documentElement.classList.add("has-cursor-duo");
+      var interactiveSel = "a, button, .btn, [role='button'], input, textarea, select, [data-cursor='hover']";
+      var textSel = "input, textarea";
+      var mx = 0, my = 0;
+      var rx = 0, ry = 0;
+      var running = false;
+      var lerp = 0.22;
+      function tick() {
+        rx += (mx - rx) * lerp;
+        ry += (my - ry) * lerp;
+        ring.style.setProperty("--rx", rx.toFixed(2) + "px");
+        ring.style.setProperty("--ry", ry.toFixed(2) + "px");
+        if (Math.abs(mx - rx) > 0.15 || Math.abs(my - ry) > 0.15) {
+          requestAnimationFrame(tick);
+        } else {
+          running = false;
+        }
+      }
+      window.addEventListener("mousemove", function (e) {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!running) { requestAnimationFrame(tick); running = true; }
+        var t = e.target;
+        var overText = t && t.closest(textSel);
+        var overInteractive = t && t.closest(interactiveSel);
+        cursor.classList.toggle("is-hidden", !!overText);
+        cursor.classList.toggle("is-hover", !!overInteractive && !overText);
+      }, { passive: true });
+      document.addEventListener("mouseleave", function () { cursor.classList.add("is-off-window"); });
+      document.addEventListener("mouseenter", function () { cursor.classList.remove("is-off-window"); });
+      window.addEventListener("mousedown", function () { cursor.classList.add("is-active"); });
+      window.addEventListener("mouseup", function () { cursor.classList.remove("is-active"); });
+    })();
+
+    // T3.HERO — Hero CTA magnetic pull. On hover, each letter pulls toward
+    //   the cursor. Desktop only (hover: hover + pointer: fine), scoped to
+    //   the button so it doesn't run globally.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      var cta = document.querySelector(".js-hero-cta");
+      if (!cta) return;
+      var chars = cta.querySelectorAll(".hero-cta-char");
+      if (!chars.length) return;
+      var mx = 0, my = 0, active = false, ticking = false;
+      function update() {
+        chars.forEach(function (ch) {
+          if (!active) {
+            ch.style.setProperty("--cta-x", "0px");
+            ch.style.setProperty("--cta-y", "0px");
+            return;
+          }
+          var r = ch.getBoundingClientRect();
+          var cx = r.left + r.width / 2;
+          var cy = r.top + r.height / 2;
+          var dx = mx - cx;
+          var dy = my - cy;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          var maxD = 90;
+          var pull = Math.max(0, 1 - d / maxD);
+          var strength = pull * 5;
+          var norm = d || 1;
+          ch.style.setProperty("--cta-x", ((dx / norm) * strength).toFixed(2) + "px");
+          ch.style.setProperty("--cta-y", ((dy / norm) * strength).toFixed(2) + "px");
+        });
+        ticking = false;
+      }
+      cta.addEventListener("mouseenter", function () { active = true; });
+      cta.addEventListener("mouseleave", function () {
+        active = false;
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      });
+      cta.addEventListener("mousemove", function (e) {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+    })();
+
+    // T3.RIPPLE — Tap-triggered ripple wave for touch devices.
+    //   When a user taps a title, a wave propagates outward from the tap
+    //   point through each character (delay proportional to distance).
+    //   Each char rises then settles. Complements the desktop magnetic
+    //   pull — gives "alive text" feedback to touch users who don't have
+    //   a persistent cursor. Uses touchstart only, so mouse-only devices
+    //   don't trigger it (they get the magnetic pull instead).
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var groups = [
+        { list: document.querySelectorAll(".section__title"),       charSel: ".char-reveal"      },
+        { list: document.querySelectorAll(".hero__title"),          charSel: ".hero__letter"     },
+        { list: document.querySelectorAll(".spotlight__title"),     charSel: ".spot-char"        },
+        { list: document.querySelectorAll(".finale__title"),        charSel: ".finale-char"      },
+        { list: document.querySelectorAll(".menu-cover__label"),    charSel: ".mc-char"          },
+        { list: document.querySelectorAll(".signature-card__name"), charSel: ".sig-char-reveal"  },
+        { list: document.querySelectorAll(".menu-item__name"),      charSel: ".name-char-reveal" }
+      ];
+      function fire(container, charSel, tx, ty) {
+        var chars = container.querySelectorAll(charSel);
+        if (!chars.length) return;
+        chars.forEach(function (ch) { ch.classList.remove("is-rippling"); });
+        void container.offsetWidth; // force reflow so animation restarts
+        chars.forEach(function (ch) {
+          var r = ch.getBoundingClientRect();
+          var cx = r.left + r.width / 2;
+          var cy = r.top + r.height / 2;
+          var d = Math.sqrt((tx - cx) * (tx - cx) + (ty - cy) * (ty - cy));
+          ch.style.setProperty("--ripple-delay", (d * 1.2).toFixed(1) + "ms");
+          ch.classList.add("is-rippling");
+        });
+      }
+      function attach(container, charSel) {
+        container.addEventListener("touchstart", function (e) {
+          if (!e.touches || !e.touches[0]) return;
+          var t = e.touches[0];
+          fire(container, charSel, t.clientX, t.clientY);
+        }, { passive: true });
+      }
+      groups.forEach(function (g) {
+        Array.prototype.forEach.call(g.list, function (c) { attach(c, g.charSel); });
+      });
+    })();
+
+    // T3.MC — Menu-cover label char split (for magnetic pull + tap ripple).
+    //   Walks each .menu-cover__label ("The Lash Menu", "The Hair Menu",
+    //   "The Wax Menu") and wraps each word in .mc-word (nowrap) and each
+    //   character in .mc-char so both the desktop magnetic system and the
+    //   mobile tap ripple can target them.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var labels = document.querySelectorAll(".menu-cover__label");
+      labels.forEach(function (label) {
+        var text = label.textContent;
+        label.textContent = "";
+        text.split(/(\s+)/).forEach(function (part) {
+          if (part === "") return;
+          if (/^\s+$/.test(part)) { label.appendChild(document.createTextNode(part)); return; }
+          var word = document.createElement("span");
+          word.className = "mc-word";
+          for (var i = 0; i < part.length; i++) {
+            var ch = document.createElement("span");
+            ch.className = "mc-char";
+            ch.textContent = part[i];
+            word.appendChild(ch);
+          }
+          label.appendChild(word);
+        });
+      });
+    })();
+
+    // T3.SEC — Section-title reveal fallback (Web Animations API).
+    //   The site-wide section IO isn't firing reliably under Lenis, and
+    //   CSS transitions can get blocked by stuck web-animations from
+    //   earlier session state. This polls for each .section__title, and
+    //   when it enters the top 85% of viewport, uses the Web Animations
+    //   API (element.animate()) to force the char reveal directly —
+    //   bypasses ALL CSS transition/specificity conflicts by animating
+    //   the property directly on the element.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var titles = Array.prototype.slice.call(document.querySelectorAll(".section__title"));
+      if (!titles.length) return;
+      // Skip titles that use the fall-from-sky animation (handled separately)
+      titles = titles.filter(function (t) { return !t.closest(".about"); });
+      var pending = titles.length;
+      if (!pending) return;
+      function reveal(t) {
+        // Add .is-visible to the ancestor section — that's the only thing
+        // the site's section IO would do. Trust the existing CSS
+        // transitions on .section__title .char-reveal to handle the reveal.
+        // No !important, no class-swap timers, no cascade fights.
+        var section = t.closest("section");
+        if (section) section.classList.add("is-visible");
+      }
+      function check() {
+        var vh = window.innerHeight;
+        titles.forEach(function (t) {
+          if (t.dataset.secFired) return;
+          var rect = t.getBoundingClientRect();
+          // Fire as soon as the title enters the bottom of the viewport
+          // — this gives the animation time to complete BEFORE the user
+          // finishes scrolling to it, so they see the tail of the reveal
+          // rather than a static title that "already animated."
+          if (rect.top < vh * 0.95 && rect.top > -rect.height) {
+            t.dataset.secFired = "1";
+            reveal(t);
+            pending--;
+          }
+        });
+      }
+      var poll = setInterval(function () {
+        check();
+        if (pending <= 0) clearInterval(poll);
+      }, 300);
+      check();
+
+      // Desktop-only: fire the FIRST section title ("What We Do") on page
+      // load in exact sync with the hero title char curtain (starts at
+      // 0.35s in the hero cascade). Both animations play in parallel on
+      // desktop where hero + services are both visible above the fold.
+      // Mobile keeps the scroll-triggered behavior — hero fills the whole
+      // viewport there so services isn't visible on load.
+      var isDesktop = window.matchMedia("(min-width: 721px)").matches;
+      if (isDesktop && titles.length) {
+        var firstTitle = titles[0];
+        setTimeout(function () {
+          if (firstTitle.dataset.secFired) return;
+          firstTitle.dataset.secFired = "1";
+          reveal(firstTitle);
+          pending--;
+        }, 350);
+      }
+    })();
+
+    // T3.FALL — Fall-from-sky trigger + section-title reveal fallback.
+    //   Scroll-triggered rAF check (NOT a continuous loop) — was previously
+    //   burning CPU every frame while idle, causing the site to feel laggy.
+    //   Now only runs on scroll/resize with rAF throttling. Also covers
+    //   the section-title char reveals ("What We Do", etc.) via a fallback
+    //   in case the section IntersectionObserver misses them.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var fallTitles = Array.prototype.slice.call(
+        document.querySelectorAll(".about .section__title, .spotlight__title, .finale__title")
+      );
+      var cascadeGroups = Array.prototype.slice.call(
+        document.querySelectorAll(".interlude__line, .finale__sub, .finale__address-line, .finale__avail, .finale__directions")
+      );
+      var menuCovers = Array.prototype.slice.call(document.querySelectorAll(".menu-cover"));
+      if (!fallTitles.length && !cascadeGroups.length && !menuCovers.length) return;
+      var fallPending = fallTitles.length;
+      var cascadePending = cascadeGroups.length;
+      var mcPending = menuCovers.length;
+      function check() {
+        var vh = window.innerHeight;
+        fallTitles.forEach(function (t) {
+          if (t.classList.contains("is-fall-in")) return;
+          var rect = t.getBoundingClientRect();
+          if (rect.top < vh * 0.85 && rect.bottom > 0) {
+            t.classList.add("is-fall-in");
+            fallPending--;
+          }
+        });
+        menuCovers.forEach(function (mc) {
+          if (mc.classList.contains("js-mc-fired")) return;
+          var rect = mc.getBoundingClientRect();
+          // Fire when the cover is CENTERED in viewport — its center must
+          // have crossed viewport center. Prevents "too soon" firing when
+          // section IO adds is-visible at just 12% intersection.
+          var coverCenter = rect.top + rect.height / 2;
+          if (coverCenter < vh * 0.7 && coverCenter > 0) {
+            mc.classList.add("js-mc-fired");
+            mcPending--;
+          }
+        });
+        cascadeGroups.forEach(function (el) {
+          if (el.dataset.cascadeFired) return;
+          var rect = el.getBoundingClientRect();
+          // Fire when the element is comfortably in view — top must be in
+          // the upper 65% of viewport (so user has clearly scrolled into
+          // it, not just barely peeked from the bottom edge).
+          if (rect.top < vh * 0.65 && rect.top > -rect.height) {
+            el.dataset.cascadeFired = "1";
+            el.querySelectorAll(".word-reveal").forEach(function (w, i) {
+              w.classList.add("is-revealed");
+              setTimeout(function () {
+                w.style.setProperty("opacity", "1", "important");
+                w.style.setProperty("transform", "none", "important");
+              }, i * 45);
+            });
+            cascadePending--;
+          }
+        });
+      }
+      var pollInterval = setInterval(function () {
+        check();
+        if (fallPending <= 0 && cascadePending <= 0 && mcPending <= 0) clearInterval(pollInterval);
+      }, 300);
+      check();
+    })();
+
+    // T3.FINALE — Char split for .finale__title (Let's Get You Booked).
+    //   Same pattern as .spotlight__title — wraps each word in .finale-word
+    //   (nowrap) and each character in .finale-char with --fnl-i for the
+    //   staggered fall-from-sky reveal.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var title = document.querySelector(".finale__title");
+      if (!title) return;
+      var text = title.textContent;
+      title.textContent = "";
+      var idx = 0;
+      text.split(/(\s+)/).forEach(function (part) {
+        if (part === "") return;
+        if (/^\s+$/.test(part)) { title.appendChild(document.createTextNode(part)); return; }
+        var word = document.createElement("span");
+        word.className = "finale-word";
+        for (var i = 0; i < part.length; i++) {
+          var ch = document.createElement("span");
+          ch.className = "finale-char";
+          ch.style.setProperty("--fnl-i", idx++);
+          ch.textContent = part[i];
+          word.appendChild(ch);
+        }
+        title.appendChild(word);
+      });
+    })();
+
+    // T3.SPOT — Spotlight title char split (for magnetic pull + fall-in).
+    //   Walks .spotlight__title and wraps each word in .spot-word (nowrap
+    //   container so line breaks stay on word boundaries) and each character
+    //   in .spot-char with --spot-i for staggered fall-from-sky reveal.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var title = document.querySelector(".spotlight__title");
+      if (!title) return;
+      var idx = 0;
+      function walk(node) {
+        if (node.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          node.textContent.split(/(\s+)/).forEach(function (part) {
+            if (part === "") return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var word = document.createElement("span");
+            word.className = "spot-word";
+            for (var i = 0; i < part.length; i++) {
+              var ch = document.createElement("span");
+              ch.className = "spot-char";
+              ch.style.setProperty("--spot-i", idx++);
+              ch.textContent = part[i];
+              word.appendChild(ch);
+            }
+            frag.appendChild(word);
+          });
+          return frag;
+        }
+        var clone = node.cloneNode(false);
+        Array.from(node.childNodes).forEach(function (c) { clone.appendChild(walk(c)); });
+        return clone;
+      }
+      var newFrag = document.createDocumentFragment();
+      Array.from(title.childNodes).forEach(function (c) { newFrag.appendChild(walk(c)); });
+      title.innerHTML = "";
+      title.appendChild(newFrag);
+    })();
+
+    // T3.SVC — Service card text split (Hair / Lash Extensions / Waxing).
+    //   Char-splits the h3 name and word-splits the description so each can
+    //   stagger in on card entry. Titles rise character-by-character, then
+    //   descriptions cascade word-by-word.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var cards = document.querySelectorAll(".service-card");
+      cards.forEach(function (card) {
+        var title = card.querySelector("h3");
+        var desc = card.querySelector("p");
+        if (title) {
+          var ctr = 0;
+          var children = Array.prototype.slice.call(title.childNodes);
+          children.forEach(function (child) {
+            if (child.nodeType !== Node.TEXT_NODE) return;
+            var text = child.textContent;
+            if (!text) return;
+            var frag = document.createDocumentFragment();
+            text.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var word = document.createElement("span");
+              word.className = "svc-char-word";
+              for (var i = 0; i < part.length; i++) {
+                var span = document.createElement("span");
+                span.className = "svc-char";
+                span.style.setProperty("--svc-i", ctr);
+                span.textContent = part[i];
+                word.appendChild(span);
+                ctr++;
+              }
+              frag.appendChild(word);
+            });
+            child.parentNode.replaceChild(frag, child);
+          });
+          title.classList.add("js-svc-title-ready");
+        }
+        if (desc) {
+          var text = desc.textContent;
+          desc.textContent = "";
+          var idx = 0;
+          text.split(/(\s+)/).forEach(function (part) {
+            if (part === "") return;
+            if (/^\s+$/.test(part)) { desc.appendChild(document.createTextNode(part)); return; }
+            var span = document.createElement("span");
+            span.className = "svc-word";
+            span.style.setProperty("--svcw-i", idx++);
+            span.textContent = part;
+            desc.appendChild(span);
+          });
+          desc.classList.add("js-svc-desc-ready");
+        }
+      });
+    })();
+
+    // T3.SIG — Signature card name character curtain
+    //   Splits .signature-card__name into .sig-char-word (nowrap wrappers) →
+    //   .sig-char-reveal spans with --sc-i for CSS-driven per-char stagger.
+    //   Triggered by parent .signature-card.is-in-view.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var names = document.querySelectorAll(".signature-card__name");
+      names.forEach(function (name) {
+        var ctr = 0;
+        var children = Array.prototype.slice.call(name.childNodes);
+        children.forEach(function (child) {
+          if (child.nodeType !== Node.TEXT_NODE) return;
+          var text = child.textContent;
+          if (!text) return;
+          var frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var word = document.createElement("span");
+            word.className = "sig-char-word";
+            for (var i = 0; i < part.length; i++) {
+              var span = document.createElement("span");
+              span.className = "sig-char-reveal";
+              span.style.setProperty("--sc-i", ctr);
+              span.textContent = part[i];
+              word.appendChild(span);
+              ctr++;
+            }
+            frag.appendChild(word);
+          });
+          child.parentNode.replaceChild(frag, child);
+        });
+        name.classList.add("js-sig-name-ready");
+      });
+    })();
+
+    // T3.SIG — Signature card description word cascade
+    //   Splits .signature-card__desc into .sig-desc-word spans with --sd-i
+    //   for CSS-driven per-word stagger, triggered by .is-in-view on parent.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var descs = document.querySelectorAll(".signature-card__desc");
+      descs.forEach(function (desc) {
+        var text = desc.textContent;
+        desc.textContent = "";
+        var idx = 0;
+        text.split(/(\s+)/).forEach(function (part) {
+          if (part === "") return;
+          if (/^\s+$/.test(part)) { desc.appendChild(document.createTextNode(part)); return; }
+          var span = document.createElement("span");
+          span.className = "sig-desc-word";
+          span.style.setProperty("--sd-i", idx++);
+          span.textContent = part;
+          desc.appendChild(span);
+        });
+        desc.classList.add("js-sig-desc-ready");
+      });
+    })();
+
+    // T3.15 — Section-title magnetic cursor pull (desktop only)
+    //   Tracks cursor and translates each .char-reveal slightly toward it.
+    //   Only affects titles near the cursor (perf). Disabled on touch/coarse
+    //   pointer devices via matchMedia gate + CSS media query.
+    (function () {
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      // Groups pair each container selector with the char-span class inside
+      // it. Extended from section titles only to also cover hero title,
+      // signature card names, and menu item names — all title-type text
+      // with existing char splits.
+      var groups = [
+        { list: document.querySelectorAll(".section__title"),       charSel: ".char-reveal"      },
+        { list: document.querySelectorAll(".hero__title"),          charSel: ".hero__letter"     },
+        { list: document.querySelectorAll(".spotlight__title"),     charSel: ".spot-char"        },
+        { list: document.querySelectorAll(".finale__title"),        charSel: ".finale-char"      },
+        { list: document.querySelectorAll(".menu-cover__label"),    charSel: ".mc-char"          },
+        { list: document.querySelectorAll(".signature-card__name"), charSel: ".sig-char-reveal"  },
+        { list: document.querySelectorAll(".menu-item__name"),      charSel: ".name-char-reveal" }
+      ];
+      var items = [];
+      groups.forEach(function (g) {
+        Array.prototype.forEach.call(g.list, function (c) {
+          items.push({ el: c, charSel: g.charSel });
+        });
+      });
+      if (!items.length) return;
+      var mx = 0, my = 0;
+      var ticking = false;
+      function update() {
+        items.forEach(function (item) {
+          var t = item.el;
+          var titleRect = t.getBoundingClientRect();
+          var buffer = 140;
+          var near = my >= titleRect.top - buffer && my <= titleRect.bottom + buffer;
+          var chars = t.querySelectorAll(item.charSel);
+          if (!near) {
+            chars.forEach(function (ch) {
+              ch.style.setProperty("--pull-x", "0px");
+              ch.style.setProperty("--pull-y", "0px");
+            });
+            return;
+          }
+          chars.forEach(function (ch) {
+            var r = ch.getBoundingClientRect();
+            var cx = r.left + r.width / 2;
+            var cy = r.top + r.height / 2;
+            var dx = mx - cx;
+            var dy = my - cy;
+            var d = Math.sqrt(dx * dx + dy * dy);
+            var maxD = 100;
+            var pull = Math.max(0, 1 - d / maxD);
+            var strength = pull * 7;
+            var norm = d || 1;
+            ch.style.setProperty("--pull-x", ((dx / norm) * strength).toFixed(2) + "px");
+            ch.style.setProperty("--pull-y", ((dy / norm) * strength).toFixed(2) + "px");
+          });
+          t.classList.add("js-magnetic-ready");
+        });
+        ticking = false;
+      }
+      window.addEventListener("mousemove", function (e) {
+        mx = e.clientX;
+        my = e.clientY;
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+    })();
   </script>
+
+  <!-- Vercel Web Analytics — script auto-served by Vercel's edge network
+       at /_vercel/insights/script.js when the site is deployed to Vercel.
+       No npm package, no build step, no config file. -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 
 </body>
 </html>

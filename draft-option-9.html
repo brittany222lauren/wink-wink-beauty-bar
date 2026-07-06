@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wink Wink — Option 9 Draft (Caption-Style Hero)</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1817;
+      --black: #0d0b0b;
+      --cream: #faf4ee;
+      --cream-soft: #f5ede1;
+      --rose-gold: #c08f6b;
+      --rose-gold-light: #d9b48f;
+      --line: rgba(192, 143, 107, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", system-ui, sans-serif;
+      font-weight: 300;
+    }
+
+    /* Draft banner */
+    .draft-banner {
+      background: #1a1614;
+      color: #a89c8e;
+      padding: 0.55rem 1.5rem;
+      font-family: "Italiana", serif;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.18);
+    }
+    .draft-banner a {
+      color: var(--rose-gold-light);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217, 180, 143, 0.4);
+      padding-bottom: 1px;
+      margin-left: 1.5rem;
+    }
+
+    /* ─────────────────────────────────────────
+       HERO — Option 9: Caption-Style (Image + Statement)
+       Composition logic of an art book or museum print:
+         · A contained image, framed by generous cream margins
+         · A typographic statement positioned below, like a plate caption
+       References: Magnum prints, Aesop, Le Labo, Byredo, beauty monographs.
+       ───────────────────────────────────────── */
+    .hero {
+      background: var(--cream);
+      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 6vw, 5rem);
+    }
+
+    .hero__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* Tiny editorial wordmark — sits above the image like a magazine masthead */
+    .hero__brand {
+      text-align: center;
+      margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    .hero__brand-mark {
+      display: inline-block;
+      font-family: "Italiana", serif;
+      font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--ink);
+      padding-left: 0.42em;
+      line-height: 1;
+    }
+    .hero__brand-sub {
+      display: block;
+      margin-top: 0.45rem;
+      font-family: "Italiana", serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.62em;
+      text-transform: uppercase;
+      color: #8a7c6d;
+      padding-left: 0.62em;
+      line-height: 1;
+    }
+
+    /* The image — contained, edge-to-edge of the max-width frame.
+       Cinema banner aspect (21:9) shows just the eye-and-lash band — campaign film still. */
+    .hero__media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 21 / 9;
+      overflow: hidden;
+      background: #1a1614;
+      isolation: isolate;
+    }
+    .hero__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 38%; /* favor the eye/lash band */
+      filter: brightness(1) contrast(1.04) saturate(1.02);
+    }
+    /* Tiny corner caption — like a museum plate's image credit */
+    .hero__media-caption {
+      position: absolute;
+      bottom: 0.9rem;
+      right: 1rem;
+      z-index: 2;
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: rgba(250, 244, 238, 0.75);
+      text-transform: lowercase;
+    }
+
+    /* The caption-as-statement: lives BELOW the image, reads as the plate caption.
+       Left-aligned to the image edge (museum plate convention). */
+    .hero__caption {
+      max-width: 720px;
+      margin-top: clamp(2.5rem, 4.5vw, 4rem);
+    }
+    .hero__rule {
+      display: block;
+      width: 56px;
+      height: 1px;
+      background: var(--rose-gold);
+      margin-bottom: 1.4rem;
+    }
+    .hero__eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      margin-bottom: 1.4rem;
+    }
+    .hero__title {
+      font-family: "Italiana", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.8rem, 6.5vw, 5.6rem);
+      line-height: 1.02;
+      letter-spacing: 0.005em;
+      color: var(--ink);
+      margin-bottom: 1.6rem;
+    }
+    .hero__sub {
+      font-family: "Inter", sans-serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.1rem;
+      line-height: 1.55;
+      color: #6e5f51;
+      max-width: 540px;
+      margin-bottom: 2.2rem;
+    }
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1.1rem 2.6rem;
+      background: var(--ink);
+      color: var(--cream);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid var(--ink);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn:hover { background: transparent; color: var(--ink); }
+    .link {
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--rose-gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.5);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+    .cta-note {
+      margin-top: 1.4rem;
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #8a7c6d;
+    }
+
+    /* Mobile — keep the structure, tighten margins, recenter caption */
+    @media (max-width: 720px) {
+      .hero { padding: 1.5rem 1.25rem 2.5rem; }
+      .hero__media { aspect-ratio: 4 / 5; }  /* taller crop on mobile - portrait works better */
+      .hero__video { object-position: 50% 35%; }
+      .hero__caption { margin-top: 2.25rem; max-width: none; }
+      .hero__title { font-size: clamp(2.4rem, 10vw, 3.4rem); }
+      .hero__sub { font-size: 1rem; }
+      .hero__brand { margin-bottom: 1.25rem; }
+      .hero__brand-mark { font-size: 1rem; letter-spacing: 0.32em; padding-left: 0.32em; }
+      .hero__brand-sub { font-size: 0.55rem; letter-spacing: 0.5em; padding-left: 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="draft-banner">
+    Draft · Option 9 — Caption-Style Hero
+    <a href="/">← back to live site</a>
+  </div>
+
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__brand">
+        <span class="hero__brand-mark">Wink Wink</span>
+        <span class="hero__brand-sub">Beauty Bar</span>
+      </div>
+
+      <figure class="hero__media">
+        <video class="hero__video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
+          <source src="images/insta-6.mp4" type="video/mp4" />
+        </video>
+        <figcaption class="hero__media-caption">studio · spring</figcaption>
+      </figure>
+
+      <div class="hero__caption">
+        <span class="hero__rule" aria-hidden="true"></span>
+        <p class="hero__eyebrow">Hair · Lash Extensions · Waxing</p>
+        <h1 class="hero__title">Elevated Beauty,<br />Effortlessly You</h1>
+        <p class="hero__sub">Luxury lashes, dimensional hair, and flawless waxing — designed to make you feel confident from every angle.</p>
+        <div class="hero__actions">
+          <a href="#" class="btn">Text to Book</a>
+          <a href="#" class="link">view the menu &rarr;</a>
+        </div>
+        <p class="cta-note">by appointment only</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Match the live site's cinematic 0.65× playback
+    (function(){
+      var v = document.querySelector(".hero__video");
+      if (!v) return;
+      var setRate = function(){ try { v.playbackRate = 0.65; } catch(e){} };
+      setRate();
+      v.addEventListener("loadedmetadata", setRate);
+      v.addEventListener("play", setRate);
+    })();
+  </script>
+</body>
+</html>

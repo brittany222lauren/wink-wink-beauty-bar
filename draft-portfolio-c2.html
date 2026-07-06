@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wink Wink — Portfolio Draft (Concept 2: Runway-Style Dual Strip)</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1817;
+      --black: #0d0b0b;
+      --cream: #faf4ee;
+      --rose-gold: #c08f6b;
+      --rose-gold-light: #d9b48f;
+      --muted: #b3a596;
+      --line: rgba(192, 143, 107, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--cream); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-weight: 300; }
+
+    /* Draft banner */
+    .draft-banner {
+      background: #1a1614;
+      color: #a89c8e;
+      padding: 0.55rem 1.5rem;
+      font-family: "Italiana", serif;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(192, 143, 107, 0.18);
+    }
+    .draft-banner a {
+      color: var(--rose-gold-light);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217, 180, 143, 0.4);
+      padding-bottom: 1px;
+      margin-left: 1.5rem;
+    }
+
+    /* ─────────────────────────────────────────
+       RUNWAY — dual horizontal strips
+       Top strip (hair-led):  right → left, slower
+       Bottom strip (lash-led): left → right, faster
+       Tiles in each strip keep their NATIVE
+       aspect ratios (width derived from aspect
+       at a fixed strip height). Cream mask-fades
+       on left + right edges of each strip.
+       ───────────────────────────────────────── */
+    .runway {
+      background: var(--cream);
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(3.5rem, 7vw, 6rem);
+      border-top: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .runway__head {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto clamp(2rem, 4vw, 3rem);
+      padding: 0 1.5rem;
+    }
+    .runway__kicker {
+      display: block;
+      font-family: "Inter", sans-serif;
+      font-style: italic;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      margin-bottom: 0.85rem;
+    }
+    .runway__title {
+      font-family: "Italiana", Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .runway__handle {
+      display: inline-block;
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--rose-gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: border-color 0.2s ease;
+    }
+    .runway__handle:hover { border-bottom-color: var(--rose-gold); }
+
+    /* Each strip — full-bleed horizontal channel with cream mask-fades on left + right */
+    .runway__strip {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right,
+        transparent 0%, #000 5%, #000 95%, transparent 100%);
+              mask-image: linear-gradient(to right,
+        transparent 0%, #000 5%, #000 95%, transparent 100%);
+    }
+    .runway__strip + .runway__strip {
+      margin-top: clamp(0.9rem, 1.6vw, 1.4rem);
+    }
+    .runway__strip--top    { height: clamp(320px, 38vw, 420px); }
+    .runway__strip--bottom { height: clamp(280px, 32vw, 360px); }
+
+    /* The actual moving track. Tiles flex horizontally, each at native aspect. */
+    .runway__track {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.8rem, 1.4vw, 1.2rem);
+      width: max-content;
+      height: 100%;
+      padding: 0 clamp(0.8rem, 1.4vw, 1.2rem);
+      will-change: transform;
+    }
+    /* Top strip: drifts right → left at a calmer pace */
+    .runway__strip--top .runway__track {
+      animation: scrollLeft 60s linear infinite;
+    }
+    /* Bottom strip: counter-drifts left → right slightly faster */
+    .runway__strip--bottom .runway__track {
+      animation: scrollRight 50s linear infinite;
+    }
+
+    /* Hover pauses BOTH strips so visitor can study a tile */
+    .runway:hover .runway__track {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollLeft {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes scrollRight {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+
+    /* Each tile keeps its native aspect — height is fixed, width is auto */
+    .runway-tile {
+      position: relative;
+      height: 100%;
+      flex: 0 0 auto;
+      border-radius: 4px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #ece4d8 0%, #ddd2c1 100%);
+      cursor: zoom-in;
+    }
+    .runway-tile a { display: block; height: 100%; }
+    .runway-tile img,
+    .runway-tile video {
+      height: 100%;
+      width: auto;
+      display: block;
+      /* Unified warm color grade — matches the rest of the site */
+      filter: brightness(1.02) contrast(1.08) saturate(1.05) sepia(0.06) hue-rotate(-2deg);
+      transition: transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+    }
+    .runway-tile:hover img,
+    .runway-tile:hover video { transform: scale(1.03); }
+    /* Subtle rose-gold edge on hover */
+    .runway-tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border: 1px solid rgba(192, 143, 107, 0);
+      border-radius: 4px;
+      transition: border-color 0.4s ease;
+    }
+    .runway-tile:hover::after {
+      border-color: rgba(192, 143, 107, 0.42);
+    }
+
+    /* Reduced motion: freeze the runway, allow native horizontal scroll */
+    @media (prefers-reduced-motion: reduce) {
+      .runway__track { animation: none; transform: none; }
+      .runway__strip {
+        overflow-x: auto;
+        -webkit-mask-image: none;
+                mask-image: none;
+      }
+    }
+
+    /* Mobile: shorter strips, slower drift */
+    @media (max-width: 720px) {
+      .runway__strip--top    { height: clamp(240px, 56vw, 320px); }
+      .runway__strip--bottom { height: clamp(220px, 50vw, 280px); }
+      .runway__strip--top .runway__track    { animation-duration: 50s; }
+      .runway__strip--bottom .runway__track { animation-duration: 42s; }
+    }
+  </style>
+</head>
+<body>
+  <div class="draft-banner">
+    Draft · Concept 2 &mdash; Runway-Style Dual Strip (Counter-Direction Motion)
+    <a href="/">&larr; back to live site</a>
+  </div>
+
+  <section class="runway">
+    <header class="runway__head">
+      <span class="runway__kicker">Follow Along</span>
+      <h2 class="runway__title">The Portfolio</h2>
+      <a href="https://instagram.com/winkwinkbeautybar" class="runway__handle" target="_blank" rel="noopener">@winkwinkbeautybar</a>
+    </header>
+
+    <!-- TOP STRIP — drifts right→left, hair-anchored -->
+    <div class="runway__strip runway__strip--top">
+      <ul class="runway__track">
+        <!-- Original set -->
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="Brunette hair with dimensional highlights" width="1320" height="1856" loading="lazy" /></picture></a></li>
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="Brow and lash extension finished look" width="1320" height="1819" loading="lazy" /></picture></a></li>
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-5.mp4" autoplay loop muted playsinline preload="metadata" aria-label="Hair styling video"></video></a></li>
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="Volume lash extensions detail" width="1287" height="1376" loading="lazy" /></picture></a></li>
+        <!-- Duplicated for seamless infinite loop -->
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-4.webp" type="image/webp" /><img src="images/insta-4.jpg" alt="" width="1320" height="1856" loading="lazy" /></picture></a></li>
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="" width="1320" height="1819" loading="lazy" /></picture></a></li>
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-5.mp4" loop muted playsinline preload="metadata" aria-hidden="true"></video></a></li>
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="" width="1287" height="1376" loading="lazy" /></picture></a></li>
+      </ul>
+    </div>
+
+    <!-- BOTTOM STRIP — drifts left→right (counter), lash-anchored -->
+    <div class="runway__strip runway__strip--bottom">
+      <ul class="runway__track">
+        <!-- Original set -->
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="Lash extension close-up with mirror tool" width="1309" height="1850" loading="lazy" /></picture></a></li>
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" autoplay loop muted playsinline preload="metadata" aria-label="Lash detail video"></video></a></li>
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="Volume lash extensions detail" width="1287" height="1376" loading="lazy" /></picture></a></li>
+        <li class="runway-tile"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="Brow and lash extension finished look" width="1320" height="1819" loading="lazy" /></picture></a></li>
+        <!-- Duplicated for seamless infinite loop -->
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-1.webp" type="image/webp" /><img src="images/insta-1.jpg" alt="" width="1309" height="1850" loading="lazy" /></picture></a></li>
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><video src="images/insta-6.mp4" loop muted playsinline preload="metadata" aria-hidden="true"></video></a></li>
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-2.webp" type="image/webp" /><img src="images/insta-2.jpg" alt="" width="1287" height="1376" loading="lazy" /></picture></a></li>
+        <li class="runway-tile" aria-hidden="true"><a href="https://instagram.com/winkwinkbeautybar" target="_blank" rel="noopener"><picture><source srcset="images/insta-3.webp" type="image/webp" /><img src="images/insta-3.jpg" alt="" width="1320" height="1819" loading="lazy" /></picture></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    // Slow video playback to match site rhythm
+    document.querySelectorAll(".runway-tile video").forEach(function (v) {
+      var setRate = function () { try { v.playbackRate = 0.6; } catch (e) {} };
+      setRate();
+      v.addEventListener("loadedmetadata", setRate);
+      v.addEventListener("play", setRate);
+    });
+  </script>
+</body>
+</html>

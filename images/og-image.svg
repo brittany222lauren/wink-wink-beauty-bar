@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Wink Wink Beauty Bar — Editorial OG card (mini magazine cover)
+       Render this SVG to og-image.jpg at 1200x630 for maximum social
+       platform compatibility (some networks strip SVG in OG previews).
+       Any SVG-to-JPG tool will work: online converter, Figma export,
+       or ImageMagick: `magick og-image.svg og-image.jpg -quality 92`. -->
+
+  <!-- Cream editorial paper background with subtle vertical warmth -->
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f9f0e6"/>
+      <stop offset="100%" stop-color="#f4e6d5"/>
+    </linearGradient>
+    <linearGradient id="roseGold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#a67650"/>
+      <stop offset="50%"  stop-color="#c08f6b"/>
+      <stop offset="100%" stop-color="#a67650"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#paper)"/>
+
+  <!-- Editorial masthead hairline — top edge -->
+  <line x1="80" y1="80" x2="1120" y2="80" stroke="#c08f6b" stroke-width="0.75" opacity="0.55"/>
+
+  <!-- Primary wordmark (Italiana serif) -->
+  <text x="600" y="290"
+        text-anchor="middle"
+        font-family="Italiana, Georgia, serif"
+        font-size="128"
+        fill="#2b1e14"
+        letter-spacing="1">Wink Wink</text>
+
+  <!-- Subtitle (tracked-out Italiana small caps aesthetic) -->
+  <text x="600" y="345"
+        text-anchor="middle"
+        font-family="Italiana, Georgia, serif"
+        font-size="30"
+        letter-spacing="11"
+        fill="#7a6a58">BEAUTY BAR</text>
+
+  <!-- Signature flourish: two hairlines + rose-gold diamond -->
+  <g transform="translate(600, 405)">
+    <line x1="-105" y1="0" x2="-25" y2="0" stroke="url(#roseGold)" stroke-width="1.2"/>
+    <line x1="25"   y1="0" x2="105"  y2="0" stroke="url(#roseGold)" stroke-width="1.2"/>
+    <polygon points="0,-9 9,0 0,9 -9,0" fill="url(#roseGold)"/>
+  </g>
+
+  <!-- Service kicker -->
+  <text x="600" y="475"
+        text-anchor="middle"
+        font-family="Inter, system-ui, sans-serif"
+        font-size="16"
+        font-weight="500"
+        letter-spacing="8"
+        fill="#8a7c6d">HAIR &#183; LASH EXTENSIONS &#183; WAXING</text>
+
+  <!-- Italic tagline (Italiana italic sensibility) -->
+  <text x="600" y="540"
+        text-anchor="middle"
+        font-family="Italiana, Georgia, serif"
+        font-size="26"
+        font-style="italic"
+        fill="#6e5f51">by appointment &#183; booked by text</text>
+
+  <!-- Editorial masthead hairline — bottom edge -->
+  <line x1="80" y1="570" x2="1120" y2="570" stroke="#c08f6b" stroke-width="0.75" opacity="0.55"/>
+
+  <!-- Fine issue-detail (very editorial magazine touch) -->
+  <text x="80" y="600"
+        font-family="Inter, system-ui, sans-serif"
+        font-size="12"
+        letter-spacing="3"
+        fill="#a89c8e">№ 01</text>
+  <text x="1120" y="600"
+        text-anchor="end"
+        font-family="Inter, system-ui, sans-serif"
+        font-size="12"
+        font-style="italic"
+        letter-spacing="1.5"
+        fill="#a89c8e">winkwinkbeauty.com</text>
+</svg>

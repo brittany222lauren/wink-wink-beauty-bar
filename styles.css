@@ -5,23 +5,40 @@
   --ink: #1c1817;
   --rose-gold: #c08f6b;
   --rose-gold-light: #d9b48f;
+  --champagne: #ebdcc3;
   --gold-grad: linear-gradient(135deg, #d9b48f 0%, #c08f6b 45%, #a36f4e 100%);
   --blush: #f7ede4;
   --blush-deep: #f1e0d2;
   --cream: #faf4ee;
   --text: #2b2421;
-  --muted: #8a7c70;
+  --muted: #6b6058;
   --line: rgba(192, 143, 107, 0.28);
-  --shadow: 0 18px 50px -22px rgba(40, 25, 15, 0.45);
+  --shadow: 0 22px 55px -24px rgba(20, 18, 16, 0.32);
   --maxw: 1080px;
+  /* Spacing scale (use these for new work) */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 2.5rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
+  --space-10: 5rem;
+  --space-12: 6rem;
+  --space-16: 8rem;
+  --space-20: 10rem;
 }
+
+/* Custom text selection — rose-gold instead of browser-default blue */
+::selection { background: rgba(192, 143, 107, 0.32); color: var(--ink); }
+::-moz-selection { background: rgba(192, 143, 107, 0.32); color: var(--ink); }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: "Montserrat", system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   color: var(--text);
   background: var(--cream);
   line-height: 1.65;
@@ -30,30 +47,150 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Italiana", Georgia, serif;
   font-weight: 500;
   line-height: 1.08;
 }
 
 a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }
+
+/* Sitewide warm film grain on light backgrounds (very subtle — adds printed-page texture) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  z-index: 9997;
+}
+
+/* Vellum texture on Signature Services section (subtle warmth + film) */
+.signature {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(180deg, var(--cream) 0%, #f8efe2 100%);
+}
+.signature::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  z-index: 0;
+}
+.signature > * { position: relative; z-index: 1; }
+
+/* Brand photo grade for editorial portraits — warm + slightly muted.
+   (Runway tiles use a stronger grade defined in the .runway-tile block below.) */
+.about__photo img {
+  filter: brightness(0.98) contrast(1.04) saturate(0.92) sepia(0.04);
+}
+
+/* Section reveal on scroll — unified editorial easing across every variant.
+   cubic-bezier(0.32, 0.72, 0.36, 1) matches the hero fade-in + nav CTA timing
+   for a single coherent motion language. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1.05s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 1.05s cubic-bezier(0.32, 0.72, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* Section reveal variations — distinct entrance vectors, same easing language */
+.reveal.reveal--left  { transform: translateX(-24px); }
+.reveal.reveal--right { transform: translateX(24px); }
+.reveal.reveal--zoom  { transform: scale(0.985); }
+.reveal.reveal--up    { transform: translateY(36px); }
+.reveal.is-visible.reveal--left,
+.reveal.is-visible.reveal--right,
+.reveal.is-visible.reveal--zoom,
+.reveal.is-visible.reveal--up { transform: none; }
+
+/* B5 — Parallax CSS hooks (JS sets the --parallax-y / --interlude-parallax variable) */
+.about__photo img { transform: translateY(var(--parallax-y, 0)); transition: transform 0.05s linear; }
+.signature-card { transform: translateY(var(--parallax-y, 0)); transition: transform 0.05s linear, box-shadow 0.4s ease, border-color 0.3s ease; }
+.interlude::before { transform: translateY(var(--interlude-parallax, 0)); will-change: transform; }
+
+/* Hero h1 curtain reveal — each character rises from below a mask.
+   The word wrapper is both a line-break lock (white-space: nowrap so
+   words never break mid-character) AND the mask container (overflow
+   hidden with a small top/bottom pad so descenders and italic angle
+   don't clip). Letters stagger via --i, and lines stagger via --line
+   for the two-line composition ("Elevated Beauty," → "Effortlessly You"). */
+.hero__word {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0.14em 0.06em 0.1em;
+  margin: -0.14em -0.06em -0.1em;
+  vertical-align: baseline;
+}
+.hero__letter {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: heroLetterCurtain 0.85s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: calc(0.35s + var(--i, 0) * 0.02s + var(--line, 0) * 0.28s);
+}
+@keyframes heroLetterCurtain {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
+}
+/* "You" italic swap — last word arrives with a slight italic-slant that
+   resolves to upright, drawing subtle emphasis to the reader ("You"). */
+.hero__word--italic-swap .hero__letter {
+  animation-name: heroLetterCurtainItalicSwap;
+  animation-duration: 1.05s;
+}
+@keyframes heroLetterCurtainItalicSwap {
+  0%   { transform: translateY(110%) skewX(-9deg); }
+  60%  { transform: translateY(4%) skewX(-3deg); }
+  100% { transform: translateY(0) skewX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero__word,
+  .hero__letter {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
 
 /* ===== Buttons ===== */
 .btn {
   display: inline-block;
   white-space: nowrap;
-  padding: 0.95rem 2.2rem;
-  background: var(--gold-grad);
-  color: #fff;
-  font-size: 0.78rem;
+  padding: 1rem 2.4rem;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  border: 1px solid var(--ink);
   border-radius: 999px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-  box-shadow: 0 12px 28px -14px rgba(163, 111, 78, 0.85);
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 18px 38px -22px rgba(20, 15, 10, 0.55);
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -14px rgba(163, 111, 78, 0.9); }
+.btn:hover {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 0 22px 42px -22px rgba(20, 15, 10, 0.45);
+}
 
 .btn--ghost {
   background: transparent;
@@ -61,19 +198,40 @@ img { display: block; max-width: 100%; }
   border: 1px solid var(--rose-gold);
   box-shadow: none;
 }
-.btn--ghost:hover { background: rgba(192, 143, 107, 0.08); }
+.btn--ghost:hover { background: rgba(192, 143, 107, 0.1); color: var(--rose-gold-light); }
 
-.btn--small { padding: 0.62rem 1.4rem; font-size: 0.68rem; }
+.btn--small { padding: 0.6rem 1.3rem; font-size: 0.66rem; }
+
+/* Demoted secondary action — a quiet underlined link */
+.link--quiet {
+  display: inline-flex;
+  align-items: center;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 0.2rem 0.1rem 0.25rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.link--quiet:hover { border-bottom-color: var(--ink); }
+.link--quiet-light {
+  color: #d8c8b9;
+  border-bottom-color: rgba(217, 200, 185, 0.4);
+}
+.link--quiet-light:hover { color: var(--cream); border-bottom-color: var(--cream); }
 
 .cta-note {
   margin: 1rem auto 0;
   text-align: center;
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
+  font-size: 0.76rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #c2b2a3;
+  color: #7a6a58;
+  font-weight: 500;
 }
-.cta-note--revealed { color: var(--rose-gold-light); letter-spacing: 0.1em; }
+.cta-note--revealed { color: var(--cream); letter-spacing: 0.1em; }
 
 /* ===== Navigation ===== */
 .nav {
@@ -89,68 +247,625 @@ img { display: block; max-width: 100%; }
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(217, 180, 143, 0.18);
 }
+.nav__brand-wrap { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.1rem; }
+/* Stacked luxury lockup — wordmark dominant, descriptor as house signature */
 .nav__brand {
-  font-family: "Cormorant Garamond", serif;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.18rem;
+  line-height: 1;
+  text-decoration: none;
+}
+.nav__brand-mark {
+  font-family: "Italiana", serif;
   font-size: 1.5rem;
   letter-spacing: 0.16em;
   color: var(--rose-gold-light);
   text-transform: uppercase;
+  line-height: 1;
+  padding-left: 0.16em; /* optical compensation for tracked-out last letter */
+  white-space: nowrap;
 }
-.nav__links { display: flex; gap: 1.9rem; }
+.nav__brand-sub {
+  font-family: "Italiana", serif;
+  font-size: 0.56rem;
+  letter-spacing: 0.42em;
+  color: #a89c8e;
+  text-transform: uppercase;
+  line-height: 1;
+  padding-left: 0.42em;
+  white-space: nowrap;
+}
+.nav__hint {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: #8a7c6d;
+  line-height: 1;
+}
+.nav__links { display: flex; gap: 2.4rem; }
 .nav__links a {
+  position: relative;
+  padding: 0.4rem 0 0.55rem;
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #e9ddd1;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease, letter-spacing 0.4s cubic-bezier(0.32, 0.72, 0.36, 1);
 }
 .nav__links a:hover { color: var(--rose-gold-light); }
 
-/* ===== Hero ===== */
-.hero {
-  position: relative;
-  background: radial-gradient(circle at 50% 18%, #1f1a17 0%, var(--black) 70%);
-  color: #f3e9de;
-  text-align: center;
-  padding: clamp(3.5rem, 9vw, 7rem) 1.5rem clamp(4.5rem, 10vw, 8rem);
-  overflow: hidden;
+/* Scroll-triggered nav CTA — hidden above the hero, fades in once visitor scrolls past it */
+.nav__cta {
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.45s cubic-bezier(0.32, 0.72, 0.36, 1);
 }
-.hero::after {
+.nav__cta.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav__cta { transition: opacity 0.2s ease; transform: none; }
+}
+/* M.5 — animated underline on hover (and shown for current section) */
+.nav__links a::before {
   content: "";
   position: absolute;
-  inset: auto 0 0 0;
-  height: 120px;
-  background: linear-gradient(to bottom, transparent, var(--cream));
+  left: 0;
+  right: 0;
+  bottom: 0.15rem;
+  height: 1px;
+  background: var(--rose-gold-light);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.2, 1);
 }
-.hero__inner { position: relative; max-width: 720px; margin: 0 auto; z-index: 1; }
-.hero__logo {
-  width: clamp(210px, 42vw, 300px);
-  margin: 0 auto 1.6rem;
-  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.65));
+.nav__links a:hover::before,
+.nav__links a.is-current::before { transform: scaleX(1); }
+/* Active section: subtle letter-spacing shift + color lift — adds a quiet "you are here" signal */
+.nav__links a.is-current {
+  color: var(--rose-gold-light);
+  letter-spacing: 0.22em;
 }
-.hero__eyebrow {
-  font-size: 0.74rem;
+/* M.4 — small dot below the current section's link */
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.55rem;
+  width: 4px;
+  height: 4px;
+  background: var(--rose-gold);
+  border-radius: 50%;
+  transform: translateX(-50%) scale(0);
+  transition: transform 0.3s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+.nav__links a.is-current::after { transform: translateX(-50%) scale(1); }
+
+/* Loading splash — wordmark fades in, then ceremoniously "settles" toward the nav
+   position as the splash background dissolves to reveal the page.
+   Creates the illusion that the splash wordmark becomes the nav wordmark. */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.splash.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* Instant hide as a backstop — some previews/iframes don't tick CSS
+     transitions consistently, so the fade alone can leave the panel
+     stuck on the loading screen. Guaranteed removal once the class
+     is added. */
+  display: none;
+}
+.splash__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  opacity: 0;
+  animation: splashIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s forwards;
+}
+/* Logo stays perfectly centered during the fade-out — no drift toward the nav.
+   Simple, calm exit that matches user expectation of a "loading screen." */
+.splash__mark {
+  font-family: "Italiana", serif;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
   letter-spacing: 0.42em;
   text-transform: uppercase;
-  color: var(--rose-gold-light);
-  margin-bottom: 1rem;
+  color: var(--champagne);
+  padding-left: 0.42em;
+  line-height: 1;
+}
+.splash__sub {
+  font-family: "Italiana", serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.62em;
+  text-transform: uppercase;
+  color: #a89c8e;
+  padding-left: 0.62em;
+  line-height: 1;
+}
+@keyframes splashIn { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .splash, .splash__brand { animation: none; transition: opacity 0.2s ease; }
+}
+
+/* Scroll progress hairline — thin champagne line at top of viewport */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 1.5px;
+  width: 0%;
+  background: linear-gradient(to right, transparent, var(--rose-gold-light) 50%, var(--rose-gold));
+  z-index: 9998;
+  transition: width 0.1s ease-out;
+  pointer-events: none;
+}
+
+/* C — Custom cursor follower (soft rose-gold glow) */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(192, 143, 107, 0.55);
+  filter: blur(7px);
+  pointer-events: none;
+  z-index: 200;
+  transform: translate3d(-100px, -100px, 0);
+  transition: width 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+              height 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+              background 0.3s ease,
+              filter 0.35s ease,
+              opacity 0.3s ease;
+  opacity: 0;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.cursor-glow.is-active { opacity: 1; }
+/* Hover state over buttons/links — softer, smaller, less attention-grabbing
+   than before (was 64px @ 0.45 alpha; now 38px @ 0.22 alpha). */
+.cursor-glow.is-link {
+  width: 38px;
+  height: 38px;
+  background: rgba(217, 180, 143, 0.22);
+  filter: blur(9px);
+}
+/* Linger state — after 900ms of stillness the cursor swells into a soft
+   rose-gold halo. Cancels on any movement. */
+.cursor-glow.is-lingering {
+  width: 74px;
+  height: 74px;
+  background: rgba(217, 180, 143, 0.30);
+  filter: blur(16px);
+}
+.cursor-glow.is-link.is-lingering {
+  width: 82px;
+  height: 82px;
+  background: rgba(217, 180, 143, 0.36);
+}
+/* Disabled on touch devices + reduced motion */
+@media (hover: none), (pointer: coarse) {
+  .cursor-glow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow { display: none; }
+}
+
+/* D.3 — Side-margin page index (fixed numeral + tiny label, updates on scroll) */
+.page-index {
+  position: fixed;
+  top: 50%;
+  left: clamp(1rem, 2.5vw, 2.2rem);
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.page-index.is-visible { opacity: 1; }
+.page-index__numeral {
+  font-family: "Italiana", serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--rose-gold);
+  line-height: 1;
+}
+.page-index__label {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  margin-left: 0.1rem;
+}
+@media (max-width: 1024px) {
+  .page-index { display: none; }
+}
+
+/* Editorial fixed chapter marker — pins to the right margin as the visitor
+   scrolls through each menu section. Small rose-gold Roman numeral above
+   the italic chapter label, flanked by thin decorative rules. Reads like
+   a magazine's chapter tab in the margin. */
+.chapter-marker {
+  position: fixed;
+  top: 50%;
+  right: clamp(1rem, 3vw, 2.5rem);
+  transform: translate(0.6rem, -50%);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 60px;
+  padding: 0.8rem 0;
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+  pointer-events: none;
+}
+.chapter-marker.is-visible { opacity: 1; transform: translate(0, -50%); }
+.chapter-marker__numeral {
+  font-family: "Italiana", serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+  color: var(--rose-gold);
+  line-height: 1;
+  text-shadow: 0 0 14px rgba(250, 244, 238, 0.45);
+}
+.chapter-marker__label {
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a89c8e;
+  line-height: 1;
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .chapter-marker { display: none; }
+}
+
+/* Mobile menu toggle — italic word instead of hamburger icon (boutique register) */
+.nav__toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 0.85rem 0.9rem;
+  min-height: 44px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  color: var(--cream);
+  transition: color 0.2s ease;
+}
+.nav__toggle:hover { color: var(--rose-gold-light); }
+.nav__toggle[aria-expanded="true"] .nav__toggle-label::before { content: "close"; }
+.nav__toggle[aria-expanded="true"] .nav__toggle-label { font-size: 0; }
+.nav__toggle[aria-expanded="true"] .nav__toggle-label::before { font-size: 0.78rem; }
+
+/* ===== Hero ===== */
+/* ──────────────────────────────────────────────────────────────
+   HERO — Asymmetric Editorial Split (Option 2)
+   Left: cream typographic column (the magazine cover masthead)
+   Right: contained video portrait (the campaign film still)
+   Composition references: Vogue Beauty, Dior Beauty, Hourglass.
+   ────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  align-items: stretch;
+  /* Editorial slim — total ~55% shorter than original hero */
+  min-height: clamp(340px, 46vh, 460px);
+  background: var(--cream);
+  color: var(--ink);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Ambient warm glow — a large soft rose-gold radial that breathes
+   in sync with the Ken Burns 16s cycle. Sits beneath the video and
+   extends slightly beyond the visible frame so its rise & fall reads
+   as ambient studio light rather than a spotlight. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 62% 55% at 68% 42%,
+    rgba(217, 180, 143, 0.32) 0%,
+    rgba(217, 180, 143, 0.14) 40%,
+    rgba(217, 180, 143, 0) 78%);
+  mix-blend-mode: soft-light;
+  animation: heroAmbientBreath 16s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+@keyframes heroAmbientBreath {
+  0%, 100% { opacity: 0.72; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::before { animation: none; opacity: 0.85; transform: none; }
+}
+
+/* Left column — cream type stage (tight editorial padding) */
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  max-width: none;
+  margin: 0;
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.75rem, 4.5vw, 4rem);
+}
+
+/* Right column — contained video portrait */
+.hero__media {
+  position: relative;
+  overflow: hidden;
+  background: transparent; /* let cream show through the mask-fade at bottom */
+  /* Aggressive bottom fade — physically slims the visible video from below.
+     Eye/brow/lash zone holds, nose/lip area dissolves into the cream. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 82%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 82%);
+}
+
+/* Cinematic key light — soft warm radial brightens the lash focal zone.
+   mix-blend soft-light with warm cream tone = lash luminance without bleach. */
+.hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 32% 28% at 50% 30%,
+    rgba(255, 238, 215, 0.34) 0%,
+    rgba(255, 238, 215, 0.16) 40%,
+    rgba(255, 238, 215, 0) 75%);
+  mix-blend-mode: soft-light;
+}
+
+/* Warm sepia vignette — film-stock falloff at the corners (NOT black).
+   mix-blend multiply with deep warm brown = cinematic lens grade. */
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse 96% 105% at 50% 38%,
+    rgba(42, 28, 20, 0) 35%,
+    rgba(42, 28, 20, 0.30) 75%,
+    rgba(58, 38, 28, 0.55) 100%);
+  mix-blend-mode: multiply;
+}
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Aggressive beauty-campaign close-up — brows + eyes + lashes fill the frame.
+     Object-position 52% lifts the eye line into the upper third of the visible mask
+     zone. Ken Burns micro-zoom (1.25 → 1.30 → 1.25) keeps the frame breathing. */
+  object-position: 50% 52%;
+  transform: scale(1.25);
+  transform-origin: 50% 52%;
+  animation: heroKenBurns 16s ease-in-out infinite;
+  /* Cinematic grade — deeper Chanel/Tom Ford campaign push: richer blacks,
+     more saturated skin tones, extra rose-gold warmth, subtle film sepia.
+     Sharpens perception of lash detail without blur. */
+  filter: brightness(1.02) contrast(1.18) saturate(1.12) hue-rotate(-5deg) sepia(0.1);
+  pointer-events: none;
+}
+
+/* Ken Burns — micro motion. Living painting, never a noticeable zoom. */
+@keyframes heroKenBurns {
+  0%, 100% { transform: scale(1.25); }
+  50%      { transform: scale(1.30); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__video { animation: none; }
+}
+
+/* Film grain overlay on the hero video — SVG fractalNoise data URI,
+   animated via steps() for the flickering "35mm film" feel. Sits above
+   the video but under the vignette/key-light pseudos (they are z-index
+   1 and 2). Same visual language as the menu chapter cover grain. */
+.hero__media-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.97  0 0 0 0 0.94  0 0 0 0 0.88  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  animation: heroMediaGrainShift 0.8s steps(4) infinite;
+}
+@keyframes heroMediaGrainShift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -16% 22%; }
+  50%  { background-position: 24% -28%; }
+  75%  { background-position: -22% -12%; }
+  100% { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__media-grain { animation: none; }
+}
+
+/* Scroll-driven hero release — text gently rises + fades, media gently scales down
+   as the visitor scrolls past the hero. Reads as a film transition, not a "scroll effect."
+   Uses CSS animation-timeline where supported; degrades to static on older browsers. */
+@supports (animation-timeline: view()) {
+  .hero__inner {
+    animation: heroTextRelease linear forwards;
+    animation-timeline: view();
+    animation-range: exit 0% exit 80%;
+  }
+  .hero__media {
+    animation: heroMediaRelease linear forwards;
+    animation-timeline: view();
+    animation-range: exit 0% exit 80%;
+  }
+}
+@keyframes heroTextRelease {
+  to {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+}
+@keyframes heroMediaRelease {
+  to {
+    opacity: 0.6;
+    transform: scale(0.97);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__inner, .hero__media { animation: none; }
+}
+
+/* Paper-grain texture preserved on dark closing finale section */
+.finale::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.88  0 0 0 1 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  z-index: 1;
+}
+
+/* Subtle hairline divider down the seam between type + media (editorial fold) */
+.hero__inner::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  right: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--line) 30%, var(--line) 70%, transparent);
+  pointer-events: none;
+}
+
+.hero__eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.85rem;
 }
 .hero__title {
-  font-size: clamp(2.8rem, 8vw, 5rem);
-  background: linear-gradient(120deg, #f7ede2, #d9b48f, #c08f6b);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin-bottom: 1.2rem;
+  font-family: "Italiana", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 4.6vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  margin-bottom: 0.95rem;
+  text-shadow: none;
 }
 .hero__sub {
-  max-width: 520px;
-  margin: 0 auto 2.2rem;
-  color: #cdbcab;
+  max-width: 460px;
+  margin: 0 0 1.4rem;
+  color: #6e5f51;
   font-size: 1.02rem;
+  line-height: 1.55;
+  text-shadow: none;
 }
-.hero__actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-.hero__actions--center { margin-top: 1.8rem; }
+.hero__actions { display: flex; gap: 1.25rem; justify-content: flex-start; flex-wrap: wrap; align-items: center; }
+.hero__actions--center { margin-top: 1.8rem; justify-content: center; }
+
+/* D.2 — Hero scroll cue (anchored bottom-left of type column) */
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: clamp(0.5rem, 1.5vw, 1rem);
+  font-family: "Italiana", serif;
+  font-size: 0.86rem;
+  /* No letter-spacing — the anchor contains only an arrow glyph, and
+     tracked-out spacing added trailing space that shifted the arrow's
+     visible center left of the text above. */
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #8a7c6d;
+  transition: color 0.3s ease;
+}
+.hero__scroll:hover { color: var(--ink); }
+.hero__scroll-arrow {
+  display: inline-block;
+  font-size: 0.95rem;
+  animation: scrollBob 2.4s ease-in-out infinite;
+}
+@keyframes scrollBob {
+  0%, 100% { transform: translateY(0); opacity: 0.85; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-arrow { animation: none; }
+}
+
+/* ── Tablet: tighten ratio slightly, keep split ── */
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
+  .hero__title { font-size: clamp(2.3rem, 4.4vw, 3.6rem); }
+}
+
+/* ── Mobile: stack — video portrait on top, type column below ── */
+@media (max-width: 820px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: 38vh auto;
+    min-height: auto;
+  }
+  .hero__media { order: -1; min-height: 38vh; }
+  .hero__inner {
+    align-items: center;
+    text-align: center;
+    padding: clamp(2.25rem, 7vw, 3rem) 1.5rem clamp(2.5rem, 7vw, 3.25rem);
+  }
+  .hero__actions { justify-content: center; }
+  .hero__sub { margin-left: auto; margin-right: auto; }
+  .hero__inner::after { display: none; }
+}
 
 /* ===== Section primitives ===== */
 .section__title {
@@ -159,6 +874,162 @@ img { display: block; max-width: 100%; }
   color: var(--ink);
 }
 .section__title--light { color: #f3e9de; }
+
+/* Signature editorial flourish — a small SVG lockup with two rose-gold
+   hairlines flanking a centered diamond, drawn ONCE and reused under every
+   major section title as the site's visual signature. Consistent across
+   light and dark sections since rose-gold reads on both. */
+.section__title::after,
+.finale__title::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 8px;
+  margin: 1.5rem auto 0.4rem;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 8'><line x1='0' y1='4' x2='40' y2='4' stroke='%23c08f6b' stroke-width='1'/><line x1='56' y1='4' x2='96' y2='4' stroke='%23c08f6b' stroke-width='1'/><polygon points='48,0.5 52,4 48,7.5 44,4' fill='%23c08f6b'/></svg>") no-repeat center;
+}
+/* Spotlight title is a heroic display headline set against a full-bleed
+   photo — the flourish reads as visual noise there, so it's suppressed. */
+.spotlight__title::after { display: none; }
+
+/* ===== Menu Chapter Covers — cinematic full-bleed panels =====
+   A cover panel precedes each pricing menu (Lashes I, Hair II, Waxing III).
+   Editorial pause with the chapter numeral + italic label centered over a
+   darkened service backdrop photograph. Adds the "opening the next chapter"
+   pacing before dense pricing content. */
+.menu-cover {
+  position: relative;
+  height: clamp(360px, 55vh, 620px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--black);
+  isolation: isolate;
+}
+/* Background photo layer — grade-matched to the site's warm film palette,
+   then dimmed so the numeral + label read clearly on top. At rest the
+   photo is blurred (6px); on entering viewport it sharpens over 1.2s.
+   The scale animation (menuCoverKenBurns) runs continuously while the
+   cover is in viewport, giving a slow cinematic drift. */
+.menu-cover::before {
+  content: "";
+  position: absolute;
+  inset: -4%;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.5) contrast(1.05) saturate(1.02) sepia(0.08) hue-rotate(-3deg) blur(6px);
+  transform: scale(1.05);
+  transition: filter 1.2s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 1s cubic-bezier(0.32, 0.72, 0.36, 1);
+  z-index: 0;
+}
+/* Subtle rose-gold ambient wash over the photo for warmth continuity */
+.menu-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(192, 143, 107, 0.14) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+/* Menu cover photos — served via image-set() so browsers pull webp when
+   they support it, falling back to png. Each panel gets its bespoke
+   chapter photograph. */
+.menu-cover--lashes::before  {
+  background-image: image-set(url("images/lash-menu.webp") type("image/webp"), url("images/lash-menu.png") type("image/png"));
+}
+.menu-cover--hair::before    {
+  background-image: image-set(url("images/hair-menu.webp") type("image/webp"), url("images/hair-menu.png") type("image/png"));
+}
+.menu-cover--waxing::before  {
+  background-image: image-set(url("images/wax-menu.webp") type("image/webp"), url("images/wax-menu.png") type("image/png"));
+}
+.menu-cover.is-in-viewport::before {
+  filter: brightness(0.5) contrast(1.05) saturate(1.02) sepia(0.08) hue-rotate(-3deg) blur(0);
+  animation: menuCoverKenBurns 24s ease-in-out infinite alternate;
+}
+@keyframes menuCoverKenBurns {
+  from { transform: scale(1.02); }
+  to   { transform: scale(1.12); }
+}
+
+/* Grain film overlay — SVG fractalNoise data URI, animated via
+   background-position steps for the flickering "35mm film" feel.
+   Sits above the photo but below the numeral/label (z-index: 2 is
+   .menu-cover__inner). Pause-when-off-viewport applies below. */
+.menu-cover__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.93  0 0 0 0 0.88  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  background-repeat: repeat;
+  opacity: 0.24;
+  mix-blend-mode: overlay;
+  animation: menuCoverGrainShift 0.8s steps(4) infinite;
+}
+@keyframes menuCoverGrainShift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -18% 24%; }
+  50%  { background-position: 22% -30%; }
+  75%  { background-position: -26% -14%; }
+  100% { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-cover.is-in-viewport::before { animation: none; }
+  .menu-cover__grain { animation: none; }
+}
+
+.menu-cover__inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--cream);
+  padding: 0 clamp(1.5rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.menu-cover__numeral {
+  font-family: "Italiana", serif;
+  font-size: clamp(3.6rem, 6.5vw, 5.2rem);
+  color: var(--rose-gold-light);
+  letter-spacing: 0.06em;
+  /* padding-left balances the tracked-out space after the last character
+     so the visual weight of the text is centered in the flex column. */
+  padding-left: 0.06em;
+  margin-bottom: 0.7rem;
+  line-height: 1;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+.menu-cover__label {
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  color: var(--cream);
+  letter-spacing: 0.03em;
+  padding-left: 0.03em;
+  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+.menu-cover__flourish {
+  display: block;
+  width: 96px;
+  height: 8px;
+  margin: 1.3rem auto 0;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 8'><line x1='0' y1='4' x2='40' y2='4' stroke='%23d9b48f' stroke-width='1'/><line x1='56' y1='4' x2='96' y2='4' stroke='%23d9b48f' stroke-width='1'/><polygon points='48,0.5 52,4 48,7.5 44,4' fill='%23d9b48f'/></svg>") no-repeat center;
+}
+/* Reveal — the cover fades up as it enters view */
+.menu-cover .menu-cover__inner {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1.1s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 1.1s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu-cover.is-in-viewport .menu-cover__inner { opacity: 1; transform: none; }
+
 .section__lead {
   text-align: center;
   color: var(--muted);
@@ -174,10 +1045,30 @@ img { display: block; max-width: 100%; }
 }
 .services__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1.55fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.4rem;
   margin-top: 2.8rem;
 }
+/* Lash card — featured, spans both rows on the left */
+.services__grid .service-card--lash {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+/* Hair + Waxing — square, stacked on the right */
+.services__grid .service-card--hair {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 0;
+}
+.services__grid .service-card--waxing {
+  grid-column: 2;
+  grid-row: 2;
+  min-height: 0;
+}
+.services__grid .service-card--lash h3 { font-size: 2.4rem; }
 .service-card {
   position: relative;
   overflow: hidden;
@@ -191,29 +1082,54 @@ img { display: block; max-width: 100%; }
   text-align: center;
   color: var(--cream);
   background-color: var(--ink);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.4s ease;
 }
+/* ::before = the photo, zoomable on hover */
 .service-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(13, 11, 11, 0.42) 0%, rgba(13, 11, 11, 0.72) 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.75s ease;
+  z-index: 0;
+  filter: brightness(0.98) contrast(1.04) saturate(0.92) sepia(0.04);
+}
+.service-card:hover::before { transform: scale(1.045); }
+/* ::after = the dark overlay (stays put). Increased base darkness and
+   deeper bottom fade so overlaid title + description read cleanly against
+   the campaign photos. */
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(13, 11, 11, 0.35) 0%,
+    rgba(13, 11, 11, 0.45) 40%,
+    rgba(13, 11, 11, 0.78) 100%);
   z-index: 1;
+  pointer-events: none;
 }
 .service-card > * { position: relative; z-index: 2; }
 .service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 26px 60px -22px rgba(40, 25, 15, 0.7);
+  box-shadow: 0 32px 75px -26px rgba(20, 18, 16, 0.55);
 }
 
-/* Photo backgrounds (placeholder paths — swap images later) */
-.service-card--hair { background-image: url("images/hair-bg.jpg"); }
-.service-card--lash { background-image: url("images/lash-bg.jpg"); }
-.service-card--waxing { background-image: url("images/waxing-bg.jpg"); }
+/* Photo backgrounds — WebP first, JPG fallback for older browsers */
+.service-card--hair::before {
+  background-image: url("images/hair-bg.jpg");
+  background-image: image-set(url("images/hair-bg.webp") type("image/webp"), url("images/hair-bg.jpg") type("image/jpeg"));
+}
+.service-card--lash::before {
+  background-image: url("images/lash-bg.jpg");
+  background-image: image-set(url("images/lash-bg.webp") type("image/webp"), url("images/lash-bg.jpg") type("image/jpeg"));
+}
+.service-card--waxing::before {
+  background-image: url("images/waxing-bg.jpg");
+  background-image: image-set(url("images/waxing-bg.webp") type("image/webp"), url("images/waxing-bg.jpg") type("image/jpeg"));
+}
 
 .service-card__icon {
   display: inline-block;
@@ -225,21 +1141,27 @@ img { display: block; max-width: 100%; }
   font-size: 1.95rem;
   margin-bottom: 0.5rem;
   color: var(--cream);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
 }
 .service-card p {
-  color: #e9dccf;
-  font-size: 0.92rem;
+  color: #f6ecdd;
+  font-size: 0.98rem;
   max-width: 260px;
+  line-height: 1.6;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
 }
 .service-card__link {
-  display: inline-block;
-  margin-top: 1.2rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--rose-gold-light);
-  border-bottom: 1px solid rgba(217, 180, 143, 0.55);
-  padding-bottom: 2px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.4rem;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  color: var(--cream);
+  border-bottom: 1px solid rgba(247, 237, 226, 0.35);
+  padding: 0.6rem 0.2rem 0.5rem;
+  min-height: 44px;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 .service-card__link:hover { color: #fff; border-color: #fff; }
@@ -250,118 +1172,291 @@ img { display: block; max-width: 100%; }
   margin: 0 auto;
   padding: clamp(3.5rem, 8vw, 5.5rem) clamp(1.25rem, 5vw, 2rem);
 }
-.menu--alt {
-  max-width: none;
-  background: var(--blush);
+/* Continuous menu — all three pricing chapters now sit on cream, separated by a single hairline divider above each subsequent menu */
+.menu + .menu {
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+}
+.menu--alt {
+  /* retained only so the class doesn't break anything — no longer applies blush bg */
 }
 .menu__head { text-align: center; }
+/* Default kicker: italic Inter label — restrained, editorial */
 .menu__kicker {
   display: inline-block;
-  font-size: 0.68rem;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
   color: var(--rose-gold);
-  padding: 0.4rem 1.1rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
+}
+/* (cta-band retired — closing now handled by .finale chapter) */
+
+/* Chapter mark — used above pricing-menu kickers (I., II., III.) */
+.menu__chapter {
+  display: block;
+  font-family: "Italiana", serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  line-height: 1;
 }
 .menu__intro {
   max-width: 460px;
-  margin: 0.2rem auto 0;
+  margin: 0.9rem auto 0;
   font-size: 0.95rem;
+  line-height: 1.55;
   color: var(--muted);
 }
-.menu__ornament {
-  width: 64px;
-  height: 1px;
-  margin: 1.3rem auto 0;
-  background: var(--line);
-  position: relative;
-}
-.menu__ornament::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  background: var(--rose-gold-light);
-  transform: translate(-50%, -50%) rotate(45deg);
-}
+/* Secondary hairline retired — the section-title signature flourish above
+   is the only divider needed. Keeping the element in the DOM so JS/motion
+   selectors don't break, but hiding it visually. */
+.menu__ornament { display: none; }
 
 .menu-list {
   list-style: none;
   max-width: 640px;
-  margin: 2.6rem auto 0;
+  margin: 3rem auto 0;
 }
 .menu-item {
-  padding: 1.25rem 0;
+  padding: 1.45rem 0;
   border-bottom: 1px solid var(--line);
 }
 .menu-item:last-child { border-bottom: none; }
+/* Lead/hero menu item — clearer signature treatment via space + scale */
+.menu-item--lead { padding: 2rem 0; }
+.menu-item--lead .menu-item__name { font-size: 1.85rem; letter-spacing: 0.005em; }
+.menu-item--lead .menu-item__price { font-size: 2.25rem; }
+.menu-item--lead .menu-item__desc { font-size: 0.95rem; margin-top: 0.7rem; }
+
 .menu-item__head {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: 0.75rem;
+  position: relative;
 }
+/* Rose-gold ink dot — signature marginalia. Always visible at low opacity;
+   swells + brightens on hover as the ink line draws across the row. */
+.menu-item__head::before {
+  content: "";
+  position: absolute;
+  left: -1.1rem;
+  top: 0.7rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rose-gold);
+  opacity: 0.32;
+  transform: scale(1);
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+/* Ink line — draws from the dot ALL the way to the price on hover.
+   This is the "ink drop expanding" signature: the marginalia dot bleeds
+   right across the row, ending at the price. */
+.menu-item__head::after {
+  content: "";
+  position: absolute;
+  left: -0.85rem;
+  right: 0;
+  bottom: -0.5rem;
+  height: 1px;
+  background: var(--rose-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.75s cubic-bezier(0.32, 0.72, 0.36, 1);
+  opacity: 0.85;
+}
+.menu-item:hover .menu-item__head::before { opacity: 1; transform: scale(1.7); }
+.menu-item:hover .menu-item__head::after  { transform: scaleX(1); }
 .menu-item__name {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
-  font-weight: 500;
+  position: relative;
+  font-family: "Italiana", serif;
+  font-weight: 400;
+  font-size: 1.5rem;
   color: var(--ink);
   line-height: 1.2;
 }
+/* Superseded by the .menu-item__head::after ink-line hover treatment above.
+   Kept as an empty rule for now to preserve the existing motion system's
+   references. */
+/* Qualifier (e.g. "Must have 50% remaining") drops onto its own line for cleaner reading */
 .menu-item__name small {
-  font-family: "Montserrat", sans-serif;
-  font-size: 0.62rem;
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.78rem;
   font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
   color: var(--muted);
-  margin-left: 0.4rem;
-  white-space: nowrap;
+  margin-top: 0.35rem;
+  margin-left: 0;
+  white-space: normal;
 }
 .menu-item__lead {
   flex: 1;
-  border-bottom: 1px dotted var(--line);
-  transform: translateY(-4px);
   min-width: 1.5rem;
 }
 .menu-item__price {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--rose-gold);
+  font-family: "Italiana", serif;
+  font-weight: 400;
+  font-size: 1.9rem;
+  color: #6e4a30; /* deeper warm bronze — much higher contrast vs cream */
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 .menu-item__price .from {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
-  vertical-align: middle;
-  margin-right: 0.15rem;
+  vertical-align: 0.55em;
+  margin-right: 0.4rem;
 }
 .menu-item__desc {
-  margin-top: 0.45rem;
-  max-width: 90%;
-  font-size: 0.86rem;
-  line-height: 1.65;
+  margin-top: 0.6rem;
+  max-width: 38rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
   color: var(--muted);
 }
 .menu__note {
   max-width: 520px;
-  margin: 2.2rem auto 0;
+  margin: 2.6rem auto 0;
   text-align: center;
-  font-size: 0.78rem;
-  font-style: italic;
+  font-family: "Italiana", serif;
+  font-size: 0.95rem;
+  font-style: normal;
   line-height: 1.6;
+  letter-spacing: 0.08em;
   color: var(--muted);
+}
+
+/* ===== Signature Spotlight — heroic full-bleed moment ===== */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+  min-height: 86vh;
+  background-color: var(--ink);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+/* The photograph — oversized vertically + parallax-translated by JS */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: 0;
+  right: 0;
+  bottom: -10%;
+  background-image: url("images/insta-3.jpg");
+  background-image: image-set(url("images/insta-3.webp") type("image/webp"), url("images/insta-3.jpg") type("image/jpeg"));
+  background-size: cover;
+  /* Pull frame downward so the eyebrow drops out of view and the lashes carry the composition */
+  background-position: 50% 78%;
+  background-repeat: no-repeat;
+  transform: translateY(var(--parallax, 0));
+  will-change: transform;
+  z-index: 0;
+  filter: brightness(0.97) contrast(1.05) saturate(0.93) sepia(0.04);
+}
+/* Asymmetric gradient: deeper on the left so the copy reads, fading to clear photo on the right */
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(13, 11, 11, 0.82) 0%,
+    rgba(13, 11, 11, 0.62) 35%,
+    rgba(13, 11, 11, 0.18) 70%,
+    rgba(13, 11, 11, 0.02) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+.spotlight__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(4.5rem, 10vw, 9rem) clamp(1.5rem, 5vw, 3rem);
+}
+.spotlight__copy {
+  max-width: 480px;
+  color: var(--cream);
+  margin-left: 0;
+}
+.spotlight__eyebrow {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--rose-gold-light);
+  margin-bottom: 1.5rem;
+}
+.spotlight__title {
+  font-family: "Italiana", serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  color: var(--cream);
+  margin-bottom: 1.4rem;
+}
+.spotlight__sub {
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #d8c8b9;
+  max-width: 460px;
+  margin-bottom: 2.4rem;
+}
+.spotlight__price-row {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.spotlight__price {
+  font-family: "Italiana", serif;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--rose-gold-light);
+  white-space: nowrap;
+}
+.spotlight__price .from {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #b3a596;
+  vertical-align: 0.85em;
+  margin-right: 0.5rem;
+}
+/* Cream-on-dark button override inside spotlight */
+.spotlight .btn {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--cream);
+  box-shadow: 0 22px 45px -22px rgba(0, 0, 0, 0.5);
+}
+.spotlight .btn:hover {
+  background: transparent;
+  color: var(--cream);
+  border-color: var(--cream);
 }
 
 /* ===== Signature Services ===== */
@@ -372,9 +1467,12 @@ img { display: block; max-width: 100%; }
 }
 .signature__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.4rem;
-  margin-top: 2.8rem;
+  /* Editorial asymmetric layout — featured card dominant (~60%), two supporting stacked right.
+     Reads as a magazine spread, not a SaaS pricing table. */
+  grid-template-columns: 1.6fr 1fr;
+  grid-template-rows: repeat(2, auto);
+  gap: 1.5rem;
+  margin-top: 3rem;
 }
 .signature-card {
   position: relative;
@@ -382,46 +1480,119 @@ img { display: block; max-width: 100%; }
   flex-direction: column;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 2rem 1.8rem 1.6rem;
+  border-radius: 8px;
+  padding: 2.2rem 1.9rem 1.8rem;
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.4s ease, border-color 0.3s ease;
 }
-.signature-card:hover { transform: translateY(-5px); }
+.signature-card:hover { box-shadow: 0 30px 60px -28px rgba(20, 18, 16, 0.32); }
 .signature-card--featured {
+  grid-column: 1;
+  grid-row: 1 / span 2; /* full height of the right-side stack */
   border-color: var(--rose-gold-light);
   box-shadow: 0 22px 50px -26px rgba(163, 111, 78, 0.55);
+  /* Featured card has an editorial image at the top — remove inner padding so
+     the image bleeds edge-to-edge; the body block handles its own padding. */
+  padding: 0;
+  overflow: hidden;
+}
+/* Editorial product-card photo zone — top portion of the featured card */
+.signature-card__media {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  /* Slight landscape ratio — preserves lash detail without dominating the card */
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #1a1614;
+  border-bottom: 1px solid var(--line);
+}
+.signature-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  display: block;
+  /* Match site-wide warm color grade — same family as gallery + hero */
+  filter: brightness(1.02) contrast(1.08) saturate(1.05) sepia(0.06) hue-rotate(-2deg);
+  transition: transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.signature-card--featured:hover .signature-card__media img {
+  transform: scale(1.03);
+}
+/* Body block — inherits the inner padding that was previously on the card itself */
+.signature-card__body {
+  padding: 2rem 2.4rem 2.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.signature-card__body .signature-card__desc { flex: 1; }
+/* Vertical rose-gold edge accent on the featured card — quiet differentiation */
+.signature-card--featured::before {
+  content: "";
+  position: absolute;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  left: 0;
+  width: 2px;
+  background: var(--rose-gold);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.signature-card--featured .signature-card__name { font-size: clamp(2rem, 2.6vw, 2.6rem); line-height: 1.08; }
+.signature-card--featured .signature-card__desc { font-size: 0.98rem; line-height: 1.75; }
+
+/* Mobile/tablet collapse — stack back to single column */
+@media (max-width: 900px) {
+  .signature__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .signature-card--featured { grid-column: auto; grid-row: auto; padding: 2.2rem 1.9rem 1.8rem; }
+  .signature-card--featured .signature-card__name { font-size: 1.85rem; }
+}
+.signature-card__booking {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-top: 0.7rem;
 }
 .signature-card__tag {
   position: absolute;
-  top: -0.7rem;
-  left: 1.8rem;
+  top: 1.1rem;
+  left: 1.1rem;
+  z-index: 3;
   font-size: 0.6rem;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #fff;
   background: var(--gold-grad);
-  padding: 0.35rem 0.8rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 999px;
+  box-shadow: 0 4px 14px -4px rgba(20, 15, 10, 0.45);
 }
 .signature-card__eyebrow {
-  font-size: 0.64rem;
-  letter-spacing: 0.26em;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--rose-gold);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.65rem;
 }
 .signature-card__name {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   color: var(--ink);
-  margin-bottom: 0.6rem;
-  line-height: 1.15;
+  margin-bottom: 0.7rem;
+  line-height: 1.18;
 }
 .signature-card__desc {
   font-size: 0.88rem;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--muted);
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.6rem;
   flex: 1;
 }
 .signature-card__foot {
@@ -430,122 +1601,3137 @@ img { display: block; max-width: 100%; }
   justify-content: space-between;
   gap: 1rem;
   border-top: 1px solid var(--line);
-  padding-top: 1rem;
+  padding-top: 1.15rem;
 }
 .signature-card__link {
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  border-bottom: 1px solid rgba(192, 143, 107, 0.45);
+  padding-bottom: 3px;
+  transition: border-color 0.2s ease;
+}
+.signature-card__link:hover { border-bottom-color: var(--ink); }
+
+/* ===== Meet the Artist ===== */
+.about {
+  background: var(--cream);
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 5vw, 2rem);
+}
+.about__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+.about__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: linear-gradient(160deg, #ece4d8 0%, #ddd2c1 100%);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.about__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Elegant placeholder shown when images/rikki.jpg is absent */
+.about__photo--empty::after {
+  content: "Portrait";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: rgba(60, 50, 40, 0.4);
+}
+.about__copy h2 { margin-top: 0.3rem; margin-bottom: 1.3rem; }
+.about__copy p {
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: var(--text);
+  max-width: 38rem;
+}
+.about__sign {
+  margin-top: 1.4rem;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+/* ===== Editorial Interlude — Option A: faded beauty photography backdrop ===== */
+.interlude {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(6rem, 14vw, 10rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  overflow: hidden;
+  background: var(--blush); /* warm fallback */
+}
+/* Faded beauty photograph backdrop (Option A) */
+.interlude::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("images/insta-2.jpg");
+  background-image: image-set(url("images/insta-2.webp") type("image/webp"), url("images/insta-2.jpg") type("image/jpeg"));
+  background-size: cover;
+  background-position: 50% 42%;
+  background-repeat: no-repeat;
+  opacity: 0.22;
+  filter: brightness(1.04) saturate(0.92) sepia(0.08);
+  z-index: 0;
+}
+/* Warm cream gradient overlay + bottom fade into the menu below */
+.interlude::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    /* bottom fade — last 30% melts into the menu's pure cream */
+    linear-gradient(to bottom,
+      transparent 0%,
+      transparent 65%,
+      rgba(250, 244, 238, 0.65) 88%,
+      var(--cream) 100%),
+    /* warm radial atmosphere */
+    radial-gradient(ellipse at 50% 45%,
+      rgba(248, 239, 222, 0.45) 0%,
+      rgba(244, 233, 210, 0.78) 55%,
+      rgba(236, 223, 197, 0.92) 100%);
+  z-index: 0;
+}
+.interlude > * { position: relative; z-index: 1; }
+.interlude__eyebrow {
+  display: inline-block;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--rose-gold);
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 2px;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  margin-bottom: 2.2rem;
 }
-.signature-card__link:hover { color: var(--ink); border-color: var(--rose-gold); }
-
-/* ===== Booking CTA band ===== */
-.cta-band {
-  background: var(--blush);
-  border-top: 1px solid var(--line);
-  text-align: center;
-  padding: clamp(3.5rem, 8vw, 5.5rem) 1.5rem;
+.interlude__line {
+  font-family: "Italiana", serif;
+  font-size: clamp(1.35rem, 3.8vw, 3.1rem);
+  line-height: 1.35;
+  letter-spacing: 0.012em;
+  color: var(--ink);
+  max-width: 46rem;
+  margin: 0 auto;
+  text-wrap: balance;
 }
-.cta-band__sub {
-  max-width: 460px;
-  margin: 0.6rem auto 1.8rem;
-  color: var(--muted);
+.interlude__sign {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 400;
   font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-top: 2.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
 }
-.cta-note--onlight { color: var(--muted); }
+/* Signature "Rikki" — draws in like handwriting via clip-path wipe on
+   scroll into view. Italiana italic at larger size + rose-gold reads as
+   an editorial signature line, not a caption. */
+.interlude__sign-name {
+  display: inline-block;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 1.65rem;
+  letter-spacing: 0.02em;
+  color: var(--rose-gold);
+  line-height: 1;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.55s cubic-bezier(0.32, 0.72, 0.36, 1) 0.5s;
+}
+.interlude.is-visible .interlude__sign-name {
+  clip-path: inset(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .interlude__sign-name { clip-path: inset(0); transition: none; }
+}
+
+/* ===== Testimonials ===== */
+.testimonials {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(3rem, 6vw, 4.5rem) clamp(1.25rem, 5vw, 2rem);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  /* Lighter warm wash — present but recessive */
+  background:
+    radial-gradient(ellipse at 50% 30%, #fbf6ec 0%, #f7eedd 60%, #f3e8d2 100%);
+}
+/* Faint paper-grain texture for editorial print feel */
+.testimonials::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  z-index: 0;
+}
+.testimonials > * { position: relative; z-index: 1; }
+/* Tighter title in this context — heading already shines above */
+/* Testimonials title uses the standard .section__title size — matches
+   Services, Signature Services, and Portfolio for a consistent rhythm. */
+.testimonials__head { text-align: center; max-width: 720px; margin: 0 auto; }
+.testimonials__list {
+  list-style: none;
+  max-width: 960px;
+  margin: 2.4rem auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.2rem) clamp(1.6rem, 3.5vw, 2.8rem);
+}
+.testimonial {
+  position: relative;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+/* Featured pull-quote — spans both columns, slightly larger, centered */
+.testimonial--featured {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding-top: 1.4rem;
+  padding-bottom: 1.9rem;
+  max-width: 720px;
+  margin: 0 auto;
+  border-top: none;
+  position: relative;
+}
+.testimonial--featured::after {
+  display: none;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 1px;
+  background: var(--line);
+}
+.testimonial--featured .testimonial__quote {
+  font-size: clamp(1.28rem, 2.4vw, 1.72rem);
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto 1.6rem;
+  letter-spacing: 0.005em;
+  position: relative;
+  padding-top: 3.2rem;
+  color: var(--text);
+}
+/* Giant Italiana opening quote mark — the editorial pull-quote signature.
+   Hangs above the text like a magazine drop mark. Enters with a slight
+   overshoot as the section scrolls into view — stage-curtain reveal. */
+.testimonial--featured .testimonial__quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -1.4rem;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  transform-origin: center 65%;
+  font-family: "Italiana", serif;
+  font-style: normal;
+  font-size: clamp(5.5rem, 8vw, 7rem);
+  line-height: 1;
+  color: var(--rose-gold);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 1.5s cubic-bezier(0.34, 1.42, 0.64, 1) 0.35s,
+              opacity 0.9s cubic-bezier(0.32, 0.72, 0.36, 1) 0.35s;
+}
+.testimonials.is-visible .testimonial--featured .testimonial__quote::before {
+  transform: translateX(-50%) scale(1);
+  opacity: 0.52;
+}
+@media (prefers-reduced-motion: reduce) {
+  .testimonial--featured .testimonial__quote::before {
+    transform: translateX(-50%) scale(1); opacity: 0.52; transition: none;
+  }
+}
+/* Editorial sig line — Italiana caps for the name, italic + rose-gold
+   hairline separator for the service tag. Two-part sig line, magazine style. */
+.testimonial__attr {
+  font-family: "Italiana", serif;
+  font-weight: 400;
+  font-size: 0.86rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.testimonial__attr-name { color: var(--rose-gold); }
+.testimonial__attr-service {
+  font-style: italic;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  position: relative;
+  padding-left: 0.85rem;
+}
+.testimonial__attr-service::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 1px;
+  background: var(--rose-gold);
+  opacity: 0.6;
+}
+.testimonial__quote {
+  /* Body testimonial quotes use Inter italic for reading legibility.
+     The featured pull-quote KEEPS Italiana italic — its large size
+     handles the display face just fine. Body copy needs a text face. */
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.02rem, 1.5vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.002em;
+}
+/* Featured pull-quote keeps the Italiana display italic — it's the hero */
+.testimonial--featured .testimonial__quote {
+  font-family: "Italiana", serif;
+}
+/* .testimonial__highlight retained in HTML for future flexibility, but visually
+   neutralized so every word of every quote reads at one consistent weight/color.
+   Curated editorial feel — no accidental emphasis between reviews. */
+.testimonial__highlight {
+  color: inherit;
+  font-weight: inherit;
+}
+
+/* ===== The Portfolio — single editorial film strip ===== */
+.insta {
+  background: var(--cream);
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(3.5rem, 7vw, 6rem);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+.insta__head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+  padding: 0 1.5rem;
+}
+.insta__handle {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: "Italiana", Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--rose-gold);
+  transition: color 0.25s ease;
+}
+.insta__handle:hover { color: var(--rose-gold-light); }
+
+/* Single horizontal film strip — pure compositor-thread auto-scroll.
+   The track is doubled in markup; a CSS keyframe animation translates it
+   from 0 to -50% (the length of one copy) infinitely. Compositor-driven
+   motion is NOT blocked by main-thread page scrolling, so the strip
+   glides seamlessly as the visitor scrolls past it. */
+.filmstrip__viewport {
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 42vw, 480px);
+  overflow: hidden;
+  /* Tell the browser: hand vertical page-scroll to it, leave horizontal
+     gestures for our JS scrub handler. Without this, mobile browsers
+     grab horizontal swipes for their own scroll heuristics and our
+     touchmove handlers never see the movement. */
+  touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%, #000 5%, #000 95%, transparent 100%);
+          mask-image: linear-gradient(to right,
+    transparent 0%, #000 5%, #000 95%, transparent 100%);
+}
+
+/* Track holds tiles in a horizontal flex row. Translation is driven by
+   CSS keyframes for GPU-accelerated compositor-thread motion. The `translate`
+   property is used for JS-controlled manual scrub (hover/drag/wheel) — it
+   applies BEFORE `transform` per the CSS Transforms spec, so auto-scroll
+   (transform) and manual scrub (translate) compose additively without
+   interfering with each other. */
+.filmstrip__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 1.5vw, 1.4rem);
+  width: max-content;
+  height: 100%;
+  padding: 0 clamp(0.9rem, 1.5vw, 1.4rem);
+  list-style: none;
+  margin: 0;
+  translate: var(--scrub-x, 0px) 0;
+  animation: filmstripDrift 55s linear infinite;
+  will-change: transform, translate;
+}
+
+@keyframes filmstripDrift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Each tile keeps its native aspect — height is fixed, width is auto */
+.filmstrip-tile {
+  position: relative;
+  height: 100%;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #ece4d8 0%, #ddd2c1 100%);
+  cursor: pointer;
+}
+.filmstrip-tile a { display: block; height: 100%; }
+.filmstrip-tile img,
+.filmstrip-tile video {
+  height: 100%;
+  width: auto;
+  display: block;
+  /* Unified warm color grade — matches the rest of the site */
+  filter: brightness(1.02) contrast(1.08) saturate(1.05) sepia(0.06) hue-rotate(-2deg);
+  transition: transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.filmstrip-tile:hover img,
+.filmstrip-tile:hover video { transform: scale(1.03); }
+/* Subtle rose-gold edge on hover */
+.filmstrip-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(192, 143, 107, 0);
+  border-radius: 4px;
+  transition: border-color 0.4s ease;
+}
+.filmstrip-tile:hover::after {
+  border-color: rgba(192, 143, 107, 0.42);
+}
+
+/* Reduced motion: freeze the strip, allow native horizontal scroll */
+@media (prefers-reduced-motion: reduce) {
+  .filmstrip__track { animation: none; transform: none; }
+  .filmstrip__viewport {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+}
+
+/* Cursor: grab affordance telegraphs that visitors can scrub the strip
+   left/right (in addition to the always-running auto-scroll). Tiles show
+   pointer since they open a lightbox on click. During active drag we swap
+   to grabbing + disable pointer events on children so link clicks don't
+   fire when the visitor is scrubbing. */
+.filmstrip__viewport { cursor: grab; }
+.filmstrip__viewport.is-dragging { cursor: grabbing; }
+.filmstrip__viewport.is-dragging * { pointer-events: none; }
+.filmstrip-tile { cursor: pointer; }
+
+/* Lightbox for tile click */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 11, 11, 0.94);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9990;
+  padding: clamp(2rem, 5vw, 5rem);
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.lightbox.is-open { display: flex; }
+.lightbox__stage {
+  max-width: 90vw;
+  max-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox__stage img,
+.lightbox__stage video {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 4px;
+  filter: brightness(0.98) contrast(1.04) saturate(0.92) sepia(0.04);
+}
+.lightbox__close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--cream);
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  transition: color 0.2s ease;
+}
+.lightbox__close:hover { color: var(--rose-gold-light); }
+.lightbox__cta {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.lightbox__cta:hover { background: transparent; color: var(--cream); border: 1px solid var(--cream); }
+
+/* ===== Final booking section — luxury conversion close ===== */
+.finale {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 30%, #1c1816 0%, var(--black) 90%);
+  /* Tighter vertical rhythm — conversion section, not a hero */
+  padding: clamp(2.5rem, 5vw, 4rem) 1.5rem clamp(2.5rem, 5vw, 3.5rem);
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+  color: #e9ddd1;
+}
+/* Atmospheric backdrop — endpage.jpg darkened slightly for cinematic readability.
+   Soft radial mask fades the image's edges into the warm-black gradient. */
+.finale__atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("images/endpage.jpg");
+  background-image: image-set(url("images/endpage.webp") type("image/webp"), url("images/endpage.jpg") type("image/jpeg"));
+  background-size: cover;
+  background-position: 50% 45%;
+  opacity: 0.20;
+  /* Subtle darken — brightness pulled down without flattening contrast or saturation */
+  filter: brightness(0.75) contrast(1.05) saturate(0.95) sepia(0.06);
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at center, #000 25%, transparent 88%);
+          mask-image: radial-gradient(ellipse 75% 70% at center, #000 25%, transparent 88%);
+  animation: finaleAtmosphereBreath 22s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes finaleAtmosphereBreath {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .finale__atmosphere { animation: none; }
+}
+
+.finale__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Conversion headline — the entry point now (kicker retired) */
+.finale__title {
+  font-family: "Italiana", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.06;
+  letter-spacing: 0.005em;
+  color: #f3e9de;
+  margin-bottom: 1.1rem;
+}
+
+/* Supporting copy — italic Inter, taupe, warm + readable */
+.finale__sub {
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.98rem, 1.4vw, 1.1rem);
+  line-height: 1.6;
+  color: #c8baab;
+  max-width: 460px;
+  margin: 0 auto 1.6rem;
+}
+
+/* CTA wrapper — primary focal point */
+.finale__cta-wrap { margin-bottom: clamp(1.5rem, 3vw, 2.2rem); }
+
+/* The primary CTA — large, dramatic, with a slow breathing glow */
+.btn--finale {
+  background: var(--cream);
+  color: var(--ink);
+  border: 1px solid var(--cream);
+  padding: 1.2rem 3rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.26em;
+  position: relative;
+  /* Soft champagne breathing glow — Aman/COMO booking-button cue */
+  animation: finaleCTABreath 4s ease-in-out infinite;
+  will-change: box-shadow;
+  border-radius: 999px;
+}
+@keyframes finaleCTABreath {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 180, 143, 0.0), 0 16px 36px -16px rgba(0, 0, 0, 0.55); }
+  50%      { box-shadow: 0 0 0 8px rgba(217, 180, 143, 0.10), 0 16px 36px -16px rgba(0, 0, 0, 0.55); }
+}
+/* Rose-gold ring pulse — radiates outward on a 3s cycle, offset from the
+   champagne breath so the CTA reads as *waiting for you* without competing
+   with the primary breath. Two distinct rhythms = alive not synthetic. */
+.btn--finale::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid var(--rose-gold);
+  opacity: 0;
+  transform: scale(1);
+  animation: finaleRingPulse 3s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes finaleRingPulse {
+  0%   { transform: scale(1);    opacity: 0.5; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+.btn--finale:hover {
+  background: transparent;
+  color: var(--cream);
+  animation-play-state: paused;
+}
+.btn--finale:hover::after { animation-play-state: paused; opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .btn--finale, .btn--finale::after { animation: none; }
+  .btn--finale::after { display: none; }
+}
+
+/* Micro-prestige cue under the CTA — italic, rose-gold, tracked */
+.finale__avail {
+  margin-top: 1.1rem;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rose-gold-light);
+}
+
+/* Editorial divider — two hairlines with a tiny rose-gold dot between */
+.finale__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin: clamp(1.5rem, 2.5vw, 2.2rem) auto;
+  max-width: 200px;
+}
+.finale__divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(217, 180, 143, 0.32);
+}
+.finale__divider-dot {
+  color: var(--rose-gold);
+  font-size: 0.95rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+/* Address section — quiet supporting info, NOT competing with the CTA */
+.finale__details {
+  /* Border-top retired in favor of editorial divider above */
+}
+.finale__address {
+  font-style: normal;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: #e9ddd1;
+  line-height: 1.85;
+  margin-bottom: 1.3rem;
+}
+.finale__contact {
+  display: inline-flex;
+  /* Baseline alignment — text of different sizes sits on the same baseline,
+     which is the natural-feeling alignment for mixed-size typography. */
+  align-items: baseline;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* Phone + Directions — unified Italiana italic to match the finale's editorial voice.
+   Visibility achieved through SIZE differential (phone larger) + cream contrast,
+   not through introducing a different font. Tabular numbers keep digits clean. */
+/* Unified size — phone and directions now sit at the same scale,
+   reading as a perfectly balanced pair in the same typographic voice */
+.finale__phone,
+.finale__directions {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  font-family: "Italiana", serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  padding: 0.35rem 0.4rem;
+  min-height: 44px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  /* Ambient rose-gold glow — pulses continuously to draw the eye */
+  text-shadow: 0 0 12px rgba(217, 180, 143, 0.35);
+  animation: directionsGlow 3.5s ease-in-out infinite;
+}
+@keyframes directionsGlow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(217, 180, 143, 0.25),
+                 0 0 16px rgba(192, 143, 107, 0.18);
+    color: var(--cream);
+  }
+  50% {
+    text-shadow: 0 0 14px rgba(217, 180, 143, 0.55),
+                 0 0 28px rgba(192, 143, 107, 0.4),
+                 0 0 44px rgba(192, 143, 107, 0.22);
+    color: #fff5e6;
+  }
+}
+/* Rose-gold underline hairline that pulses in sync with glow */
+.finale__directions::after {
+  content: "";
+  position: absolute;
+  left: 0.4rem;
+  right: 0.4rem;
+  bottom: 0.25rem;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(217, 180, 143, 0.6) 15%,
+    rgba(217, 180, 143, 1) 50%,
+    rgba(217, 180, 143, 0.6) 85%,
+    transparent 100%);
+  opacity: 0.5;
+  animation: directionsUnderlinePulse 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes directionsUnderlinePulse {
+  0%, 100% { opacity: 0.4; transform: scaleX(0.85); }
+  50%      { opacity: 1;   transform: scaleX(1);    }
+}
+.finale__phone { font-feature-settings: "tnum" 1; } /* tabular digits */
+.finale__phone:hover { color: var(--rose-gold-light); }
+.finale__directions:hover {
+  color: #fff5e6;
+  text-shadow: 0 0 18px rgba(217, 180, 143, 0.75),
+               0 0 36px rgba(192, 143, 107, 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  .finale__directions,
+  .finale__directions::after { animation: none; }
+}
+.finale__sep { color: rgba(168, 156, 142, 0.55); font-size: 0.85rem; letter-spacing: 0; }
 
 /* ===== Sticky mobile booking bar ===== */
 .sticky-book { display: none; }
 
-/* ===== Visit ===== */
-.visit {
-  background: radial-gradient(circle at 50% 0%, #221c18, var(--black) 75%);
-  padding: clamp(3.5rem, 8vw, 6rem) 1.5rem;
-}
-.visit__card {
-  max-width: 560px;
-  margin: 0 auto;
-  text-align: center;
-  color: #e9ddd1;
-}
-.visit__address {
-  font-style: normal;
-  margin: 1.5rem 0 1rem;
-  font-size: 1.05rem;
-  letter-spacing: 0.06em;
-  color: #d8c8b9;
-  line-height: 2;
-}
-.visit__phone {
-  display: inline-block;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.9rem;
-  color: var(--rose-gold-light);
-  letter-spacing: 0.04em;
-}
-
-/* ===== Footer ===== */
+/* ===== Footer — minimal dark signature band ===== */
 .footer {
   background: var(--black);
+  padding: clamp(1.4rem, 2.6vw, 2rem) 1.5rem clamp(1.6rem, 2.8vw, 2.2rem);
+  border-top: 1px solid rgba(217, 180, 143, 0.12);
   text-align: center;
-  padding: 3rem 1.5rem 2.5rem;
-  border-top: 1px solid rgba(217, 180, 143, 0.15);
 }
-.footer__logo { width: 92px; margin: 0 auto 1rem; border-radius: 50%; }
-.footer__tagline {
+.footer .footer__line {
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  color: #a89c8e;
+  margin: 0 auto 0.55rem;
+  max-width: 1080px;
+}
+.footer__sep {
+  color: var(--rose-gold);
+  margin: 0 0.65em;
+  font-style: normal;
+}
+.footer__link {
+  color: #a89c8e;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.footer__link:hover { color: var(--rose-gold-light); border-bottom-color: rgba(217, 180, 143, 0.4); }
+.footer__url {
+  margin: 0.75rem 0 0; /* slight breathing room so URL reads as its own signature line */
+}
+.footer__url a {
+  /* Matches the footer credit line typography (Inter italic) — same font system
+     so the URL reads as a continuation of the footer voice, distinguished by
+     a slightly heavier weight and the rose-gold link accent. */
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--rose-gold-light);
+  /* Underline hidden by default; reveals on hover (cleaner default state) */
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.footer__url a:hover {
+  color: var(--cream);
+  border-bottom-color: rgba(247, 237, 226, 0.5);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LUXURY MOTION SYSTEM — 18-item highest-impact sprint
+   Staggered reveals, hover treatments, cursor spotlight, magnetic
+   buttons, word-cascade reveals, divider draw, center-tile focus.
+   ════════════════════════════════════════════════════════════════ */
+
+/* —— M.2 Magnetic CTA support (transform via CSS variables set by JS) —— */
+.hero .btn,
+.btn--finale,
+.spotlight .btn,
+.signature-card__link {
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0.36, 1),
+              background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transform: translate(var(--magnetic-x, 0px), var(--magnetic-y, 0px));
+  will-change: transform;
+}
+.hero .btn.is-magnetized,
+.btn--finale.is-magnetized,
+.spotlight .btn.is-magnetized,
+.signature-card__link.is-magnetized {
+  transition: transform 0.18s cubic-bezier(0.32, 0.72, 0.36, 1),
+              background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* —— M.4 Services staggered card reveal —— */
+/* Services cards: dramatic staggered entrance — rise from below + subtle
+   scale-in as each card enters view. Fires per-card via the JS observer
+   in index.html so each card animates when IT crosses into the viewport,
+   not when the section top does. Plays on both desktop and mobile. */
+.services .service-card {
+  opacity: 0;
+  transform: translateY(60px) scale(0.94);
+  transition: opacity 1.1s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 1.1s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.services .service-card.is-in-view { opacity: 1; transform: none; }
+.services .service-card:nth-child(2).is-in-view { transition-delay: 0.12s; }
+.services .service-card:nth-child(3).is-in-view { transition-delay: 0.24s; }
+
+/* —— M.5 Services card hover treatment —— */
+.service-card { transition: transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1), box-shadow 0.5s ease; }
+.service-card::before { transition: transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1), opacity 0.5s ease; }
+.service-card:hover { transform: translateY(-4px); }
+.service-card:hover::before { transform: scale(1.05); opacity: 0.9; }
+.service-card:hover h3 { letter-spacing: 0.04em; }
+.service-card h3 { transition: letter-spacing 0.5s cubic-bezier(0.32, 0.72, 0.36, 1); }
+
+/* —— M.6 Spotlight scroll-driven text cascade —— */
+.spotlight__eyebrow,
+.spotlight__title,
+.spotlight__sub,
+.spotlight__price-row {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 1.1s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 1.1s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.spotlight.is-cascading .spotlight__eyebrow   { opacity: 1; transform: none; transition-delay: 0.1s; }
+.spotlight.is-cascading .spotlight__title     { opacity: 1; transform: none; transition-delay: 0.3s; }
+.spotlight.is-cascading .spotlight__sub       { opacity: 1; transform: none; transition-delay: 0.6s; }
+.spotlight.is-cascading .spotlight__price-row { opacity: 1; transform: none; transition-delay: 0.85s; }
+
+/* —— M.7 Cursor-tracked warm spotlight (Spotlight section only) —— */
+.spotlight {
+  position: relative;
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+}
+.spotlight.has-cursor {
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(circle 280px at var(--cursor-x) var(--cursor-y),
+      rgba(217, 180, 143, 0.10) 0%,
+      rgba(217, 180, 143, 0) 70%);
+}
+
+/* —— M.8 Signature 3-card reveal + supporting card hover lift ——
+   Each card animates independently as it enters view via the per-card
+   IntersectionObserver in index.html — no more early-firing when the
+   section top is offscreen. Rises + scales in, plays every time. */
+.signature .signature-card {
+  opacity: 0;
+  transform: translateY(60px) scale(0.94);
+  transition: opacity 0.6s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.6s cubic-bezier(0.32, 0.72, 0.36, 1),
+              box-shadow 0.5s ease,
+              border-color 0.4s ease;
+}
+.signature .signature-card.is-in-view { opacity: 1; transform: none; }
+.signature .signature-card:nth-child(1).is-in-view { transition-delay: 0s; }
+.signature .signature-card:nth-child(2).is-in-view { transition-delay: 0.15s; }
+.signature .signature-card:nth-child(3).is-in-view { transition-delay: 0.3s; }
+/* Supporting cards (non-featured): hover lift + rose-gold edge */
+.signature-card:not(.signature-card--featured):hover {
+  transform: translateY(-4px);
+  border-color: var(--rose-gold-light);
+  box-shadow: 0 28px 50px -22px rgba(20, 18, 16, 0.28);
+}
+
+/* —— M.10 Interlude quote + M.16 Finale headline word-cascade —— */
+.word-reveal {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition: opacity 0.85s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.85s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--word-i, 0) * 0.045s);
+}
+.word-reveal.is-revealed { opacity: 1; transform: none; }
+
+/* —— M.11 Menu row staggered reveal —— */
+.menu__list .menu-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu.is-visible .menu-item { opacity: 1; transform: none; }
+.menu.is-visible .menu-item:nth-child(1) { transition-delay: 0.05s; }
+.menu.is-visible .menu-item:nth-child(2) { transition-delay: 0.10s; }
+.menu.is-visible .menu-item:nth-child(3) { transition-delay: 0.15s; }
+.menu.is-visible .menu-item:nth-child(4) { transition-delay: 0.20s; }
+.menu.is-visible .menu-item:nth-child(5) { transition-delay: 0.25s; }
+.menu.is-visible .menu-item:nth-child(6) { transition-delay: 0.30s; }
+.menu.is-visible .menu-item:nth-child(7) { transition-delay: 0.35s; }
+.menu.is-visible .menu-item:nth-child(8) { transition-delay: 0.40s; }
+
+/* Rose-gold hairline sweep at the bottom of each menu row as the section
+   enters view. Rule scales left→right at 0.65 opacity while the text is
+   fading up, then fades away leaving only the neutral divider. Reads as
+   ink drawing under each line as it "sets" onto the menu. */
+.menu-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--rose-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  pointer-events: none;
+}
+.menu.is-visible .menu-item::after {
+  animation: menuItemRuleSweep 1.55s cubic-bezier(0.32, 0.72, 0.36, 1) forwards;
+}
+@keyframes menuItemRuleSweep {
+  0%   { transform: scaleX(0); opacity: 0; }
+  20%  { transform: scaleX(0.18); opacity: 0.7; }
+  55%  { transform: scaleX(0.55); opacity: 0.55; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+.menu.is-visible .menu-item:nth-child(1)::after { animation-delay: 0.08s; }
+.menu.is-visible .menu-item:nth-child(2)::after { animation-delay: 0.16s; }
+.menu.is-visible .menu-item:nth-child(3)::after { animation-delay: 0.24s; }
+.menu.is-visible .menu-item:nth-child(4)::after { animation-delay: 0.32s; }
+.menu.is-visible .menu-item:nth-child(5)::after { animation-delay: 0.40s; }
+.menu.is-visible .menu-item:nth-child(6)::after { animation-delay: 0.48s; }
+.menu.is-visible .menu-item:nth-child(7)::after { animation-delay: 0.56s; }
+.menu.is-visible .menu-item:nth-child(8)::after { animation-delay: 0.64s; }
+@media (prefers-reduced-motion: reduce) {
+  .menu-item::after { animation: none; }
+}
+
+/* —— M.12 Menu row hover — warm gradient sweep + price scale bump —— */
+.menu-item {
+  position: relative;
+  transition: padding 0.4s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu-item::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -1rem;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(192, 143, 107, 0.06) 30%,
+    rgba(192, 143, 107, 0.08) 50%,
+    rgba(192, 143, 107, 0.06) 70%,
+    transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 4px;
+}
+.menu-item:hover::before { opacity: 1; }
+.menu-item:hover .menu-item__price {
+  transform: scale(1.06);
+  color: var(--rose-gold);
+}
+.menu-item__price {
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0.36, 1), color 0.3s ease;
+  transform-origin: right center;
+  display: inline-block;
+}
+
+/* —— M.15 Staggered testimonial reveal —— */
+.testimonials .testimonial {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.95s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.95s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.testimonials.is-visible .testimonial { opacity: 1; transform: none; }
+.testimonials.is-visible .testimonial:nth-child(1) { transition-delay: 0s; }
+.testimonials.is-visible .testimonial:nth-child(2) { transition-delay: 0.18s; }
+.testimonials.is-visible .testimonial:nth-child(3) { transition-delay: 0.32s; }
+
+/* —— M.17 Finale divider draw-in (center dot first, hairlines extend outward) —— */
+.finale__divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(217, 180, 143, 0.32);
+  /* Default: scaled to 0 from center; finale.is-visible expands it */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 1.2s cubic-bezier(0.32, 0.72, 0.36, 1) 0.6s;
+}
+.finale__divider-dot {
+  color: var(--rose-gold);
+  font-size: 0.95rem;
+  line-height: 1;
+  letter-spacing: 0;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1) 0.3s,
+              transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1) 0.3s;
+}
+.finale.is-visible .finale__divider-line { transform: scaleX(1); }
+.finale.is-visible .finale__divider-dot { opacity: 1; transform: scale(1); }
+
+/* —— M.6 Center-tile focus treatment (portfolio filmstrip) —— */
+.filmstrip-tile {
+  transition: transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1),
+              filter 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.filmstrip-tile.is-center-focus img,
+.filmstrip-tile.is-center-focus video {
+  filter: brightness(1.08) contrast(1.10) saturate(1.07) sepia(0.05);
+}
+
+/* —— M.7 Signature scroll-pinned moment (Spotlight cinematic zoom) ——
+   As visitor scrolls through the spotlight, the photo gently zooms OUT from a
+   tighter crop toward its rest state. Apple-product-page pacing. */
+@supports (animation-timeline: view()) {
+  .spotlight::before {
+    animation: spotlightCinematic linear forwards;
+    animation-timeline: view();
+    animation-range: entry 0% cover 50%;
+  }
+}
+@keyframes spotlightCinematic {
+  from { transform: translateY(var(--parallax, 0)) scale(1.12); }
+  to   { transform: translateY(var(--parallax, 0)) scale(1.0); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   #35 — ATMOSPHERIC SECTION CONTINUITY
+   Soften the cream↔dark section boundaries with overlap gradients
+   so the page reads as one continuous atmosphere instead of distinct
+   blocks. Applied to the three major chromatic transitions:
+     - about (cream) → spotlight (dark)
+     - spotlight (dark) → signature (cream)
+     - portfolio (cream) → finale (dark)
+   ════════════════════════════════════════════════════════════════ */
+
+/* Bottom of .about gently darkens to hint at the spotlight's warm-black below */
+.about {
+  position: relative;
+}
+.about::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 90px;
+  background: linear-gradient(to bottom,
+    rgba(13, 11, 11, 0) 0%,
+    rgba(13, 11, 11, 0.06) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top of .spotlight subtly bleeds cream so it doesn't slam into the dark.
+   Bottom of .spotlight subtly bleeds cream so the transition INTO signature
+   (cream) feels like a slow surfacing rather than a hard cut. */
+.spotlight {
+  box-shadow:
+    inset 0 60px 90px -50px rgba(250, 244, 238, 0.18),
+    inset 0 -60px 90px -50px rgba(250, 244, 238, 0.22);
+}
+
+/* Top of .signature gently picks up a hint of warm-black for the same
+   reason in reverse — the bottom of spotlight blends into the top of cream */
+.signature {
+  position: relative;
+}
+.signature::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 90px;
+  background: linear-gradient(to top,
+    rgba(13, 11, 11, 0) 0%,
+    rgba(13, 11, 11, 0.05) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom of .insta (portfolio, cream) gently fades to dark so the entrance
+   into .finale (dark) feels like a sunset rather than a curtain drop */
+.insta {
+  position: relative;
+}
+.insta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 110px;
+  background: linear-gradient(to bottom,
+    rgba(13, 11, 11, 0) 0%,
+    rgba(13, 11, 11, 0.10) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Top of .finale (dark) softly suggests the cream it just emerged from */
+.finale {
+  box-shadow:
+    inset 0 70px 100px -55px rgba(250, 244, 238, 0.15);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MEDIUM-IMPACT MOTION POLISH (items 19-34)
+   ════════════════════════════════════════════════════════════════ */
+
+/* —— #19 Hero "view the menu →" — arrow nudge + underline grow on hover —— */
+.hero .link--quiet {
+  position: relative;
+  display: inline-block;
+  border-bottom: none;
+  padding: 0.55rem 0.2rem;
+  min-height: 44px;
+}
+.hero .link--quiet::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  /* Fully invisible at rest — no color AND no scale. Some mobile browsers
+     rendered a 1px seam even at scaleX(0), so we also zero the background
+     and opacity. Hover brings all three back. */
+  background: transparent;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.32, 0.72, 0.36, 1),
+              background 0.3s ease,
+              opacity 0.3s ease;
+}
+.hero .link--quiet:hover::after {
+  transform: scaleX(1);
+  background: var(--rose-gold);
+}
+.hero .link--quiet { transition: letter-spacing 0.4s ease; }
+.hero .link--quiet:hover { letter-spacing: 0.04em; }
+
+/* —— #20 Hero CTA breathing glow (same family as finale CTA) —— */
+.hero .btn {
+  animation: heroCTABreath 5s ease-in-out infinite;
+}
+@keyframes heroCTABreath {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(192, 143, 107, 0); }
+  50%      { box-shadow: 0 0 0 8px rgba(192, 143, 107, 0.10); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero .btn { animation: none; }
+}
+
+/* —— #21 Hero text staggered entrance cascade — REVISED SEQUENCE
+   eyebrow (accordion per-part) → h1 curtain (line 1 then line 2)
+   → subtitle word-cascade → CTA → cta-note → scroll arrow.
+   Container-level opacity animations kept for .hero__sub (pre-JS state)
+   and .hero__actions/.cta-note/.hero__scroll; the eyebrow container
+   only animates letter-spacing tracking, per-part opacity is on parts. */
+.hero__sub,
+.hero__actions,
+.cta-note,
+.hero__scroll {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroCascadeIn 0.95s cubic-bezier(0.32, 0.72, 0.36, 1) forwards;
+}
+.hero__sub     { animation-delay: 1.5s; }
+.hero__actions { animation-delay: 2.2s; }
+.cta-note      { animation-delay: 2.35s; }
+.hero__scroll  { animation-delay: 2.55s; }
+/* Eyebrow container: no opacity/transform animation (parts handle their own).
+   Only the tracking-expansion runs on the container. */
+.hero__eyebrow {
+  opacity: 1;
+  transform: none;
+  letter-spacing: 0.18em;
+  animation: heroEyebrowTracking 1.4s cubic-bezier(0.32, 0.72, 0.36, 1) 0.15s forwards;
+}
+@keyframes heroEyebrowTracking {
+  to { letter-spacing: 0.42em; }
+}
+@keyframes heroCascadeIn {
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__eyebrow,
+  .hero__sub,
+  .hero__actions,
+  .cta-note,
+  .hero__scroll {
+    opacity: 1; transform: none; animation: none;
+  }
+}
+
+/* —— #22 Services card subtle detail line that fades in on hover —— */
+.service-card__detail {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
   font-size: 0.72rem;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--rose-gold-light);
-  margin-bottom: 0.8rem;
+  opacity: 0;
+  transform: translateY(6px);
+  margin-top: 0.55rem;
+  transition: opacity 0.4s ease 0.05s, transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1) 0.05s;
 }
-.footer__copy { font-size: 0.75rem; color: #8a7c6d; letter-spacing: 0.05em; }
+.service-card:hover .service-card__detail {
+  opacity: 1;
+  transform: none;
+}
+
+/* —— #23 Service card photo parallax via CSS variable
+   (JS sets --card-parallax on each card based on scroll position) —— */
+.service-card::before {
+  transform: translateY(var(--card-parallax, 0));
+}
+
+/* —— #24 Spotlight photo — continuous slow Ken Burns
+   (works alongside the existing scroll-coupled cinematic zoom) —— */
+@media (prefers-reduced-motion: no-preference) {
+  .spotlight::before {
+    animation: spotlightBreath 24s ease-in-out infinite;
+  }
+}
+@keyframes spotlightBreath {
+  0%, 100% { transform: translateY(var(--parallax, 0)) scale(1.0); }
+  50%      { transform: translateY(var(--parallax, 0)) scale(1.04); }
+}
+
+/* —— #25 Featured Signature card image — slow Ken Burns —— */
+.signature-card--featured .signature-card__media img {
+  animation: signatureCardBreath 22s ease-in-out infinite;
+}
+@keyframes signatureCardBreath {
+  0%, 100% { transform: scale(1.0); }
+  50%      { transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-card--featured .signature-card__media img,
+  .spotlight::before { animation: none; }
+}
+
+/* —— #26 Interlude background — slow Ken Burns
+   (works on .interlude::before which holds the parallax photo) —— */
+@media (prefers-reduced-motion: no-preference) {
+  .interlude::before {
+    animation: interludeBreath 26s ease-in-out infinite;
+  }
+}
+@keyframes interludeBreath {
+  0%, 100% { transform: translateY(var(--interlude-parallax, 0)) scale(1.0); }
+  50%      { transform: translateY(var(--interlude-parallax, 0)) scale(1.05); }
+}
+
+/* Small decorative hairline before the Rikki signature — removed per
+   the "no dashes" pass since it visually reads as an em-dash. */
+.interlude__sign-rule { display: none; }
+
+/* —— #30 Featured testimonial word cascade (handled in JS — adds word-reveal spans) —— */
+/* The .word-reveal class already exists from M.5 and handles the cascade */
+
+/* —— #31 Testimonial author attribution delayed fade-in —— */
+.testimonial__attr {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.testimonials.is-visible .testimonial__attr { opacity: 1; transform: none; }
+.testimonials.is-visible .testimonial:nth-child(1) .testimonial__attr { transition-delay: 0.5s; }
+.testimonials.is-visible .testimonial:nth-child(2) .testimonial__attr { transition-delay: 0.7s; }
+.testimonials.is-visible .testimonial:nth-child(3) .testimonial__attr { transition-delay: 0.85s; }
+
+/* —— #32 Finale address — staggered line-by-line fade-in —— */
+.finale__address-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.finale.is-visible .finale__address-line:nth-child(1) { transition-delay: 0.85s; }
+.finale.is-visible .finale__address-line:nth-child(2) { transition-delay: 1.0s; }
+.finale.is-visible .finale__address-line { opacity: 1; transform: none; }
+.finale__contact {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0.36, 1) 1.15s,
+              transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1) 1.15s;
+}
+.finale.is-visible .finale__contact { opacity: 1; transform: none; }
+
+/* —— #33 Finale CTA hover refinement — adds subtle scale on hover —— */
+.btn--finale:hover {
+  transform: translate(var(--magnetic-x, 0), var(--magnetic-y, 0)) scale(1.03);
+}
+
+/* —— #34 Footer URL letter-spacing hover bloom —— */
+.footer__url a {
+  transition: color 0.3s ease, border-color 0.3s ease, letter-spacing 0.45s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.footer__url a:hover {
+  letter-spacing: 0.24em;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LUXURY MOTION PASS (M.12) — IG icons, alignment, refinements
+   ════════════════════════════════════════════════════════════════ */
+
+/* —— #1 Wink Wink Instagram icon (finale) — clean icon, no border, palette-only —— */
+.finale__ig {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.4rem;
+  color: var(--rose-gold-light);
+  padding: 0.4rem;
+  transition: color 0.35s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.4s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.finale__ig:hover {
+  color: var(--cream);
+  transform: scale(1.12);
+}
+.ig-icon {
+  display: block;
+  vertical-align: middle;
+}
+
+/* —— #2 Digital Millionaires Instagram icon (footer credit line) — tiny inline —— */
+.footer__dm-ig {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.4em;
+  padding: 0.95rem;
+  color: #a89c8e;
+  vertical-align: middle;
+  transition: color 0.3s ease, transform 0.4s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.footer__dm-ig:hover {
+  color: var(--rose-gold-light);
+  transform: scale(1.12);
+}
+.footer__dm-ig .ig-icon { width: 14px; height: 14px; }
+
+/* —— #3 Hero microcopy alignment fix ——
+   The .cta-note + .hero__scroll pair now lives inside .hero__badge — a
+   fit-content flex-column that hugs the cta-note text width. The badge
+   itself sits at the text column's left edge (align-self: flex-start)
+   so it stays in the editorial left-aligned rhythm, but the arrow
+   centers under the cta-note's actual text via the badge's
+   align-items: center. */
+.hero__badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: flex-start;
+  width: fit-content;
+  margin-top: 1rem;
+}
+.hero .cta-note {
+  text-align: left;
+  margin: 0;
+  padding-left: 0;
+}
+.hero__badge .hero__scroll { align-self: center; }
+
+/* —— #4 Meet Rikki motion ——
+   Photo: slow Ken Burns drift. Text: staggered cascade reveal. */
+.about__photo img {
+  animation: aboutPhotoBreath 22s ease-in-out infinite;
+}
+@keyframes aboutPhotoBreath {
+  0%, 100% { transform: translateY(var(--parallax-y, 0)) scale(1); }
+  50%      { transform: translateY(var(--parallax-y, 0)) scale(1.03); }
+}
+/* Meet Rikki bio — headline + sig fade on their own; body paragraphs
+   animate their word children individually for a line-by-line unfurl. */
+.about__copy > h2,
+.about__copy > .about__sign {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.95s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.95s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.about.is-visible .about__copy > h2       { opacity: 1; transform: none; transition-delay: 0.1s; }
+.about.is-visible .about__copy > .about__sign { opacity: 1; transform: none; transition-delay: 2.4s; }
+
+/* Per-word reveal on Rikki's body paragraphs — each word cascades in with
+   a 25ms stagger. Reads as text UNFURLING onto the page rather than
+   arriving as a block. */
+.about__copy p:not(.about__sign) .about__word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.55s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(0.35s + var(--i, 0) * 0.024s);
+}
+.about.is-visible .about__copy p:not(.about__sign) .about__word {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .about__word { opacity: 1 !important; transform: none !important; }
+}
+
+/* —— #5 Signature Services — kicker + title + intro staggered before cards —— */
+.signature .menu__kicker,
+.signature .section__title,
+.signature .menu__intro {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.9s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.signature.is-visible .menu__kicker     { opacity: 1; transform: none; transition-delay: 0s; }
+.signature.is-visible .section__title   { opacity: 1; transform: none; transition-delay: 0.1s; }
+.signature.is-visible .menu__intro      { opacity: 1; transform: none; transition-delay: 0.2s; }
+/* Bump card delays so they cascade AFTER the header */
+.signature.is-visible .signature-card:nth-child(1) { transition-delay: 0s; }
+.signature.is-visible .signature-card:nth-child(2) { transition-delay: 0.15s; }
+.signature.is-visible .signature-card:nth-child(3) { transition-delay: 0.3s; }
+/* "THE SIGNATURE" pill entrance — fades + scales in after the featured card lands */
+.signature-card__tag {
+  opacity: 0;
+  transform: scale(0.85);
+  transform-origin: left center;
+  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0.36, 1) 0.9s,
+              transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1) 0.9s;
+}
+.signature.is-visible .signature-card__tag { opacity: 1; transform: scale(1); }
+
+/* —— #6 Menu sections — full luxury motion treatment —— */
+
+/* Chapter mark — quiet scale-fade entrance */
+.menu__chapter {
+  opacity: 0;
+  transform: translateY(10px) scale(0.94);
+  transform-origin: center bottom;
+  transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.9s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu.is-visible .menu__chapter { opacity: 1; transform: none; transition-delay: 0s; }
+
+/* Header stagger: kicker → title → intro */
+.menu .menu__kicker,
+.menu .menu__intro {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.85s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.85s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu.is-visible .menu__kicker { opacity: 1; transform: none; transition-delay: 0.1s; }
+.menu.is-visible .menu__intro  { opacity: 1; transform: none; transition-delay: 0.45s; }
+
+/* Section title — opacity wrapper (word-cascade JS animates individual words) */
+.menu .section__title {
+  opacity: 0;
+  transition: opacity 0.6s ease 0.18s;
+}
+.menu.is-visible .section__title { opacity: 1; }
+
+/* Secondary rose-gold hairline that drew under the menu intro on reveal
+   — retired per client feedback. The signature flourish under each
+   section title provides all the visual separation needed. */
+.menu .menu__head { position: relative; }
+.menu .menu__head::after { display: none; }
+
+/* Menu items — slide in from left (more dramatic than fade-up) with deeper stagger */
+.menu .menu-list .menu-item,
+.menu .menu__list .menu-item {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.85s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.95s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu.is-visible .menu-item { opacity: 1; transform: none; }
+.menu.is-visible .menu-item:nth-child(1) { transition-delay: 0.55s; }
+.menu.is-visible .menu-item:nth-child(2) { transition-delay: 0.70s; }
+.menu.is-visible .menu-item:nth-child(3) { transition-delay: 0.85s; }
+.menu.is-visible .menu-item:nth-child(4) { transition-delay: 1.00s; }
+.menu.is-visible .menu-item:nth-child(5) { transition-delay: 1.15s; }
+.menu.is-visible .menu-item:nth-child(6) { transition-delay: 1.30s; }
+.menu.is-visible .menu-item:nth-child(7) { transition-delay: 1.45s; }
+.menu.is-visible .menu-item:nth-child(8) { transition-delay: 1.60s; }
+
+/* Item description fades in slightly delayed after name + price */
+.menu .menu-item__desc {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.7s cubic-bezier(0.32, 0.72, 0.36, 1) 0.3s,
+              transform 0.7s cubic-bezier(0.32, 0.72, 0.36, 1) 0.3s;
+}
+.menu.is-visible .menu-item__desc { opacity: 1; transform: none; }
+
+/* Item hover — name nudges right + color shifts to rose-gold */
+.menu-item__name {
+  display: inline-block;
+  transition: transform 0.45s cubic-bezier(0.32, 0.72, 0.36, 1),
+              color 0.4s ease,
+              letter-spacing 0.45s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transform-origin: left center;
+}
+.menu-item:hover .menu-item__name {
+  transform: translateX(6px);
+  color: var(--rose-gold);
+  letter-spacing: 0.02em;
+}
+
+/* Pricing note / footer — fades in last */
+.menu__pricing-note,
+.menu__footer-note {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.8s cubic-bezier(0.32, 0.72, 0.36, 1) 1.8s,
+              transform 0.8s cubic-bezier(0.32, 0.72, 0.36, 1) 1.8s;
+}
+.menu.is-visible .menu__pricing-note,
+.menu.is-visible .menu__footer-note { opacity: 1; transform: none; }
+
+/* —— #7 Testimonials — section title stagger + featured scale-in —— */
+.testimonials .menu__kicker,
+.testimonials .section__title {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.9s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.testimonials.is-visible .menu__kicker   { opacity: 1; transform: none; transition-delay: 0s; }
+.testimonials.is-visible .section__title { opacity: 1; transform: none; transition-delay: 0.15s; }
+/* Bump testimonial delays so they cascade AFTER the header */
+.testimonials.is-visible .testimonial:nth-child(1) { transition-delay: 0.3s; }
+.testimonials.is-visible .testimonial:nth-child(2) { transition-delay: 0.48s; }
+.testimonials.is-visible .testimonial:nth-child(3) { transition-delay: 0.62s; }
+/* Featured testimonial — softer entrance with subtle scale + opacity */
+.testimonial--featured {
+  transform: translateY(20px) scale(0.985);
+  transition: opacity 1.1s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 1.1s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.testimonials.is-visible .testimonial--featured { transform: none; }
+
+/* ════════════════════════════════════════════════════════════════
+   #8 PORTFOLIO JITTER FIX
+   ════════════════════════════════════════════════════════════════ */
+
+/* Remove the center-tile focus treatment (was the primary jitter source —
+   filter recalc every animation frame caused constant repaints) */
+.filmstrip-tile.is-center-focus img,
+.filmstrip-tile.is-center-focus video {
+  filter: brightness(1.02) contrast(1.08) saturate(1.05) sepia(0.06) hue-rotate(-2deg);
+  /* identity — matches default grade so focus class is a no-op visually */
+}
+
+/* GPU-accelerate the viewport itself. `contain` and `will-change:scroll-position`
+   were removed — they were interacting badly with the rAF loop entering/exiting
+   viewport, contributing to the jolt. The translateZ(0) is enough to promote
+   the viewport to its own compositor layer. */
+.filmstrip__viewport {
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+}
+
+/* Filmstrip tiles: no hover effects, no rose-gold edge — the strip reads
+   as a continuous cinema reel. Tiles still respond to clicks (lightbox). */
+.filmstrip-tile {
+  transform: translate3d(0, 0, 0);
+}
+.filmstrip-tile img,
+.filmstrip-tile video {
+  will-change: transform;
+}
+.filmstrip-tile::after {
+  display: none;
+}
+
+/* —— Reduced motion safety net —— */
+@media (prefers-reduced-motion: reduce) {
+  .word-reveal,
+  .services .service-card,
+  .signature .signature-card,
+  .menu__list .menu-item,
+  .testimonials .testimonial,
+  .spotlight__eyebrow,
+  .spotlight__title,
+  .spotlight__sub,
+  .spotlight__price-row,
+  .finale__divider-line,
+  .finale__divider-dot {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero .btn, .btn--finale { transform: none !important; }
+}
 
 /* ===== Responsive ===== */
+/* Tablet nav: too many items to fit alongside brand + CTA, so switch
+   to hamburger drawer between 721-1100px. Content layouts remain
+   at their tablet-appropriate sizes (governed by the 720 breakpoint). */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .nav { gap: 1rem; padding: 0.9rem 1.5rem; }
+  .nav__toggle { display: inline-flex; margin-left: 0.2rem; }
+  .nav__hint { display: none; }
+  .nav__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(13, 11, 11, 0.97);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(217, 180, 143, 0.18);
+    border-bottom: 1px solid rgba(217, 180, 143, 0.18);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .nav__links.is-open { max-height: 360px; }
+  .nav__links a {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid rgba(217, 180, 143, 0.08);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+  }
+  .nav__links a:last-child { border-bottom: none; }
+}
+
 @media (max-width: 720px) {
-  .nav__links { display: none; }
-  .nav { gap: 0.75rem; padding: 0.85rem 1.1rem; }
-  .nav__brand { font-size: 1.2rem; letter-spacing: 0.1em; }
-  .btn--small { padding: 0.55rem 1.05rem; font-size: 0.62rem; letter-spacing: 0.14em; }
+  .nav { gap: 0.6rem; padding: 0.85rem 1.1rem; flex-wrap: nowrap; }
+  .nav__brand { gap: 0.14rem; }
+  .nav__brand-mark { font-size: 1.2rem; letter-spacing: 0.12em; padding-left: 0.12em; }
+  .nav__brand-sub { font-size: 0.5rem; letter-spacing: 0.36em; padding-left: 0.36em; }
+  .btn--small { padding: 0.55rem 1.05rem; font-size: 0.6rem; letter-spacing: 0.16em; }
+
+  /* Mobile drawer: slides down under the nav bar */
+  .nav__toggle { display: inline-flex; margin-left: 0.2rem; }
+  .nav__hint { display: none; } /* hide hint on mobile to save space */
+  .nav__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(13, 11, 11, 0.97);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(217, 180, 143, 0.18);
+    border-bottom: 1px solid rgba(217, 180, 143, 0.18);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .nav__links.is-open { max-height: 360px; }
+  .nav__links a {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid rgba(217, 180, 143, 0.08);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+  }
+  .nav__links a:last-child { border-bottom: none; }
+
   .menu-item__desc { max-width: 100%; }
+  /* Testimonials: stack all three on mobile */
+  .testimonials__list { grid-template-columns: 1fr; }
+  .testimonial--featured { max-width: 100%; padding-top: 1.4rem; }
+  .testimonial--featured .testimonial__quote { font-size: 1.35rem; }
+
+  /* Services: stack back to single column on mobile */
+  .services__grid { grid-template-columns: 1fr; grid-template-rows: none; gap: 1rem; }
+  .services__grid .service-card--lash,
+  .services__grid .service-card--hair,
+  .services__grid .service-card--waxing { grid-column: auto; grid-row: auto; min-height: 320px; }
+  .services__grid .service-card--lash h3 { font-size: 1.95rem; }
+
+  /* Filmstrip on mobile: shorter height (drag-scroll works on touch via native overflow) */
+  .filmstrip__viewport { height: clamp(280px, 60vw, 360px); }
+
+  /* Spotlight on mobile: vertical gradient + content pushed lower so photo shows more */
+  .spotlight { min-height: 88vh; display: flex; align-items: flex-end; }
+  .spotlight::after {
+    background: linear-gradient(180deg, rgba(13, 11, 11, 0) 0%, rgba(13, 11, 11, 0.55) 55%, rgba(13, 11, 11, 0.92) 100%);
+  }
+  .spotlight__inner { padding-top: 0; padding-bottom: clamp(2rem, 8vw, 4rem); }
+  .spotlight__copy { max-width: 100%; }
+  .spotlight__price-row { gap: 1.1rem; }
+  .spotlight__price { font-size: 2rem; }
+  /* Smaller chapter marker on mobile */
+  .chapter-marker { font-size: 0.95rem; }
+  /* Footer mobile: text stays centered, slightly tighter line-height */
+  .footer .footer__line { font-size: 0.66rem; line-height: 1.75; }
+  .about__inner { grid-template-columns: 1fr; gap: 2rem; }
+  .about__photo { max-width: 360px; margin: 0 auto; width: 100%; }
+  .hero__actions { flex-direction: column; align-items: center; }
 
   .sticky-book {
     position: fixed;
-    left: 0.9rem;
-    right: 0.9rem;
-    bottom: 0.9rem;
+    left: 50%;
+    bottom: 1.1rem;
+    transform: translateX(-50%) translateY(140%);
     z-index: 70;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.1rem;
-    padding: 0.8rem 1rem;
-    background: var(--gold-grad);
-    color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 14px 34px -10px rgba(40, 25, 15, 0.65);
+    display: inline-flex;
+    /* Use baseline so italic "Rikki" and tracked-out label share a line,
+       not a mid-cap vertical center that always looks off with italics. */
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.95rem 2rem;
+    background: var(--ink);
+    color: var(--cream);
+    border: 1px solid rgba(247, 237, 226, 0.08);
+    /* Pill shape — apex CTA radius */
+    border-radius: 999px;
+    box-shadow: 0 22px 48px -16px rgba(20, 15, 10, 0.55);
     text-align: center;
     opacity: 0;
-    transform: translateY(140%);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.45s cubic-bezier(0.32, 0.72, 0.36, 1),
+                transform 0.45s cubic-bezier(0.32, 0.72, 0.36, 1);
     pointer-events: none;
+    white-space: nowrap;
   }
-  .sticky-book--visible { opacity: 1; transform: none; pointer-events: auto; }
+  .sticky-book--visible { opacity: 1; transform: translateX(-50%); pointer-events: auto; }
   .sticky-book__label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
+    /* Balance the trailing tracked-out space after "K" so the label reads
+       centered relative to its own visual bounds. */
+    padding-left: 0.24em;
   }
   .sticky-book__sub {
     font-size: 0.58rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    opacity: 0.9;
+    color: var(--rose-gold-light);
+    font-style: italic;
+    /* Same trailing-space compensation for the italic sig */
+    padding-left: 0.18em;
   }
   body { padding-bottom: 5.5rem; }
+
+  /* ═════════════════════════════════════════════════════════════════
+     Mobile-only polish pass — layout crops, hover simplifications,
+     motion pacing so animations don't finish before user scrolls in.
+     ═════════════════════════════════════════════════════════════════ */
+
+  /* Mobile nav: switch from sticky to FIXED so it's always pinned to the
+     top of the visible viewport regardless of scroll behavior (Lenis
+     smooth-scroll, mobile browser URL bar collapse, anchor jumps).
+     Body gains matching padding-top so hero content isn't hidden.
+     Hide the in-nav Text-to-Book pill on mobile — the sticky booking
+     pill at the bottom of the viewport already covers that role and
+     was crowding the hamburger against the right edge. */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  body {
+    padding-top: 60px;
+    overflow-x: hidden;
+  }
+  html { overflow-x: hidden; }
+  .nav__cta { display: none; }
+
+  /* CTA note under hero: center + stack on 2 lines. Position stays
+     in-flow after the CTA row (its original spot). The middle dot
+     separator hides on mobile so the two phrases sit one per line. */
+  .hero__inner { align-items: center; text-align: center; }
+  .hero__inner > * { align-self: center; }
+  .hero .cta-note {
+    align-self: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 1rem auto 0;
+    width: 100%;
+  }
+  .hero .cta-note__sep { display: none; }
+  .hero .cta-note__part { display: block; }
+
+  /* Meet Rikki bio: slow down + delay the per-word reveal so it plays
+     while the visitor is actually reading the section, not before
+     they've reached it. Base delay 1.1s + 40ms per word + 750ms
+     per-word duration — total ~5.7s, staggered over the visible copy. */
+  .about__copy p:not(.about__sign) .about__word {
+    transition-duration: 0.75s;
+    transition-delay: calc(1.1s + var(--i, 0) * 0.04s);
+  }
+  .about.is-visible .about__copy > .about__sign { transition-delay: 5.2s; }
+
+  /* Menu item hover: retire the persistent rose-gold marginalia dot on
+     mobile so hover shows only ONE effect — the rose-gold ink hairline
+     drawing across the row. */
+  .menu-item__head::before { display: none; }
+
+  /* Spotlight photo (studio's signature): enlarge and bottom-anchor the
+     background so the forehead is cropped out and the frame holds the
+     eyebrow + eye + lashes. */
+  .spotlight::before {
+    background-size: 180% auto !important;
+    background-position: 50% 100% !important;
+    top: 0 !important;
+    bottom: 0 !important;
+  }
+
+  /* Menu chapter covers on mobile: each panel matches its source image's
+     native aspect ratio so nothing is cropped. Lash + Hair images are
+     1916×821 (aspect 2.33); Wax is 1774×887 (aspect 2). Width locked
+     to 100% so aspect-ratio drives the height without forcing overflow. */
+  .menu-cover {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: 50vh;
+  }
+  .menu-cover--lashes,
+  .menu-cover--hair {
+    aspect-ratio: 1916 / 821;
+  }
+  .menu-cover--waxing {
+    aspect-ratio: 1774 / 887;
+  }
+  .menu-cover--lashes::before,
+  .menu-cover--hair::before {
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    inset: 0 !important;
+    transform: none !important;
+  }
+  .menu-cover--waxing::before {
+    background-size: cover !important;
+    background-position: 22% 50% !important;
+    inset: 0 !important;
+    transform: none !important;
+  }
+  .menu-cover.is-in-viewport::before { transform: none !important; }
 }
+
+/* —————————————————————————————————————————————————————————————
+   GLOBAL ANIMATION GATING — pause infinite CSS animations on
+   sections that aren't currently in the viewport. The .is-in-viewport
+   class is toggled live by the IntersectionObserver in index.html.
+   Sections without the class get animation-play-state: paused on
+   their infinite-loop elements. One-shot reveal animations are
+   unaffected (they're keyed by .is-visible, not by this rule).
+   ————————————————————————————————————————————————————————————— */
+.hero:not(.is-in-viewport) .hero__video,
+.hero:not(.is-in-viewport) .hero__scroll-arrow,
+.hero:not(.is-in-viewport) .btn,
+.hero:not(.is-in-viewport) .hero__title,
+.hero:not(.is-in-viewport) .hero__link-arrow,
+.hero:not(.is-in-viewport) .cta-note__part,
+.about:not(.is-in-viewport) .about__photo img,
+.spotlight:not(.is-in-viewport)::before,
+.signature:not(.is-in-viewport) .signature-card--featured .signature-card__media img,
+.interlude:not(.is-in-viewport)::before,
+.finale:not(.is-in-viewport) .finale__atmosphere,
+.finale:not(.is-in-viewport) .btn--finale,
+.finale:not(.is-in-viewport) .finale__address-line,
+.finale:not(.is-in-viewport) .finale__phone,
+.filmstrip:not(.is-in-viewport) .filmstrip__track,
+.menu-cover:not(.is-in-viewport) .menu-cover__grain,
+.hero:not(.is-in-viewport) .hero__media-grain,
+.spotlight:not(.is-in-viewport) .btn.js-book,
+.spotlight:not(.is-in-viewport) .btn.js-book::before,
+.finale:not(.is-in-viewport) .btn--finale,
+.finale:not(.is-in-viewport) .btn--finale::before,
+.finale:not(.is-in-viewport) .finale__directions,
+.finale:not(.is-in-viewport) .finale__directions::after {
+  animation-play-state: paused;
+}
+
+/* ==================================================================
+   TIER 3 HERO — ADDITIONAL HERO TEXT MOTION LAYER
+   Ten additive text-animation moments layered onto the hero: eyebrow
+   accordion, character curtain title, line-by-line title arrival,
+   italic swap on "You", subtitle word cascade, arrow drift, CTA
+   magnetic pull, badge tracking pulse, underline shimmer sweep,
+   ambient title letter-spacing breath.
+   ================================================================== */
+
+/* --- Hero eyebrow accordion (per-part stagger, LtR flow) ---
+   Container tracking-expansion is handled in the #21 hero cascade block
+   above. This block handles the per-part opacity + slide-in cascade. */
+.hero__eyebrow-part,
+.hero__eyebrow-sep {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: heroEyebrowPartIn 0.85s cubic-bezier(0.32, 0.72, 0.36, 1) forwards;
+}
+/* Sibling positions (all children are <span>):
+   1: Hair · 2: sep · 3: Lash Extensions · 4: sep · 5: Waxing */
+.hero__eyebrow-part:nth-of-type(1) { animation-delay: 0.15s; }
+.hero__eyebrow-sep:nth-of-type(2)  { animation-delay: 0.3s;  }
+.hero__eyebrow-part:nth-of-type(3) { animation-delay: 0.35s; }
+.hero__eyebrow-sep:nth-of-type(4)  { animation-delay: 0.55s; }
+.hero__eyebrow-part:nth-of-type(5) { animation-delay: 0.6s;  }
+@keyframes heroEyebrowPartIn {
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__eyebrow-part,
+  .hero__eyebrow-sep { opacity: 1; transform: none; animation: none; }
+}
+
+/* --- Hero subtitle word cascade ---
+   When JS wraps words in .hero__sub-word (adds .js-hero-sub-ready to
+   container), each word fades + slides up individually. The container's
+   own block-cascade rule is overridden by the higher-specificity
+   .js-hero-sub-ready.hero__sub selector below. */
+.js-hero-sub-ready.hero__sub {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+.hero__sub-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: heroSubWordIn 0.65s cubic-bezier(0.32, 0.72, 0.36, 1) forwards;
+  animation-delay: calc(1.5s + var(--sub-i, 0) * 0.04s);
+}
+@keyframes heroSubWordIn {
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__sub-word { opacity: 1; transform: none; animation: none; }
+}
+
+/* --- Ambient title opacity breath ---
+   After the title curtain reveal completes (~2.1s), the container
+   starts a slow opacity pulse. Uses opacity (not letter-spacing) so
+   the layout can never shift and "Elevated Beauty," can't be pushed
+   to wrap. Pauses when hero out of view. */
+.hero__title.js-hero-title-ready {
+  animation: heroTitleBreath 6s ease-in-out infinite;
+  animation-delay: 2.3s;
+}
+@keyframes heroTitleBreath {
+  0%, 100% { opacity: 0.94; }
+  50%      { opacity: 1;    }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__title.js-hero-title-ready { animation: none; opacity: 1; }
+}
+
+/* --- "view the menu →" arrow drift ---
+   The arrow glyph gently nudges right and back every 4s. Signals
+   invitation to scroll without being loud. Pauses when hero out. */
+.hero__link-arrow {
+  display: inline-block;
+  animation: heroArrowDrift 4s ease-in-out infinite;
+  animation-delay: 2.6s;
+  will-change: transform;
+}
+@keyframes heroArrowDrift {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__link-arrow { animation: none; }
+}
+
+/* --- CTA magnetic pull (desktop only) ---
+   Chars translate toward cursor via --cta-x / --cta-y CSS vars written
+   per-frame by the T3.HERO magnetic-pull IIFE. Coarse pointers get
+   no transform (touch devices don't need it). */
+.hero-cta-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.hero-cta-char {
+  display: inline-block;
+  transform: translate(var(--cta-x, 0), var(--cta-y, 0));
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+@media (hover: none), (pointer: coarse) {
+  .hero-cta-char { transform: none; transition: none; }
+}
+
+/* --- Badge (cta-note) subtle pulse ---
+   The "by appointment · currently booking" parts scale + fade very
+   subtly on a 6s cycle. Nearly imperceptible; adds ambient life. */
+.cta-note__part {
+  display: inline-block;
+  animation: ctaNoteBreath 6s ease-in-out infinite;
+  animation-delay: 3s;
+}
+.cta-note__part:nth-of-type(3) { animation-delay: 3.6s; }
+@keyframes ctaNoteBreath {
+  0%, 100% { transform: scale(1);    opacity: 0.95; }
+  50%      { transform: scale(1.02); opacity: 1;    }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cta-note__part { animation: none; opacity: 1; transform: none; }
+}
+
+/* --- "view the menu" underline shimmer sweep on hover ---
+   Replaces the flat rose-gold underline with a moving gradient
+   highlight on hover, giving the link a subtle "alive" feel. */
+.hero .link--quiet:hover::after {
+  background: linear-gradient(
+    90deg,
+    rgba(192, 143, 107, 0)   0%,
+    rgba(192, 143, 107, 1)  50%,
+    rgba(192, 143, 107, 0) 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  animation: linkShimmerSweep 1.5s ease-in-out infinite;
+}
+@keyframes linkShimmerSweep {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero .link--quiet:hover::after {
+    background: var(--rose-gold);
+    animation: none;
+  }
+}
+
+
+/* ==================================================================
+   TIER 3 — TEXT MOTION PREMIUM LAYER
+   Fourteen additive text-animation moments layered atop the existing
+   motion system. Editorial-magazine tempo throughout: tracked-out
+   labels expand, section titles curtain-reveal by character, menu
+   intros unfurl by line, testimonials cascade word-by-word, menu
+   item names cascade character-by-character, prices scale-settle,
+   diamond flourishes rotate in, chapter numerals draw as calligraphy,
+   address breathes, phone pulses, section titles breathe with scroll,
+   desktop section titles pull toward the cursor magnetically.
+   ================================================================== */
+
+/* --- 3.1 Kicker letter-spacing expansion ---
+   Tracked-out uppercase labels start tight and expand to their
+   designed letter-spacing as their section enters view. The classic
+   luxury motion signature (Aesop, Hourglass, Byredo). */
+/* Signature-card and testimonial eyebrows still use letter-spacing
+   expansion (their containers are wide, no wrap risk). Interlude eyebrow
+   was causing "a note from the studio" to wrap on mobile widths — now
+   uses static letter-spacing + opacity/translateY reveal instead. */
+.signature-card__eyebrow,
+.testimonial__attr {
+  transition: letter-spacing 0.95s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.signature-card__eyebrow { letter-spacing: 0.1em; }
+.testimonial__attr { letter-spacing: 0.1em; }
+.signature.is-visible .signature-card__eyebrow { letter-spacing: 0.28em; }
+.testimonials.is-visible .testimonial__attr { letter-spacing: 0.28em; }
+
+/* Interlude eyebrow — no letter-spacing pump (was causing wrap). Static
+   tracking, opacity + translateY reveal instead. */
+.interlude__eyebrow {
+  letter-spacing: 0.32em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.9s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.9s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.interlude.is-visible .interlude__eyebrow {
+  opacity: 1;
+  transform: none;
+}
+/* Hero eyebrow tracking-expansion moved to #21 hero cascade block above */
+@media (prefers-reduced-motion: reduce) {
+  .interlude__eyebrow,
+  .signature-card__eyebrow,
+  .testimonial__attr,
+  .hero__eyebrow { transition: none; animation: none; }
+  .interlude__eyebrow { letter-spacing: 0.32em; }
+  .signature-card__eyebrow { letter-spacing: 0.28em; }
+  .testimonial__attr { letter-spacing: 0.28em; }
+  .hero__eyebrow { letter-spacing: 0.42em; opacity: 1; transform: none; }
+}
+
+/* --- 3.2 Character curtain reveal for section titles ---
+   JS wraps each character of every .section__title in a .char-reveal
+   span with --char-i set. Characters drop in from behind a top mask
+   with 35ms per-char stagger. Editorial print-typography feel. */
+.section__title .char-word,
+.menu-item__name .name-char-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.section__title .char-reveal {
+  display: inline-block;
+  transform: translateY(1.05em);
+  opacity: 0;
+  transition: transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1),
+              opacity 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--char-i, 0) * 0.035s);
+}
+.section__title.js-charified {
+  overflow: hidden;
+  padding: 0.05em 0;
+}
+.is-visible .section__title .char-reveal { transform: none; opacity: 1; }
+
+/* T3.SEC fallback — kept simple. Just makes sure the ancestor .section
+   gets .is-visible when the title enters view; the existing CSS
+   transitions on .section__title .char-reveal handle the actual reveal.
+   No !important, no compound motion, no cascade wars. */
+@media (prefers-reduced-motion: reduce) {
+  .section__title .char-reveal { transform: none; opacity: 1; transition: none; }
+}
+
+/* --- 3.3 Line-by-line menu intro reveal ---
+   JS wraps each intro in a .line-reveal container per natural line
+   (splits on `<br>` or breaks by punctuation clause). Each line rises
+   with a 200ms stagger after the section title lands. */
+.menu__intro .line-reveal {
+  display: block;
+  opacity: 0;
+  transform: translateY(0.55em);
+  transition: opacity 0.85s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.85s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--line-i, 0) * 0.2s + 0.5s);
+}
+.is-visible > .menu__head .menu__intro .line-reveal,
+.is-visible .menu__intro .line-reveal { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .menu__intro .line-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* --- 3.4 Word cascade for all testimonials ---
+   JS extended to cascade all three quotes, not just featured.
+   Uses the existing .word-reveal styling — no new CSS needed here. */
+
+/* --- 3.5 Attribution dash draw-in ---
+   The rose-gold hairline before "— SERVICE" draws left-to-right after
+   the name has settled. Subtle signature-line reveal. */
+.testimonial__attr-service::before {
+  width: 0;
+  transition: width 0.65s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: 0.6s;
+}
+.testimonials.is-visible .testimonial__attr-service::before { width: 8px; }
+.testimonials.is-visible .testimonial:nth-child(1) .testimonial__attr-service::before { transition-delay: 0.85s; }
+.testimonials.is-visible .testimonial:nth-child(2) .testimonial__attr-service::before { transition-delay: 1.05s; }
+.testimonials.is-visible .testimonial:nth-child(3) .testimonial__attr-service::before { transition-delay: 1.2s; }
+@media (prefers-reduced-motion: reduce) {
+  .testimonial__attr-service::before { width: 8px; transition: none; }
+}
+
+/* --- 3.6 Diamond flourish rotate-in ---
+   The flourish SVG is split: `::after` renders the two hairlines only
+   (baked-in diamond removed) and a `::before` renders a rose-gold
+   diamond overlaid at flourish center that rotates + scales in.
+   Reads as a jewel settling into place. */
+.section__title, .finale__title { position: relative; }
+.section__title::after, .finale__title::after {
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 8'><line x1='0' y1='4' x2='40' y2='4' stroke='%23c08f6b' stroke-width='1'/><line x1='56' y1='4' x2='96' y2='4' stroke='%23c08f6b' stroke-width='1'/></svg>") no-repeat center;
+}
+.section__title::before, .finale__title::before {
+  content: "";
+  position: absolute;
+  bottom: 0.4rem;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--rose-gold);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transform: translateX(-50%) rotate(-90deg) scale(0);
+  transform-origin: center;
+  transition: transform 1.1s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: 0.55s;
+  z-index: 1;
+  pointer-events: none;
+}
+.is-visible .section__title::before,
+.is-visible .finale__title::before {
+  transform: translateX(-50%) rotate(0deg) scale(1);
+}
+.spotlight__title::before { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .section__title::before, .finale__title::before {
+    transform: translateX(-50%) rotate(0deg) scale(1);
+    transition: none;
+  }
+}
+
+/* --- 3.7 Menu item name letter cascade ---
+   JS wraps each character of menu item names in a .name-char-reveal
+   span. Characters drop in with 25ms per-char stagger when the menu
+   item row enters view. Layers under the existing ink-line sweep. */
+.menu-item__name .name-char-reveal {
+  display: inline-block;
+  transform: translateY(0.5em);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+              opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--nchar-i, 0) * 0.025s);
+}
+.menu-item.is-name-revealed .menu-item__name .name-char-reveal {
+  transform: none; opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-item__name .name-char-reveal { transform: none; opacity: 1; transition: none; }
+}
+
+/* --- 3.8 Price scale-in with weight settle ---
+   Each price starts slightly larger and lighter, settles to designed
+   size/weight over 500ms on menu-item entry. Reads as the number
+   "arriving" at its final value. */
+.menu-item__price {
+  transform: scale(1.15);
+  opacity: 0;
+  filter: blur(1.5px);
+  transition: transform 0.55s cubic-bezier(0.32, 0.72, 0.36, 1),
+              opacity 0.45s cubic-bezier(0.32, 0.72, 0.36, 1),
+              filter 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu.is-visible .menu-item__price {
+  transform: none;
+  opacity: 1;
+  filter: none;
+}
+/* Same stagger as .menu-item entry, offset slightly later */
+.menu.is-visible .menu-item:nth-child(1) .menu-item__price { transition-delay: 0.35s; }
+.menu.is-visible .menu-item:nth-child(2) .menu-item__price { transition-delay: 0.45s; }
+.menu.is-visible .menu-item:nth-child(3) .menu-item__price { transition-delay: 0.55s; }
+.menu.is-visible .menu-item:nth-child(4) .menu-item__price { transition-delay: 0.65s; }
+.menu.is-visible .menu-item:nth-child(5) .menu-item__price { transition-delay: 0.75s; }
+.menu.is-visible .menu-item:nth-child(6) .menu-item__price { transition-delay: 0.85s; }
+.menu.is-visible .menu-item:nth-child(7) .menu-item__price { transition-delay: 0.95s; }
+.menu.is-visible .menu-item:nth-child(8) .menu-item__price { transition-delay: 1.05s; }
+/* Signature card prices — scale-settle too */
+.signature-card__price, .spotlight__price {
+  transform: scale(1.12);
+  opacity: 0;
+  filter: blur(1px);
+  transition: transform 0.55s cubic-bezier(0.32, 0.72, 0.36, 1),
+              opacity 0.45s cubic-bezier(0.32, 0.72, 0.36, 1),
+              filter 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: 0.55s;
+}
+.signature.is-visible .signature-card__price,
+.spotlight.is-cascading .spotlight__price {
+  transform: none; opacity: 1; filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-item__price, .signature-card__price, .spotlight__price {
+    transform: none; opacity: 1; filter: none; transition: none;
+  }
+}
+
+/* --- 3.9 Scroll-driven letter-spacing on section titles ---
+   As a section title crosses viewport-center, its letter-spacing
+   pumps ~0.02em and returns. JS sets the CSS var per-frame.
+   .finale__title is excluded — its container is tight to the copy
+   length and any pump forces "Let's Get You Booked" to wrap. */
+.section__title {
+  letter-spacing: calc(var(--title-track, 0em));
+}
+@media (prefers-reduced-motion: reduce) {
+  .section__title { letter-spacing: 0; }
+}
+
+/* --- 3.10 Menu chapter numeral draw-in ---
+   Roman numerals (I., II., III.) on chapter covers reveal via a
+   bottom-up clip-path, mimicking calligraphy strokes being laid down.
+   Ties visually to the interlude Rikki signature handwriting. */
+.menu-cover__numeral {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.7s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: 0.1s;
+}
+.menu-cover.is-visible.js-mc-fired .menu-cover__numeral {
+  clip-path: inset(0 0 0 0);
+}
+.menu-cover__label {
+  opacity: 0;
+  transform: translateY(0.6em);
+  transition: opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: 0.55s;
+}
+.menu-cover.is-visible.js-mc-fired .menu-cover__label {
+  opacity: 1; transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-cover__numeral { clip-path: none; transition: none; }
+  .menu-cover__label { opacity: 1; transform: none; transition: none; }
+}
+
+/* --- 3.12 Address block breath ---
+   Address opacity pulses over an 8s cycle. Nearly imperceptible; makes
+   the finale feel alive rather than static. Uses opacity (not
+   letter-spacing) so the address can never wrap mid-cycle. */
+.finale__address-line {
+  display: inline-block;
+  animation: addressBreath 8s ease-in-out infinite;
+}
+.finale__address-line:nth-child(2) { animation-delay: 4s; }
+@keyframes addressBreath {
+  0%, 100% { opacity: 0.82; }
+  50%      { opacity: 1;    }
+}
+@media (prefers-reduced-motion: reduce) {
+  .finale__address-line { animation: none; opacity: 1; }
+}
+
+/* --- 3.13 Phone number pulse ---
+   Phone number scales 1.0 → 1.015 → 1.0 every 5s. Subtle "act on me"
+   cue without being loud. Uses transform (compositor-cheap). */
+.finale__phone {
+  display: inline-block;
+  animation: phonePulse 5s ease-in-out infinite;
+  animation-delay: 2s;
+  transform-origin: center;
+}
+@keyframes phonePulse {
+  0%, 60%, 100% { transform: scale(1); }
+  75%           { transform: scale(1.018); }
+  85%           { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .finale__phone { animation: none; }
+}
+
+/* --- 3.14 Menu item hover — letter-spacing expand ---
+   Hovering a menu row expands the item name's letter-spacing. Reads
+   as opening a specimen. Pairs with the existing ink-line sweep. */
+.menu-item .menu-item__name {
+  transition: letter-spacing 0.5s cubic-bezier(0.32, 0.72, 0.36, 1),
+              color 0.4s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+.menu-item:hover .menu-item__name {
+  letter-spacing: 0.045em;
+}
+@media (hover: none) {
+  .menu-item:hover .menu-item__name { letter-spacing: inherit; }
+}
+
+/* --- 3.15 Section-title magnetic cursor pull (desktop) ---
+   Individual characters translate slightly toward cursor position.
+   JS writes --pull-x/--pull-y per-char based on cursor distance.
+   Disabled on touch/coarse-pointer devices. */
+@media (hover: hover) and (pointer: fine) {
+  .section__title .char-reveal {
+    transform: translate(var(--pull-x, 0), calc(1.05em + var(--pull-y, 0)));
+  }
+  .is-visible .section__title .char-reveal {
+    transform: translate(var(--pull-x, 0), var(--pull-y, 0));
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+    transition-delay: calc(var(--char-i, 0) * 0.035s), calc(var(--char-i, 0) * 0.035s);
+  }
+  /* After reveal completes, character-i delay drops so magnetic pull is instant */
+  .is-visible .section__title.js-magnetic-ready .char-reveal {
+    transition-delay: 0s;
+    transition-duration: 0.25s;
+  }
+
+  /* Extended magnetic pull — applies to hero title letters, spotlight
+     title chars, signature card name chars, and menu item name chars.
+     Uses the CSS translate property (separate from transform) so it
+     composes cleanly with the reveal animations' transform without
+     needing to modify them. */
+  .hero__letter,
+  .spot-char,
+  .mc-char,
+  .finale-char,
+  .sig-char-reveal,
+  .name-char-reveal {
+    translate: var(--pull-x, 0) var(--pull-y, 0);
+    transition: translate 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  /* On js-magnetic-ready parents, snap pull instant for responsive feel */
+  .hero__title.js-magnetic-ready .hero__letter,
+  .spotlight__title.js-magnetic-ready .spot-char,
+  .menu-cover__label.js-magnetic-ready .mc-char,
+  .finale__title.js-magnetic-ready .finale-char,
+  .signature-card__name.js-magnetic-ready .sig-char-reveal,
+  .menu-item__name.js-magnetic-ready .name-char-reveal {
+    transition-duration: 0.22s;
+  }
+}
+/* Outside media query: spotlight title char structure — nowrap word
+   wrappers so multi-word titles ("Full Set", "Lash Extensions") never
+   break mid-word. spot-char is inline-block so translate applies. */
+.spot-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+/* Fall-from-sky reveal — Meet Rikki, Full Set Lash Extensions, and
+   Let's Get You Booked all use the same effect. Chars drop from above
+   with a slight tilt (alternating odd/even) and a springy landing.
+   Triggered by the per-title .is-fall-in observer (T3.FALL) so the
+   animation fires only when the user has actually scrolled INTO the
+   title — not when the parent section barely intersects viewport.
+   Uses CSS translate property for magnetic pull so the fall transform
+   stays intact. */
+
+/* Spotlight title chars */
+.spot-char {
+  display: inline-block;
+  transform: translateY(-0.9em) rotate(-4deg);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--spot-i, 0) * 0.055s);
+}
+.spot-char:nth-child(even) {
+  transform: translateY(-0.9em) rotate(4deg);
+}
+.spotlight__title.is-fall-in .spot-char,
+.spotlight__title.is-fall-in .spot-char:nth-child(even) {
+  transform: translateY(0) rotate(0);
+  opacity: 1;
+}
+
+/* Meet Rikki section title chars */
+.about .section__title.js-charified {
+  overflow: visible;
+  padding: 0.3em 0 0;
+}
+.about .section__title .char-reveal {
+  transform: translateY(-0.9em) rotate(-4deg);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--char-i, 0) * 0.055s);
+}
+.about .section__title .char-reveal:nth-child(even) {
+  transform: translateY(-0.9em) rotate(4deg);
+}
+.about .section__title.is-fall-in .char-reveal,
+.about .section__title.is-fall-in .char-reveal:nth-child(even) {
+  transform: translateY(0) rotate(0);
+  opacity: 1;
+}
+
+/* Finale title chars — Let's Get You Booked */
+.finale__title { overflow: visible; }
+.finale-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.finale-char {
+  display: inline-block;
+  transform: translateY(-0.9em) rotate(-4deg);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(var(--fnl-i, 0) * 0.055s);
+}
+.finale-char:nth-child(even) {
+  transform: translateY(-0.9em) rotate(4deg);
+}
+.finale__title.is-fall-in .finale-char,
+.finale__title.is-fall-in .finale-char:nth-child(even) {
+  transform: translateY(0) rotate(0);
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about .section__title .char-reveal {
+    translate: var(--pull-x, 0) var(--pull-y, 0);
+    transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1),
+                translate 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition-delay: calc(var(--char-i, 0) * 0.055s),
+                      calc(var(--char-i, 0) * 0.055s),
+                      0s;
+  }
+  .about .section__title.is-fall-in .char-reveal,
+  .about .section__title.is-fall-in .char-reveal:nth-child(even) {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spot-char,
+  .finale-char,
+  .about .section__title .char-reveal {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+/* Service card text stagger — h3 chars rise, description words cascade.
+   Triggered on .service-card.is-in-view (per-card IO already in place). */
+.svc-char-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.svc-char {
+  display: inline-block;
+  transform: translateY(0.6em);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+              opacity 0.45s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(0.25s + var(--svc-i, 0) * 0.025s);
+}
+.service-card.is-in-view .svc-char {
+  transform: none;
+  opacity: 1;
+}
+.svc-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(0.75s + var(--svcw-i, 0) * 0.028s);
+}
+.service-card.is-in-view .svc-word {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .svc-char, .svc-word { opacity: 1; transform: none; transition: none; }
+}
+
+/* Spotlight + Finale CTA — attention-drawing premium animation.
+   Rose-gold ring pulse + gentle scale breath + periodic shimmer sweep
+   across the button text every 8s. Same treatment on both so the CTA
+   at both the mid-page and end-page conversion points feels alive. */
+.spotlight .btn.js-book,
+.finale .btn--finale {
+  position: relative;
+  overflow: hidden;
+  animation: ctaAttentionBreath 4s ease-in-out infinite,
+             ctaAttentionRing 3.6s ease-in-out infinite;
+}
+@keyframes ctaAttentionBreath {
+  0%, 100% { transform: scale(1);     }
+  50%      { transform: scale(1.028); }
+}
+@keyframes ctaAttentionRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(192, 143, 107, 0);   }
+  50%      { box-shadow: 0 0 0 14px rgba(192, 143, 107, 0.14),
+                          0 0 32px 0 rgba(192, 143, 107, 0.16); }
+}
+.spotlight .btn.js-book::before,
+.finale .btn--finale::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -55%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 235, 210, 0.42) 50%,
+    transparent 100%);
+  pointer-events: none;
+  animation: ctaAttentionShimmer 8s ease-in-out infinite;
+  animation-delay: 1.8s;
+}
+@keyframes ctaAttentionShimmer {
+  0%   { left: -55%; }
+  35%  { left: 155%; }
+  100% { left: 155%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spotlight .btn.js-book,
+  .finale .btn--finale { animation: none; }
+  .spotlight .btn.js-book::before,
+  .finale .btn--finale::before { animation: none; }
+}
+/* Menu-cover label char structure — mirrors .spot-word / .spot-char.
+   Applies to "The Lash Menu", "The Hair Menu", "The Wax Menu". */
+.mc-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.mc-char {
+  display: inline-block;
+}
+
+/* --- Tap-triggered ripple wave (mobile / touch) ---
+   When a title is tapped, JS adds .is-rippling to each of its chars
+   with a --ripple-delay proportional to distance from the tap point.
+   Each char rises then settles — the visual wave propagates outward
+   from the tap. Uses the CSS translate property so it composes with
+   existing transform-based reveal animations. */
+@keyframes charRipple {
+  0%   { translate: 0 0;      }
+  35%  { translate: 0 -7px;   }
+  100% { translate: 0 0;      }
+}
+.char-reveal.is-rippling,
+.hero__letter.is-rippling,
+.spot-char.is-rippling,
+.mc-char.is-rippling,
+.sig-char-reveal.is-rippling,
+.name-char-reveal.is-rippling {
+  animation: charRipple 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+  animation-delay: var(--ripple-delay, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .char-reveal.is-rippling,
+  .hero__letter.is-rippling,
+  .spot-char.is-rippling,
+  .mc-char.is-rippling,
+  .sig-char-reveal.is-rippling,
+  .name-char-reveal.is-rippling { animation: none; }
+}
+
+/* ==================================================================
+   TIER 3 CURSOR — CUSTOM ROSE-GOLD TWIN-CIRCLE CURSOR (desktop only)
+   Two fixed-position elements: a small filled rose-gold dot tracking
+   the mouse exactly (via --dx / --dy) and a larger outlined rose-gold
+   ring following with spring lag (via --rx / --ry, lerped in JS).
+   On hover over interactive elements, the ring blooms 3× and the dot
+   fades. Auto-off on touch and prefers-reduced-motion.
+   ================================================================== */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor-duo,
+  html.has-cursor-duo body,
+  html.has-cursor-duo a,
+  html.has-cursor-duo button,
+  html.has-cursor-duo .btn {
+    cursor: none;
+  }
+  html.has-cursor-duo input,
+  html.has-cursor-duo textarea,
+  html.has-cursor-duo select {
+    cursor: text;
+  }
+}
+.cursor-duo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 0.25s cubic-bezier(0.32, 0.72, 0.36, 1);
+}
+/* Solo outlined diamond — a single rose-gold diamond (rotated square)
+   follows the cursor with spring lag. At rest: transparent center with
+   crisp rose-gold outline. On hover: fills with semi-rose-gold and
+   grows. The diamond IS the cursor — minimal, editorial, brand-tied. */
+.cursor-duo__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--rose-gold);
+  background: transparent;
+  translate: var(--rx, -100px) var(--ry, -100px);
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: width 0.4s cubic-bezier(0.22, 0.85, 0.32, 1.15),
+              height 0.4s cubic-bezier(0.22, 0.85, 0.32, 1.15),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              border-width 0.3s ease,
+              opacity 0.28s ease;
+  will-change: translate;
+  pointer-events: none;
+}
+
+/* Hover — diamond blooms + semi-fills */
+.cursor-duo.is-hover .cursor-duo__ring {
+  width: 44px;
+  height: 44px;
+  background: rgba(192, 143, 107, 0.28);
+  border-color: rgba(192, 143, 107, 1);
+  border-width: 1.5px;
+}
+
+/* Active (mousedown) — diamond compresses like a stamp */
+.cursor-duo.is-active .cursor-duo__ring {
+  width: 16px;
+  height: 16px;
+}
+.cursor-duo.is-active.is-hover .cursor-duo__ring {
+  width: 34px;
+  height: 34px;
+  background: rgba(192, 143, 107, 0.4);
+}
+
+/* Hidden over text inputs / when cursor leaves window */
+.cursor-duo.is-hidden .cursor-duo__ring,
+.cursor-duo.is-hidden .cursor-duo__dot,
+.cursor-duo.is-off-window .cursor-duo__ring,
+.cursor-duo.is-off-window .cursor-duo__dot {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-duo__ring,
+  .cursor-duo__dot {
+    transition: opacity 0.15s;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .cursor-duo { display: none; }
+  html.has-cursor-duo,
+  html.has-cursor-duo body { cursor: auto; }
+}
+
+/* ==================================================================
+   TIER 3 SIGNATURE — SIGNATURE CARD TEXT MOTION LAYER
+   Six upgrades layered on the signature cards: pill drop-in with
+   rotate, card name char curtain, rose-gold hairline under names,
+   description word cascade, CTA link letter-spacing expand, arrow
+   glide on hover. Triggered by per-card .is-in-view (from the
+   existing per-card IntersectionObserver).
+   ================================================================== */
+
+/* --- S2 "The Signature" pill drop-in with rotate ---
+   Extends the existing scale-in with a subtle rotate from tilted to
+   upright, reading like a stamp being placed. Uses the same section
+   .is-visible trigger already wired for the tag. */
+.signature-card__tag {
+  transform: scale(0.85) rotate(-6deg);
+  transform-origin: left center;
+  transition: opacity 0.75s cubic-bezier(0.32, 0.72, 0.36, 1) 0.85s,
+              transform 0.85s cubic-bezier(0.22, 0.85, 0.32, 1.15) 0.85s;
+}
+.signature.is-visible .signature-card__tag {
+  transform: scale(1) rotate(0deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-card__tag { transform: scale(1) rotate(0); transition: none; }
+}
+
+/* --- S1 Signature card name character curtain ---
+   Chars rise from below a mask (padded overflow on .sig-char-word).
+   .signature-card.is-in-view on the card triggers the per-char cascade
+   with 30ms stagger. Word wrappers prevent mid-word line breaks. */
+.signature-card__name.js-sig-name-ready {
+  overflow: visible;
+  position: relative;
+}
+.sig-char-word {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0.12em 0.04em 0.08em;
+  margin: -0.12em -0.04em -0.08em;
+  vertical-align: baseline;
+}
+.sig-char-reveal {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: calc(var(--sc-i, 0) * 0.025s + 0.05s);
+}
+.signature-card.is-in-view .sig-char-reveal {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sig-char-reveal { transform: none; transition: none; }
+}
+
+/* --- S6 Rose-gold hairline sweep under card names ---
+   A thin rose-gold line draws left-to-right beneath each card name
+   after the char curtain completes. Same visual family as testimonial
+   attribution dash. */
+.signature-card__name.js-sig-name-ready::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--rose-gold);
+  width: 0;
+  margin-top: 0.5rem;
+  transition: width 0.55s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: 0.5s;
+}
+.signature-card.is-in-view .signature-card__name.js-sig-name-ready::after {
+  width: 42px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .signature-card__name.js-sig-name-ready::after { width: 42px; transition: none; }
+}
+
+/* --- S3 Description word cascade ---
+   Each .signature-card__desc splits into per-word spans that cascade
+   with 32ms stagger after the name lands (~1.4s in). */
+.signature-card__desc.js-sig-desc-ready {
+  opacity: 1;
+  transform: none;
+}
+.sig-desc-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity 0.5s cubic-bezier(0.32, 0.72, 0.36, 1),
+              transform 0.5s cubic-bezier(0.32, 0.72, 0.36, 1);
+  transition-delay: calc(0.75s + var(--sd-i, 0) * 0.025s);
+}
+.signature-card.is-in-view .sig-desc-word {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sig-desc-word { opacity: 1; transform: none; transition: none; }
+}
+
+/* --- S5 + S9 CTA link letter-spacing expand + arrow glide on hover ---
+   Signature card link expands text letter-spacing and slides its arrow
+   6px right on hover — same family as the hero view-menu arrow. */
+.signature-card__link {
+  transition: letter-spacing 0.4s cubic-bezier(0.32, 0.72, 0.36, 1),
+              color 0.3s ease,
+              border-bottom-color 0.3s ease;
+}
+.signature-card__link-arrow {
+  display: inline-block;
+  margin-left: 0.2em;
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0.36, 1);
+  will-change: transform;
+}
+.signature-card__link:hover {
+  letter-spacing: 0.03em;
+}
+.signature-card__link:hover .signature-card__link-arrow {
+  transform: translateX(6px);
+}
+@media (hover: none), (pointer: coarse) {
+  .signature-card__link:hover { letter-spacing: inherit; }
+  .signature-card__link:hover .signature-card__link-arrow { transform: none; }
+}
+
+/* ==================================================================
+   VISUAL PASS — three moves that push the site from "designed" to
+   "published editorial."
+
+   #19 Paper-fiber texture layer — subtle warm-cream vellum grain
+       overlay on the entire site. Fixed to viewport so it moves
+       with the reader, not the scroll. Behind all content.
+
+   #21 Marble accent panels — subtle warm-cream marble veining
+       backdrop behind testimonials + interlude sections. Almost
+       imperceptible individually, but the whole section reads as
+       "printed on stone."
+
+   #10 Asymmetric editorial layout — interlude reflows to a real
+       magazine spread: italic line pushed left, kicker + signature
+       right-aligned, oceans of cream breathing between them.
+   ================================================================== */
+
+/* #19 — Global paper-fiber texture overlay (fixed to viewport) */
+html::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.94  0 0 0 0 0.88  0 0 0 0 0.78  0 0 0 0.28 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  background-repeat: repeat;
+}
+/* The cursor sits at z-index 99999, so texture stays behind it.
+   The nav (z-index 50) and sticky-book (>50) also stay above. */
+
+/* #21 — Marble accent panels behind testimonials + interlude */
+.testimonials::before,
+.interlude::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3ClinearGradient id='m1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f9f0e6' stop-opacity='0'/%3E%3Cstop offset='30%25' stop-color='%23e8d5c0' stop-opacity='0.35'/%3E%3Cstop offset='60%25' stop-color='%23d9b48f' stop-opacity='0.28'/%3E%3Cstop offset='100%25' stop-color='%23f9f0e6' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='m2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f4e6d5' stop-opacity='0'/%3E%3Cstop offset='50%25' stop-color='%23c08f6b' stop-opacity='0.2'/%3E%3Cstop offset='100%25' stop-color='%23f4e6d5' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='800' fill='url(%23m1)'/%3E%3Cpath d='M0,180 Q300,220 600,190 T1200,210' stroke='%23c08f6b' stroke-width='0.6' fill='none' opacity='0.35'/%3E%3Cpath d='M0,340 Q400,300 700,370 T1200,360' stroke='%23a67650' stroke-width='0.5' fill='none' opacity='0.28'/%3E%3Cpath d='M0,500 Q350,540 750,490 T1200,520' stroke='%23c08f6b' stroke-width='0.4' fill='none' opacity='0.32'/%3E%3Cpath d='M0,680 Q300,650 650,690 T1200,660' stroke='%23d9b48f' stroke-width='0.5' fill='none' opacity='0.3'/%3E%3Crect width='1200' height='800' fill='url(%23m2)'/%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+}
+
+/* ==================================================================
+   VISUAL PASS 2 — four moves toward couture-editorial polish
+
+   #1  Dark interlude band — flip the studio note from cream to deep
+       espresso; one dark chapter in an otherwise cream book.
+   #3  Warm hero corner vignette — golden-hour bleed at the four
+       corners so the center type sits in candlelight.
+   #4  Velvet display panel — featured signature card body inverts
+       to a warm cocoa so it reads as the couture piece in the window.
+   #5  Duotone menu chapter covers — champagne/sepia wash so the
+       lash / hair / waxing covers feel like magazine section openers.
+   ================================================================== */
+
+/* --- #3  Warm hero corner vignette (top corners only — no bleed
+        past the bottom of the video / last line of hero copy) ------- */
+.hero {
+  background:
+    linear-gradient(to bottom, rgba(140, 82, 40, 0.32) 0%, transparent 60%),
+    radial-gradient(ellipse 75% 85% at 0% 0%,   rgba(140, 82, 40, 0.65), transparent 68%),
+    radial-gradient(ellipse 75% 85% at 100% 0%, rgba(140, 82, 40, 0.70), transparent 68%),
+    var(--cream);
+}
+
+/* --- Page pull: Meet Rikki pins while "What Clients Say" pulls up
+        over it. Desktop only — on mobile the stacked flow is clearer. -- */
+@media (min-width: 900px) {
+  .page-pull { position: relative; }
+  .page-pull .about {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    /* Ensure the sticky pane covers whatever sits behind it */
+    background: var(--cream);
+  }
+  .page-pull .about__inner {
+    width: 100%;
+  }
+  .page-pull .testimonials {
+    position: relative;
+    z-index: 2;
+    /* Solid backdrop so the pull convincingly hides the pinned pane */
+    background:
+      radial-gradient(ellipse at 50% 30%, #fbf6ec 0%, #f7eedd 60%, #f3e8d2 100%);
+    /* Cast a soft shadow along the leading edge — reads as "sliding up
+       over Rikki" instead of a hard cut */
+    box-shadow: 0 -30px 50px -20px rgba(20, 15, 10, 0.18);
+  }
+}
+
+/* --- #1  Dark interlude band --------------------------------------- */
+.interlude {
+  background: #1c1410;
+}
+.interlude::before {
+  opacity: 0.14;
+  filter: brightness(0.75) saturate(0.5) sepia(0.18);
+}
+.interlude::after {
+  background:
+    radial-gradient(ellipse at 50% 45%,
+      rgba(76, 46, 28, 0.15) 0%,
+      rgba(28, 20, 16, 0.55) 65%,
+      rgba(20, 14, 10, 0.9) 100%);
+  opacity: 1;
+}
+.interlude__line     { color: #f4e6d5; }
+.interlude__eyebrow  { color: #d9b48f; }
+.interlude__sign     { color: #b7a494; }
+.interlude__sign-rule { background: rgba(217, 180, 143, 0.5); }
+.interlude__sign-name { color: #d9b48f; }
+
+/* --- #4  Velvet display panel behind featured signature card ------- */
+.signature-card--featured {
+  background: linear-gradient(158deg, #2a1e17 0%, #1a1310 100%);
+  border-color: rgba(217, 180, 143, 0.28);
+  box-shadow: 0 30px 60px -28px rgba(20, 14, 10, 0.6);
+}
+.signature-card--featured .signature-card__eyebrow { color: #d9b48f; }
+.signature-card--featured .signature-card__name    { color: #f9f0e6; }
+.signature-card--featured .signature-card__desc    { color: #d3c4b2; }
+.signature-card--featured .signature-card__booking { color: #d9b48f; }
+.signature-card--featured .signature-card__foot {
+  border-top-color: rgba(217, 180, 143, 0.22);
+}
+.signature-card--featured .signature-card__foot .menu-item__price      { color: #f4e6d5; }
+.signature-card--featured .signature-card__foot .menu-item__price .from { color: #b7a494; }
+.signature-card--featured .signature-card__link {
+  color: #d9b48f;
+  border-bottom-color: rgba(217, 180, 143, 0.32);
+}
+.signature-card--featured .signature-card__link:hover {
+  border-bottom-color: #d9b48f;
+}
+
+/* --- Section thread — a single rose-gold hairline running edge-to-edge
+        between the dark interlude and the lash chapter cover. Both
+        sections stay dark; the thread does the work. Soft glow above +
+        below the line reads as woven light, not a hard rule. -------- */
+.section-thread {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(to right,
+    rgba(192, 143, 107, 0)    0%,
+    rgba(192, 143, 107, 0.7)  25%,
+    rgba(217, 180, 143, 0.95) 50%,
+    rgba(192, 143, 107, 0.7)  75%,
+    rgba(192, 143, 107, 0)    100%);
+  box-shadow:
+    0 0 12px 1px rgba(217, 180, 143, 0.35),
+    0 0 24px 3px rgba(192, 143, 107, 0.18);
+}
+.section-thread::before,
+.section-thread::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  pointer-events: none;
+}
+.section-thread::before {
+  bottom: 100%;
+  background: linear-gradient(to top,
+    rgba(217, 180, 143, 0.12) 0%,
+    rgba(217, 180, 143, 0) 100%);
+}
+.section-thread::after {
+  top: 100%;
+  background: linear-gradient(to bottom,
+    rgba(217, 180, 143, 0.12) 0%,
+    rgba(217, 180, 143, 0) 100%);
+}
+
+/* --- Mobile edge-to-edge photography — Rikki portrait + featured
+        signature card image bleed to the phone edges instead of sitting
+        inside cream gutters. Reads like a magazine spread. -------------- */
+@media (max-width: 720px) {
+  /* Meet Rikki portrait bleeds to viewport edges; copy keeps padding */
+  .about { padding-left: 0; padding-right: 0; }
+  .about__photo {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .about__copy {
+    padding-left: clamp(1.25rem, 5vw, 2rem);
+    padding-right: clamp(1.25rem, 5vw, 2rem);
+  }
+  /* The dark gradient hint at the bottom of about spans full width already */
+
+  /* Featured signature card image bleeds past its own card padding */
+  .signature { padding-left: 0; padding-right: 0; }
+  .signature .menu__head,
+  .signature__grid > .signature-card:not(.signature-card--featured) {
+    margin-left: clamp(1.25rem, 5vw, 2rem);
+    margin-right: clamp(1.25rem, 5vw, 2rem);
+  }
+  /* On mobile the @media 900 rule adds card padding back to the featured
+     card — strip its side padding so the image can bleed, and put the
+     padding back on the body block only. */
+  .signature-card--featured {
+    padding-left: 0;
+    padding-right: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .signature-card--featured .signature-card__media {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .signature-card--featured .signature-card__body {
+    padding-left: clamp(1.25rem, 5vw, 2rem);
+    padding-right: clamp(1.25rem, 5vw, 2rem);
+  }
+}
+
+/* --- Mobile cross-fade — sections dissolve into each other at the
+        entry / exit boundaries. Tall sections (menus) hold fully
+        visible in the middle; only the ~30% of the viewport at each
+        edge is used as a fade zone. Disables the existing reveal
+        entrance so the two systems don't fight for opacity. ---------- */
+@media (max-width: 899px) {
+  body.js-crossfade-enabled section.reveal,
+  body.js-crossfade-enabled aside.reveal {
+    opacity: 1;
+    transform: none;
+  }
+  body.js-crossfade-enabled [data-crossfade] {
+    will-change: opacity;
+  }
+}
+
+
+
+

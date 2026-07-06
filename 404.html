@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found · Wink Wink Beauty Bar</title>
+  <meta name="description" content="The page you're looking for has slipped past us. Return to the studio." />
+
+  <link rel="icon" href="images/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png" />
+  <meta name="theme-color" content="#0d0b0b" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink: #1c1817;
+      --black: #0d0b0b;
+      --cream: #faf4ee;
+      --rose-gold: #c08f6b;
+      --rose-gold-light: #d9b48f;
+      --muted: #b3a596;
+      --line: rgba(192, 143, 107, 0.28);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      font-weight: 300;
+      color: var(--cream);
+      background: radial-gradient(ellipse at 50% 35%, #1a1614 0%, var(--black) 90%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle paper-grain texture */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.88  0 0 0 1 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    }
+    .inner { position: relative; z-index: 1; max-width: 540px; }
+    .brand {
+      font-family: "Italiana", Georgia, serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 3rem;
+      display: inline-block;
+    }
+    .code {
+      font-family: "Italiana", serif;
+      font-size: clamp(4.5rem, 12vw, 7rem);
+      line-height: 1;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+    .eyebrow {
+      font-family: "Inter", sans-serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      color: var(--rose-gold-light);
+      margin-bottom: 1.6rem;
+    }
+    .line {
+      font-family: "Italiana", serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.35;
+      color: var(--cream);
+      max-width: 32rem;
+      margin: 0 auto 2.4rem;
+    }
+    .actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.4rem;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--cream);
+      border-radius: 999px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn:hover { background: transparent; color: var(--cream); }
+    .link {
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--rose-gold-light);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(217, 180, 143, 0.4);
+      padding-bottom: 2px;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .link:hover { color: var(--cream); border-bottom-color: var(--cream); }
+    .footer-line {
+      position: absolute;
+      bottom: 1.8rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #8a7c6d;
+      z-index: 1;
+    }
+    /* Subtle slow-breath animation on the code, matching the hero Ken Burns rhythm */
+    .code {
+      animation: codeBreath 8s ease-in-out infinite;
+    }
+    @keyframes codeBreath {
+      0%, 100% { letter-spacing: 0.005em; }
+      50%      { letter-spacing: 0.02em; }
+    }
+    @media (prefers-reduced-motion: reduce) { .code { animation: none; } }
+    /* Hairline rose-gold divider above the closing pulled quote */
+    .quote-rule {
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: var(--rose-gold);
+      margin: 2.2rem auto 1.4rem;
+    }
+    .quote {
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      color: #c8b9a8;
+      max-width: 28rem;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+    .quote-sig {
+      display: block;
+      margin-top: 0.55rem;
+      font-family: "Italiana", serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #8a7c6d;
+    }
+  </style>
+</head>
+<body>
+  <div class="inner">
+    <span class="brand">Wink Wink</span>
+    <div class="code">404</div>
+    <p class="eyebrow">a quiet detour</p>
+    <p class="line">This page has slipped past us. The studio is just one click away.</p>
+    <div class="actions">
+      <a href="/" class="btn">Back to the studio</a>
+      <a href="sms:+16264220770" class="link">or text Rikki &rarr;</a>
+    </div>
+    <span class="quote-rule" aria-hidden="true"></span>
+    <p class="quote">
+      &ldquo;The work is in the details. The same is true of every page.&rdquo;
+      <span class="quote-sig">Rikki</span>
+    </p>
+  </div>
+  <p class="footer-line">By appointment · Jurupa Valley, California</p>
+</body>
+</html>
